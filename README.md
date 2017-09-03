@@ -1,2 +1,2 @@
 # EZChess
-Create a chessboard in JS challenge
+A 'Create a chess game in JS' challenge
