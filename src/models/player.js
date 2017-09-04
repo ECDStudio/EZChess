@@ -1,4 +1,6 @@
-class Player {
+import {Piece} from './piece';
+
+export class Player {
 	constructor(side) {
 		this.isTurn = false;
 		this.pieces = {
@@ -21,6 +23,3 @@ class Player {
 		}
 	}
 }
-
-let player1 = new Player('white');
-let player2 = new Player('black');
