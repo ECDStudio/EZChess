@@ -15,6 +15,7 @@ class Piece {
 				this.position.y = pY;
 				this.step += 1;
 			} else if (pX === 0 && pY === 0) {
+				// [0, 0] position is being captured
 				this.position.x = pX;
 				this.position.y = pY;
 			}
@@ -25,22 +26,25 @@ class Piece {
 
 class Player {
 	constructor(side) {
-		this.king = new Piece(side === 'white' ? 1 : 8, 4);
-		this.queen = new Piece(side === 'white' ? 1 : 8, 5);
-		this.rook1 = new Piece(side === 'white' ? 1 : 8, 1);
-		this.rook2 = new Piece(side === 'white' ? 1 : 8, 8);
-		this.knight1 = new Piece(side === 'white' ? 1 : 8, 2);
-		this.knight2 = new Piece(side === 'white' ? 1 : 8, 7);
-		this.bishop1 = new Piece(side === 'white' ? 1 : 8, 3);
-		this.bishop2 = new Piece(side === 'white' ? 1 : 8, 6);
-		this.pawn1 = new Piece(side === 'white' ? 2 : 7, 1);
-		this.pawn2 = new Piece(side === 'white' ? 2 : 7, 2);
-		this.pawn3 = new Piece(side === 'white' ? 2 : 7, 3);
-		this.pawn4 = new Piece(side === 'white' ? 2 : 7, 4);
-		this.pawn5 = new Piece(side === 'white' ? 2 : 7, 5);
-		this.pawn6 = new Piece(side === 'white' ? 2 : 7, 6);
-		this.pawn7 = new Piece(side === 'white' ? 2 : 7, 7);
-		this.pawn8 = new Piece(side === 'white' ? 2 : 7, 8);
+		this.isTurn = false;
+		this.pieces = {
+			king: new Piece(side === 'white' ? 1 : 8, 4),
+			queen: new Piece(side === 'white' ? 1 : 8, 5),
+			rook1: new Piece(side === 'white' ? 1 : 8, 1),
+			rook2: new Piece(side === 'white' ? 1 : 8, 8),
+			knight1: new Piece(side === 'white' ? 1 : 8, 2),
+			knight2: new Piece(side === 'white' ? 1 : 8, 7),
+			bishop1: new Piece(side === 'white' ? 1 : 8, 3),
+			bishop2: new Piece(side === 'white' ? 1 : 8, 6),
+			pawn1: new Piece(side === 'white' ? 2 : 7, 1),
+			pawn2: new Piece(side === 'white' ? 2 : 7, 2),
+			pawn3: new Piece(side === 'white' ? 2 : 7, 3),
+			pawn4: new Piece(side === 'white' ? 2 : 7, 4),
+			pawn5: new Piece(side === 'white' ? 2 : 7, 5),
+			pawn6: new Piece(side === 'white' ? 2 : 7, 6),
+			pawn7: new Piece(side === 'white' ? 2 : 7, 7),
+			pawn8: new Piece(side === 'white' ? 2 : 7, 8),
+		}
 	}
 }
 
