@@ -165,7 +165,8 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 		super(side, pX, pY);
 	}
 
-	// returns an array of available postions to move to;
+	// returns an array of available postions to move to,
+	// including possible captures;
 	// empty if there is none
 	availableMoves() {
 		const checkX = (target) => {
