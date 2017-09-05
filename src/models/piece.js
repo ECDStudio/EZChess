@@ -1,4 +1,4 @@
-export class Piece {
+export default class Piece {
 	constructor(pX, pY) {
 		this.position = {
 			x: pX,

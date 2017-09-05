@@ -1,6 +1,6 @@
-import {Piece} from './piece';
+import Piece from './Piece';
 
-export class Player {
+export default class Player {
 	constructor(side) {
 		this.isTurn = false;
 		this.pieces = {

@@ -69,12 +69,12 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_player__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Player__ = __webpack_require__(1);
 
 
 let chess = {
-	player1: new __WEBPACK_IMPORTED_MODULE_0__models_player__["a" /* Player */]('white'),
-	player2: new __WEBPACK_IMPORTED_MODULE_0__models_player__["a" /* Player */]('black')
+	player1: new __WEBPACK_IMPORTED_MODULE_0__models_Player__["a" /* default */]('white'),
+	player2: new __WEBPACK_IMPORTED_MODULE_0__models_Player__["a" /* default */]('black')
 };
 
 window.chess = chess;
@@ -84,29 +84,29 @@ window.chess = chess;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__piece__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(2);
 
 
 class Player {
 	constructor(side) {
 		this.isTurn = false;
 		this.pieces = {
-			king: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 1 : 8, 4),
-			queen: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 1 : 8, 5),
-			rook1: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 1 : 8, 1),
-			rook2: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 1 : 8, 8),
-			knight1: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 1 : 8, 2),
-			knight2: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 1 : 8, 7),
-			bishop1: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 1 : 8, 3),
-			bishop2: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 1 : 8, 6),
-			pawn1: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 2 : 7, 1),
-			pawn2: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 2 : 7, 2),
-			pawn3: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 2 : 7, 3),
-			pawn4: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 2 : 7, 4),
-			pawn5: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 2 : 7, 5),
-			pawn6: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 2 : 7, 6),
-			pawn7: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 2 : 7, 7),
-			pawn8: new __WEBPACK_IMPORTED_MODULE_0__piece__["a" /* Piece */](side === 'white' ? 2 : 7, 8),
+			king: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 4),
+			queen: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 5),
+			rook1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 1),
+			rook2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 8),
+			knight1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 2),
+			knight2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 7),
+			bishop1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 3),
+			bishop2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 6),
+			pawn1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 1),
+			pawn2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 2),
+			pawn3: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 3),
+			pawn4: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 4),
+			pawn5: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 5),
+			pawn6: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 6),
+			pawn7: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 7),
+			pawn8: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 8),
 		}
 	}
 }

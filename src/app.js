@@ -1,4 +1,4 @@
-import {Player} from './models/player';
+import Player from './models/Player';
 
 let chess = {
 	player1: new Player('white'),
