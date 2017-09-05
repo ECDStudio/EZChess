@@ -156,7 +156,7 @@ class Piece {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__checkPosition__ = __webpack_require__(4);
 
 
 
@@ -165,29 +165,14 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 		super(side, pX, pY);
 	}
 
+	// returns an array of available postions to move to;
+	// empty if there is none
 	availableMoves() {
-		const checkPosition = (x, y, side) => {
-			for (let player in __WEBPACK_IMPORTED_MODULE_1__app__["chess"]) {
-				for (let piece in __WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces) {
-					if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.x === x &&
-						__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.y === y) {
-						if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].side === side) {
-							// check if there is piece from the same side
-							return 'friendly';
-						} else {
-							// check if there is piece from the other side (can capture)
-							return 'enemy';
-						}
-					}
-				}
-			}
-		}
-		
 		const checkX = (target) => {
-			return checkPosition(target, this.position.y, this.side);
+			return Object(__WEBPACK_IMPORTED_MODULE_1__checkPosition__["a" /* checkPosition */])(target, this.position.y, this.side);
 		},
 		checkY = (target) => {
-			return checkPosition(this.position.x, target, this.side);
+			return Object(__WEBPACK_IMPORTED_MODULE_1__checkPosition__["a" /* checkPosition */])(this.position.x, target, this.side);
 		};
 
 		let positions = [],
@@ -241,6 +226,33 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 	}
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Rook;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app__ = __webpack_require__(0);
+
+
+const checkPosition = (x, y, side) => {
+	for (let player in __WEBPACK_IMPORTED_MODULE_0__app__["chess"]) {
+		for (let piece in __WEBPACK_IMPORTED_MODULE_0__app__["chess"][player].pieces) {
+			if (__WEBPACK_IMPORTED_MODULE_0__app__["chess"][player].pieces[piece].position.x === x &&
+				__WEBPACK_IMPORTED_MODULE_0__app__["chess"][player].pieces[piece].position.y === y) {
+				if (__WEBPACK_IMPORTED_MODULE_0__app__["chess"][player].side === side) {
+					// check if there is piece from the same side
+					return 'friendly';
+				} else {
+					// check if there is piece from the other side (can capture)
+					return 'enemy';
+				}
+			}
+		}
+	}
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = checkPosition;
 
 
 /***/ })

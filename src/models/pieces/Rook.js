@@ -1,29 +1,14 @@
 import Piece from '../Piece';
-import { chess } from '../../app';
+import { checkPosition } from '../../checkPosition';
 
 export default class Rook extends Piece {
 	constructor(side, pX, pY) {
 		super(side, pX, pY);
 	}
 
+	// returns an array of available postions to move to;
+	// empty if there is none
 	availableMoves() {
-		const checkPosition = (x, y, side) => {
-			for (let player in chess) {
-				for (let piece in chess[player].pieces) {
-					if (chess[player].pieces[piece].position.x === x &&
-						chess[player].pieces[piece].position.y === y) {
-						if (chess[player].side === side) {
-							// check if there is piece from the same side
-							return 'friendly';
-						} else {
-							// check if there is piece from the other side (can capture)
-							return 'enemy';
-						}
-					}
-				}
-			}
-		}
-		
 		const checkX = (target) => {
 			return checkPosition(target, this.position.y, this.side);
 		},
