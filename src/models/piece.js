@@ -1,11 +1,11 @@
 export default class Piece {
-	constructor(pX, pY) {
+	constructor(side, pX, pY) {
+		this.side = side;
 		this.position = {
 			x: pX,
 			y: pY
 		};
 		this.step = 0;
-		this.self = this;
 	}
 	
 	toPosition(pX, pY) {

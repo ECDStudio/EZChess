@@ -69,6 +69,7 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "chess", function() { return chess; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Player__ = __webpack_require__(1);
 
 
@@ -85,28 +86,31 @@ window.chess = chess;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pieces_Rook__ = __webpack_require__(3);
+
 
 
 class Player {
 	constructor(side) {
+		this.side = side;
 		this.isTurn = false;
 		this.pieces = {
-			king: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 4),
-			queen: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 5),
-			rook1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 1),
-			rook2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 8),
-			knight1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 2),
-			knight2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 7),
-			bishop1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 3),
-			bishop2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 1 : 8, 6),
-			pawn1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 1),
-			pawn2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 2),
-			pawn3: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 3),
-			pawn4: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 4),
-			pawn5: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 5),
-			pawn6: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 6),
-			pawn7: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 7),
-			pawn8: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side === 'white' ? 2 : 7, 8),
+			king: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 4),
+			queen: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 5),
+			rook1: new __WEBPACK_IMPORTED_MODULE_1__pieces_Rook__["a" /* default */](side, side === 'white' ? 1 : 8, 1),
+			rook2: new __WEBPACK_IMPORTED_MODULE_1__pieces_Rook__["a" /* default */](side, side === 'white' ? 1 : 8, 8),
+			knight1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 2),
+			knight2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 7),
+			bishop1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 3),
+			bishop2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 6),
+			pawn1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 2 : 7, 1),
+			pawn2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 2 : 7, 2),
+			pawn3: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 2 : 7, 3),
+			pawn4: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 2 : 7, 4),
+			pawn5: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 2 : 7, 5),
+			pawn6: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 2 : 7, 6),
+			pawn7: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 2 : 7, 7),
+			pawn8: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 2 : 7, 8),
 		}
 	}
 }
@@ -119,13 +123,13 @@ class Player {
 
 "use strict";
 class Piece {
-	constructor(pX, pY) {
+	constructor(side, pX, pY) {
+		this.side = side;
 		this.position = {
 			x: pX,
 			y: pY
 		};
 		this.step = 0;
-		this.self = this;
 	}
 	
 	toPosition(pX, pY) {
@@ -144,6 +148,109 @@ class Piece {
 	}
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Piece;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app__ = __webpack_require__(0);
+
+
+
+class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
+	constructor(side, pX, pY) {
+		super(side, pX, pY);
+	}
+	
+	availableMoves() {
+		const checkX = (target) => {
+			for (let player in __WEBPACK_IMPORTED_MODULE_1__app__["chess"]) {
+				for (let piece in __WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces) {
+					if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.x === target &&
+						__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.y === this.position.y) {
+						if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].side === this.side) {
+							// check if there is pieces from the same side
+							return 'has friendly';
+						} else {
+							// check if there is pieces from the other side (can capture)
+							return 'has enemy';
+						}
+					}
+				}
+			}
+		}
+		
+		const checkY = (target) => {
+			for (let player in __WEBPACK_IMPORTED_MODULE_1__app__["chess"]) {
+				for (let piece in __WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces) {
+					if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.x ===this.position.x &&
+						__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.y === target) {
+						if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].side === this.side) {
+							// check if there is pieces from the same side
+							return 'has friendly';
+						} else {
+							// check if there is pieces from the other side (can capture)
+							return 'has enemy';
+						}
+					}
+				}
+			}
+		}
+		
+		let locations = [],
+			xUp = true,
+			xDown = true,
+			yUp = true,
+			yDown = true;
+		
+		for (let i = this.position.x + 1; i <= 8; i += 1) {
+			if (xUp === true) {
+				if (checkX(i) === 'has friendly' || checkX(i) === 'has enemy') {
+					xUp = false;
+				}
+				if (checkX(i) !== 'has friendly') {
+					locations.push([i, this.position.y]);
+				}
+			}
+		}
+		for (let i = this.position.x - 1; i > 0; i -= 1) {
+			if (xDown === true) {
+				if (checkX(i) === 'has friendly' || checkX(i) === 'has enemy') {
+					xDown = false;
+				}
+				if (checkX(i) !== 'has friendly') {
+					locations.push([i, this.position.y]);
+				}
+			}
+		}
+		for (let i = this.position.y + 1; i <= 8; i += 1) {
+			if (yUp === true) {
+				if (checkY(i) === 'has friendly' || checkY(i) === 'has enemy') {
+					yUp = false;
+				}
+				if (checkY(i) !== 'has friendly') {
+					locations.push([this.position.x, i]);
+				}
+			}
+		}
+		for (let i = this.position.y - 1; i > 0; i -= 1) {
+			if (yDown === true) {
+				if (checkY(i) === 'has friendly' || checkY(i) === 'has enemy') {
+					yDown = false;
+				}
+				if (checkY(i) !== 'has friendly') {
+					locations.push([this.position.x, i]);
+				}
+			}
+		}
+		
+		return locations;
+	}
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Rook;
 
 
 /***/ })
