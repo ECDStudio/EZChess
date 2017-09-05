@@ -7,7 +7,7 @@ export default class Piece {
 		};
 		this.step = 0;
 	}
-	
+
 	toPosition(pX, pY) {
 		if (typeof pX === 'number' && typeof pY === 'number') {
 			if (pX > 0 && pX <= 8 && pY > 0 && pY <= 8) {

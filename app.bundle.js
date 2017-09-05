@@ -131,7 +131,7 @@ class Piece {
 		};
 		this.step = 0;
 	}
-	
+
 	toPosition(pX, pY) {
 		if (typeof pX === 'number' && typeof pY === 'number') {
 			if (pX > 0 && pX <= 8 && pY > 0 && pY <= 8) {
@@ -164,7 +164,7 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 	constructor(side, pX, pY) {
 		super(side, pX, pY);
 	}
-	
+
 	availableMoves() {
 		const checkX = (target) => {
 			for (let player in __WEBPACK_IMPORTED_MODULE_1__app__["chess"]) {
@@ -172,47 +172,47 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 					if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.x === target &&
 						__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.y === this.position.y) {
 						if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].side === this.side) {
-							// check if there is pieces from the same side
+							// check if there is piece from the same side
 							return 'has friendly';
 						} else {
-							// check if there is pieces from the other side (can capture)
+							// check if there is piece from the other side (can capture)
 							return 'has enemy';
 						}
 					}
 				}
 			}
 		}
-		
+
 		const checkY = (target) => {
 			for (let player in __WEBPACK_IMPORTED_MODULE_1__app__["chess"]) {
 				for (let piece in __WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces) {
 					if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.x ===this.position.x &&
 						__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.y === target) {
 						if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].side === this.side) {
-							// check if there is pieces from the same side
+							// check if there is piece from the same side
 							return 'has friendly';
 						} else {
-							// check if there is pieces from the other side (can capture)
+							// check if there is piece from the other side (can capture)
 							return 'has enemy';
 						}
 					}
 				}
 			}
 		}
-		
-		let locations = [],
+
+		let positions = [],
 			xUp = true,
 			xDown = true,
 			yUp = true,
 			yDown = true;
-		
+
 		for (let i = this.position.x + 1; i <= 8; i += 1) {
 			if (xUp === true) {
 				if (checkX(i) === 'has friendly' || checkX(i) === 'has enemy') {
 					xUp = false;
 				}
 				if (checkX(i) !== 'has friendly') {
-					locations.push([i, this.position.y]);
+					positions.push([i, this.position.y]);
 				}
 			}
 		}
@@ -222,7 +222,7 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 					xDown = false;
 				}
 				if (checkX(i) !== 'has friendly') {
-					locations.push([i, this.position.y]);
+					positions.push([i, this.position.y]);
 				}
 			}
 		}
@@ -232,7 +232,7 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 					yUp = false;
 				}
 				if (checkY(i) !== 'has friendly') {
-					locations.push([this.position.x, i]);
+					positions.push([this.position.x, i]);
 				}
 			}
 		}
@@ -242,12 +242,12 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 					yDown = false;
 				}
 				if (checkY(i) !== 'has friendly') {
-					locations.push([this.position.x, i]);
+					positions.push([this.position.x, i]);
 				}
 			}
 		}
-		
-		return locations;
+
+		return positions;
 	}
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Rook;
