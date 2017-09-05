@@ -166,39 +166,29 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 	}
 
 	availableMoves() {
+		const checkPosition = (x, y, side) => {
+			for (let player in __WEBPACK_IMPORTED_MODULE_1__app__["chess"]) {
+				for (let piece in __WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces) {
+					if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.x === x &&
+						__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.y === y) {
+						if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].side === side) {
+							// check if there is piece from the same side
+							return 'friendly';
+						} else {
+							// check if there is piece from the other side (can capture)
+							return 'enemy';
+						}
+					}
+				}
+			}
+		}
+		
 		const checkX = (target) => {
-			for (let player in __WEBPACK_IMPORTED_MODULE_1__app__["chess"]) {
-				for (let piece in __WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces) {
-					if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.x === target &&
-						__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.y === this.position.y) {
-						if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].side === this.side) {
-							// check if there is piece from the same side
-							return 'has friendly';
-						} else {
-							// check if there is piece from the other side (can capture)
-							return 'has enemy';
-						}
-					}
-				}
-			}
-		}
-
-		const checkY = (target) => {
-			for (let player in __WEBPACK_IMPORTED_MODULE_1__app__["chess"]) {
-				for (let piece in __WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces) {
-					if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.x ===this.position.x &&
-						__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].pieces[piece].position.y === target) {
-						if (__WEBPACK_IMPORTED_MODULE_1__app__["chess"][player].side === this.side) {
-							// check if there is piece from the same side
-							return 'has friendly';
-						} else {
-							// check if there is piece from the other side (can capture)
-							return 'has enemy';
-						}
-					}
-				}
-			}
-		}
+			return checkPosition(target, this.position.y, this.side);
+		},
+		checkY = (target) => {
+			return checkPosition(this.position.x, target, this.side);
+		};
 
 		let positions = [],
 			xUp = true,
@@ -208,40 +198,40 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 
 		for (let i = this.position.x + 1; i <= 8; i += 1) {
 			if (xUp === true) {
-				if (checkX(i) === 'has friendly' || checkX(i) === 'has enemy') {
+				if (checkX(i) === 'friendly' || checkX(i) === 'enemy') {
 					xUp = false;
 				}
-				if (checkX(i) !== 'has friendly') {
+				if (checkX(i) !== 'friendly') {
 					positions.push([i, this.position.y]);
 				}
 			}
 		}
 		for (let i = this.position.x - 1; i > 0; i -= 1) {
 			if (xDown === true) {
-				if (checkX(i) === 'has friendly' || checkX(i) === 'has enemy') {
+				if (checkX(i) === 'friendly' || checkX(i) === 'enemy') {
 					xDown = false;
 				}
-				if (checkX(i) !== 'has friendly') {
+				if (checkX(i) !== 'friendly') {
 					positions.push([i, this.position.y]);
 				}
 			}
 		}
 		for (let i = this.position.y + 1; i <= 8; i += 1) {
 			if (yUp === true) {
-				if (checkY(i) === 'has friendly' || checkY(i) === 'has enemy') {
+				if (checkY(i) === 'friendly' || checkY(i) === 'enemy') {
 					yUp = false;
 				}
-				if (checkY(i) !== 'has friendly') {
+				if (checkY(i) !== 'friendly') {
 					positions.push([this.position.x, i]);
 				}
 			}
 		}
 		for (let i = this.position.y - 1; i > 0; i -= 1) {
 			if (yDown === true) {
-				if (checkY(i) === 'has friendly' || checkY(i) === 'has enemy') {
+				if (checkY(i) === 'friendly' || checkY(i) === 'enemy') {
 					yDown = false;
 				}
-				if (checkY(i) !== 'has friendly') {
+				if (checkY(i) !== 'friendly') {
 					positions.push([this.position.x, i]);
 				}
 			}
