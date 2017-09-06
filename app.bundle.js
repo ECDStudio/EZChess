@@ -171,6 +171,8 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 	// including possible captures;
 	// empty if there is none
 	availableMoves() {
+		// dynamic-static x-y positions to call checkPosition(),
+		// used to determine if there is a friendly or enemy piece at that position
 		const checkX = (target) => {
 			return Object(__WEBPACK_IMPORTED_MODULE_1__checkPosition__["a" /* checkPosition */])(target, this.position.y, this.side);
 		},
@@ -184,6 +186,11 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 			yUp = true,
 			yDown = true;
 
+		// loop through all possible positions in 4 directions;
+		// stops AT position with a friendly piece,
+		// or AFTER position with an enenmy piece(capture);
+		// the for loop makes sure the position is in bound of the chessboard(1-8),
+		// and is not the position the piece is currently standing
 		for (let i = this.position.x + 1; i <= 8; i += 1) {
 			if (xUp === true) {
 				if (checkX(i) === 'friendly' || checkX(i) === 'enemy') {
