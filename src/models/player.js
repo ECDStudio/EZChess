@@ -1,5 +1,6 @@
 import Piece from './Piece';
 import Rook from './pieces/Rook';
+import Knight from './pieces/Knight';
 
 export default class Player {
 	constructor(side) {
@@ -10,8 +11,8 @@ export default class Player {
 			queen: new Piece(side, side === 'white' ? 1 : 8, 5),
 			rook1: new Rook(side, side === 'white' ? 1 : 8, 1),
 			rook2: new Rook(side, side === 'white' ? 1 : 8, 8),
-			knight1: new Piece(side, side === 'white' ? 1 : 8, 2),
-			knight2: new Piece(side, side === 'white' ? 1 : 8, 7),
+			knight1: new Knight(side, side === 'white' ? 1 : 8, 2),
+			knight2: new Knight(side, side === 'white' ? 1 : 8, 7),
 			bishop1: new Piece(side, side === 'white' ? 1 : 8, 3),
 			bishop2: new Piece(side, side === 'white' ? 1 : 8, 6),
 			pawn1: new Piece(side, side === 'white' ? 2 : 7, 1),

@@ -87,6 +87,8 @@ window.chess = chess;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pieces_Rook__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pieces_Knight__ = __webpack_require__(5);
+
 
 
 
@@ -99,8 +101,8 @@ class Player {
 			queen: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 5),
 			rook1: new __WEBPACK_IMPORTED_MODULE_1__pieces_Rook__["a" /* default */](side, side === 'white' ? 1 : 8, 1),
 			rook2: new __WEBPACK_IMPORTED_MODULE_1__pieces_Rook__["a" /* default */](side, side === 'white' ? 1 : 8, 8),
-			knight1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 2),
-			knight2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 7),
+			knight1: new __WEBPACK_IMPORTED_MODULE_2__pieces_Knight__["a" /* default */](side, side === 'white' ? 1 : 8, 2),
+			knight2: new __WEBPACK_IMPORTED_MODULE_2__pieces_Knight__["a" /* default */](side, side === 'white' ? 1 : 8, 7),
 			bishop1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 3),
 			bishop2: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 1 : 8, 6),
 			pawn1: new __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */](side, side === 'white' ? 2 : 7, 1),
@@ -165,7 +167,7 @@ class Rook extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
 		super(side, pX, pY);
 	}
 
-	// returns an array of available postions to move to,
+	// returns an array of available positions to move to,
 	// including possible captures;
 	// empty if there is none
 	availableMoves() {
@@ -254,6 +256,54 @@ const checkPosition = (x, y, side) => {
 	}
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = checkPosition;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Piece__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__checkPosition__ = __webpack_require__(4);
+
+
+
+class Knight extends __WEBPACK_IMPORTED_MODULE_0__Piece__["a" /* default */] {
+	constructor(side, pX, pY) {
+		super(side, pX, pY);
+	}
+
+	// returns an array of available positions to move to,
+	// including possible captures;
+	// empty if there is none
+	availableMoves() {
+		let positions = [],
+		targets = [
+			[this.position.x + 1, this.position.y + 2],
+			[this.position.x + 2, this.position.y + 1],
+			[this.position.x + 1, this.position.y - 2],
+			[this.position.x + 2, this.position.y - 1],
+			[this.position.x - 1, this.position.y + 2],
+			[this.position.x - 2, this.position.y + 1],
+			[this.position.x - 1, this.position.y - 2],
+			[this.position.x - 2, this.position.y - 1]
+		]
+
+		for (let i = 0; i < targets.length; i += 1) {
+			// first loop makes sure target position's in bound (1 - 8)
+			if (targets[i][0] > 0 && targets[i][0] <= 8 &&
+				targets[i][1] > 0 && targets[i][1] <=8) {
+				// second loop makes sure no friendly piece in target position
+				if (Object(__WEBPACK_IMPORTED_MODULE_1__checkPosition__["a" /* checkPosition */])(targets[i][0], targets[i][1], this.side) !== 'friendly') {
+					positions.push([targets[i][0], targets[i][1]]);
+				}
+			}
+		}
+
+		return positions;
+	}
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Knight;
 
 
 /***/ })

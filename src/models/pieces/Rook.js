@@ -6,7 +6,7 @@ export default class Rook extends Piece {
 		super(side, pX, pY);
 	}
 
-	// returns an array of available postions to move to,
+	// returns an array of available positions to move to,
 	// including possible captures;
 	// empty if there is none
 	availableMoves() {
