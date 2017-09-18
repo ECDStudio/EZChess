@@ -1,8 +1,17 @@
 import Player from './models/Player';
 
-export let chess = {
-	player1: new Player('white'),
-	player2: new Player('black')
+class Chess {
+	constructor() {
+		this.player1 = new Player('white'),
+		this.player2 = new Player('black')
+	}
+
+	reset() {
+		this.player1 = new Player('white'),
+		this.player2 = new Player('black')
+	}
 };
+
+export let chess = new Chess();
 
 window.chess = chess;
