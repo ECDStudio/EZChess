@@ -27,10 +27,10 @@ export default class Bishop extends Piece {
 		// or AFTER position with an enenmy piece(capture);
 		// the for loop makes sure the position is in bound of the chessboard(1-8),
 		// and is not the position the piece is currently standing
-		for (let i = this.position.x + 1; i <= 8; i += 1) {
+		for (let i = this.position.x + 1; i < 8; i += 1) {
 			let yTarget = this.position.y + i - this.position.x;
-			if (rightUp === true && yTarget >= 1 && yTarget <= 8) {
-				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 8) {
+			if (rightUp === true && yTarget >= 0 && yTarget < 8) {
+				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 7) {
 					rightUp = false;
 				}
 				if (check(i, yTarget) !== 'friendly') {
@@ -38,10 +38,10 @@ export default class Bishop extends Piece {
 				}
 			}
 		}
-		for (let i = this.position.x + 1; i <= 8; i += 1) {
+		for (let i = this.position.x + 1; i < 8; i += 1) {
 			let yTarget = this.position.y - i + this.position.x;
-			if (rightDown === true && yTarget >= 1 && yTarget <= 8) {
-				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 1) {
+			if (rightDown === true && yTarget >= 0 && yTarget < 8) {
+				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 0) {
 					rightDown = false;
 				}
 				if (check(i, yTarget) !== 'friendly') {
@@ -49,10 +49,10 @@ export default class Bishop extends Piece {
 				}
 			}
 		}
-		for (let i = this.position.x - 1; i > 0; i -= 1) {
+		for (let i = this.position.x - 1; i >= 0; i -= 1) {
 			let yTarget = this.position.y + i - this.position.x;
-			if (leftUp === true && yTarget >= 1 && yTarget <= 8) {
-				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 8) {
+			if (leftUp === true && yTarget >= 0 && yTarget < 8) {
+				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 7) {
 					leftUp = false;
 				}
 				if (check(i, yTarget) !== 'friendly') {
@@ -60,10 +60,10 @@ export default class Bishop extends Piece {
 				}
 			}
 		}
-		for (let i = this.position.x - 1; i > 0; i -= 1) {
+		for (let i = this.position.x - 1; i >= 0; i -= 1) {
 			let yTarget = this.position.y - i + this.position.x;
-			if (leftDown === true && yTarget >= 1 && yTarget <= 8) {
-				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 1) {
+			if (leftDown === true && yTarget >= 0 && yTarget < 8) {
+				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 0) {
 					leftDown = false;
 				}
 				if (check(i, yTarget) !== 'friendly') {

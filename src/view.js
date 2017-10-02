@@ -14,8 +14,8 @@ const watchPiece = (piece, obj) => {
 			let target = document.createElement('a');
 			target.classList.add('target-position');
 			container.append(target);
-			target.style.left = `${(i[0] - 1) * 12.5}%`;
-			target.style.bottom = `${(i[1] - 1) * 12.5}%`;
+			target.style.left = `${i[0] * 12.5}%`;
+			target.style.bottom = `${i[1] * 12.5}%`;
 
 			watchTarget(target, obj, i);
 		}
@@ -45,8 +45,8 @@ for (let player in chess) {
 
 		_piece._toPos = (pX, pY) => {
 			_piece.toPosition(pX, pY);
-			_pieceDom.style.left = `${(_piece.position.x - 1) * 12.5}%`;
-			_pieceDom.style.bottom = `${(_piece.position.y - 1) * 12.5}%`;
+			_pieceDom.style.left = `${_piece.position.x * 12.5}%`;
+			_pieceDom.style.bottom = `${_piece.position.y * 12.5}%`;
 		}
 
 		_piece._toPos(..._piece.position);
@@ -64,8 +64,8 @@ for (let player in chess) {
 
 		_piece._watchCapture = () => {
 			// detect if a piece is captured
-			if (_piece.position.x === 0 &&
-				_piece.position.y === 0) {
+			if (_piece.position.x === -1 &&
+				_piece.position.y === -1) {
 				_pieceDom.style.display = 'none';
 			}
 		}

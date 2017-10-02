@@ -30,7 +30,7 @@ export default class Rook extends Piece {
 		// or AFTER position with an enenmy piece(capture);
 		// the for loop makes sure the position is in bound of the chessboard(1-8),
 		// and is not the position the piece is currently standing
-		for (let i = this.position.x + 1; i <= 8; i += 1) {
+		for (let i = this.position.x + 1; i < 8; i += 1) {
 			if (xUp === true) {
 				if (checkX(i) === 'friendly' || checkX(i) === 'enemy') {
 					xUp = false;
@@ -40,7 +40,7 @@ export default class Rook extends Piece {
 				}
 			}
 		}
-		for (let i = this.position.x - 1; i > 0; i -= 1) {
+		for (let i = this.position.x - 1; i >= 0; i -= 1) {
 			if (xDown === true) {
 				if (checkX(i) === 'friendly' || checkX(i) === 'enemy') {
 					xDown = false;
@@ -50,7 +50,7 @@ export default class Rook extends Piece {
 				}
 			}
 		}
-		for (let i = this.position.y + 1; i <= 8; i += 1) {
+		for (let i = this.position.y + 1; i < 8; i += 1) {
 			if (yUp === true) {
 				if (checkY(i) === 'friendly' || checkY(i) === 'enemy') {
 					yUp = false;
@@ -60,7 +60,7 @@ export default class Rook extends Piece {
 				}
 			}
 		}
-		for (let i = this.position.y - 1; i > 0; i -= 1) {
+		for (let i = this.position.y - 1; i >= 0; i -= 1) {
 			if (yDown === true) {
 				if (checkY(i) === 'friendly' || checkY(i) === 'enemy') {
 					yDown = false;

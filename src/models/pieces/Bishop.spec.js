@@ -14,15 +14,15 @@ describe('availableMoves', function() {
     expect(_bishop.availableMoves()).toEqual([]);
   });
   it('should return a list of 6 positions', function() {
-    _bishop.toPosition(3, 3);
+    _bishop.toPosition(2, 2);
     expect(_bishop.availableMoves().length).toEqual(6);
   });
   it('should return a list of 6 positions', function() {
-    _bishop.toPosition(3, 6);
+    _bishop.toPosition(2, 5);
     expect(_bishop.availableMoves().length).toEqual(6);
   });
   it('should return a list of 8 positions', function() {
-    _bishop.toPosition(7, 3);
+    _bishop.toPosition(6, 2);
     expect(_bishop.availableMoves().length).toEqual(8);
   });
 });

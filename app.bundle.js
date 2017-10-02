@@ -96,7 +96,7 @@ var Piece = function () {
 		key: 'toPosition',
 		value: function toPosition(pX, pY) {
 			if (typeof pX === 'number' && typeof pY === 'number') {
-				if (pX > 0 && pX <= 8 && pY > 0 && pY <= 8) {
+				if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
 					this.position.x = pX;
 					this.position.y = pY;
 					this.step += 1;
@@ -106,13 +106,13 @@ var Piece = function () {
 						if (_app.chess[player].side !== this.side) {
 							for (var piece in _app.chess[player].pieces) {
 								if (_app.chess[player].pieces[piece].position.x === pX && _app.chess[player].pieces[piece].position.y === pY) {
-									_app.chess[player].pieces[piece].position = { x: 0, y: 0 };
+									_app.chess[player].pieces[piece].position = { x: -1, y: -1 };
 								}
 							}
 						}
 					}
-				} else if (pX === 0 && pY === 0) {
-					// [0, 0] position is being captured
+				} else if (pX === -1 && pY === -1) {
+					// [-1, -1] position is being captured
 					this.position.x = pX;
 					this.position.y = pY;
 				}
@@ -239,22 +239,22 @@ var Player = function Player(side) {
 	this.side = side;
 	this.isTurn = false;
 	this.pieces = {
-		king: new _Piece2.default(side, side === 'white' ? 1 : 8, 4),
-		queen: new _Piece2.default(side, side === 'white' ? 1 : 8, 5),
-		rook1: new _Rook2.default(side, side === 'white' ? 1 : 8, 1),
-		rook2: new _Rook2.default(side, side === 'white' ? 1 : 8, 8),
-		knight1: new _Knight2.default(side, side === 'white' ? 1 : 8, 2),
-		knight2: new _Knight2.default(side, side === 'white' ? 1 : 8, 7),
-		bishop1: new _Bishop2.default(side, side === 'white' ? 1 : 8, 3),
-		bishop2: new _Bishop2.default(side, side === 'white' ? 1 : 8, 6),
-		pawn1: new _Piece2.default(side, side === 'white' ? 2 : 7, 1),
-		pawn2: new _Piece2.default(side, side === 'white' ? 2 : 7, 2),
-		pawn3: new _Piece2.default(side, side === 'white' ? 2 : 7, 3),
-		pawn4: new _Piece2.default(side, side === 'white' ? 2 : 7, 4),
-		pawn5: new _Piece2.default(side, side === 'white' ? 2 : 7, 5),
-		pawn6: new _Piece2.default(side, side === 'white' ? 2 : 7, 6),
-		pawn7: new _Piece2.default(side, side === 'white' ? 2 : 7, 7),
-		pawn8: new _Piece2.default(side, side === 'white' ? 2 : 7, 8)
+		king: new _Piece2.default(side, side === 'white' ? 0 : 7, 3),
+		queen: new _Piece2.default(side, side === 'white' ? 0 : 7, 4),
+		rook1: new _Rook2.default(side, side === 'white' ? 0 : 7, 0),
+		rook2: new _Rook2.default(side, side === 'white' ? 0 : 7, 7),
+		knight1: new _Knight2.default(side, side === 'white' ? 0 : 7, 1),
+		knight2: new _Knight2.default(side, side === 'white' ? 0 : 7, 6),
+		bishop1: new _Bishop2.default(side, side === 'white' ? 0 : 7, 2),
+		bishop2: new _Bishop2.default(side, side === 'white' ? 0 : 7, 5),
+		pawn1: new _Piece2.default(side, side === 'white' ? 1 : 6, 0),
+		pawn2: new _Piece2.default(side, side === 'white' ? 1 : 6, 1),
+		pawn3: new _Piece2.default(side, side === 'white' ? 1 : 6, 2),
+		pawn4: new _Piece2.default(side, side === 'white' ? 1 : 6, 3),
+		pawn5: new _Piece2.default(side, side === 'white' ? 1 : 6, 4),
+		pawn6: new _Piece2.default(side, side === 'white' ? 1 : 6, 5),
+		pawn7: new _Piece2.default(side, side === 'white' ? 1 : 6, 6),
+		pawn8: new _Piece2.default(side, side === 'white' ? 1 : 6, 7)
 	};
 };
 
@@ -326,7 +326,7 @@ var Rook = function (_Piece) {
 			// or AFTER position with an enenmy piece(capture);
 			// the for loop makes sure the position is in bound of the chessboard(1-8),
 			// and is not the position the piece is currently standing
-			for (var i = this.position.x + 1; i <= 8; i += 1) {
+			for (var i = this.position.x + 1; i < 8; i += 1) {
 				if (xUp === true) {
 					if (checkX(i) === 'friendly' || checkX(i) === 'enemy') {
 						xUp = false;
@@ -336,7 +336,7 @@ var Rook = function (_Piece) {
 					}
 				}
 			}
-			for (var _i = this.position.x - 1; _i > 0; _i -= 1) {
+			for (var _i = this.position.x - 1; _i >= 0; _i -= 1) {
 				if (xDown === true) {
 					if (checkX(_i) === 'friendly' || checkX(_i) === 'enemy') {
 						xDown = false;
@@ -346,7 +346,7 @@ var Rook = function (_Piece) {
 					}
 				}
 			}
-			for (var _i2 = this.position.y + 1; _i2 <= 8; _i2 += 1) {
+			for (var _i2 = this.position.y + 1; _i2 < 8; _i2 += 1) {
 				if (yUp === true) {
 					if (checkY(_i2) === 'friendly' || checkY(_i2) === 'enemy') {
 						yUp = false;
@@ -356,7 +356,7 @@ var Rook = function (_Piece) {
 					}
 				}
 			}
-			for (var _i3 = this.position.y - 1; _i3 > 0; _i3 -= 1) {
+			for (var _i3 = this.position.y - 1; _i3 >= 0; _i3 -= 1) {
 				if (yDown === true) {
 					if (checkY(_i3) === 'friendly' || checkY(_i3) === 'enemy') {
 						yDown = false;
@@ -424,8 +424,8 @@ var Knight = function (_Piece) {
 			    targets = [[this.position.x + 1, this.position.y + 2], [this.position.x + 2, this.position.y + 1], [this.position.x + 1, this.position.y - 2], [this.position.x + 2, this.position.y - 1], [this.position.x - 1, this.position.y + 2], [this.position.x - 2, this.position.y + 1], [this.position.x - 1, this.position.y - 2], [this.position.x - 2, this.position.y - 1]];
 
 			for (var i = 0; i < targets.length; i += 1) {
-				// first loop makes sure target position's in bound (1 - 8)
-				if (targets[i][0] > 0 && targets[i][0] <= 8 && targets[i][1] > 0 && targets[i][1] <= 8) {
+				// first loop makes sure target position's in bound (0 - 7)
+				if (targets[i][0] >= 0 && targets[i][0] < 8 && targets[i][1] >= 0 && targets[i][1] < 8) {
 					// second loop makes sure no friendly piece in target position
 					if ((0, _checkPosition.checkPosition)(targets[i][0], targets[i][1], this.side) !== 'friendly') {
 						positions.push([targets[i][0], targets[i][1]]);
@@ -505,10 +505,10 @@ var Bishop = function (_Piece) {
 			// or AFTER position with an enenmy piece(capture);
 			// the for loop makes sure the position is in bound of the chessboard(1-8),
 			// and is not the position the piece is currently standing
-			for (var i = this.position.x + 1; i <= 8; i += 1) {
+			for (var i = this.position.x + 1; i < 8; i += 1) {
 				var yTarget = this.position.y + i - this.position.x;
-				if (rightUp === true && yTarget >= 1 && yTarget <= 8) {
-					if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 8) {
+				if (rightUp === true && yTarget >= 0 && yTarget < 8) {
+					if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 7) {
 						rightUp = false;
 					}
 					if (check(i, yTarget) !== 'friendly') {
@@ -516,10 +516,10 @@ var Bishop = function (_Piece) {
 					}
 				}
 			}
-			for (var _i = this.position.x + 1; _i <= 8; _i += 1) {
+			for (var _i = this.position.x + 1; _i < 8; _i += 1) {
 				var _yTarget = this.position.y - _i + this.position.x;
-				if (rightDown === true && _yTarget >= 1 && _yTarget <= 8) {
-					if (check(_i, _yTarget) === 'friendly' || check(_i, _yTarget) === 'enemy' || _yTarget === 1) {
+				if (rightDown === true && _yTarget >= 0 && _yTarget < 8) {
+					if (check(_i, _yTarget) === 'friendly' || check(_i, _yTarget) === 'enemy' || _yTarget === 0) {
 						rightDown = false;
 					}
 					if (check(_i, _yTarget) !== 'friendly') {
@@ -527,10 +527,10 @@ var Bishop = function (_Piece) {
 					}
 				}
 			}
-			for (var _i2 = this.position.x - 1; _i2 > 0; _i2 -= 1) {
+			for (var _i2 = this.position.x - 1; _i2 >= 0; _i2 -= 1) {
 				var _yTarget2 = this.position.y + _i2 - this.position.x;
-				if (leftUp === true && _yTarget2 >= 1 && _yTarget2 <= 8) {
-					if (check(_i2, _yTarget2) === 'friendly' || check(_i2, _yTarget2) === 'enemy' || _yTarget2 === 8) {
+				if (leftUp === true && _yTarget2 >= 0 && _yTarget2 < 8) {
+					if (check(_i2, _yTarget2) === 'friendly' || check(_i2, _yTarget2) === 'enemy' || _yTarget2 === 7) {
 						leftUp = false;
 					}
 					if (check(_i2, _yTarget2) !== 'friendly') {
@@ -538,10 +538,10 @@ var Bishop = function (_Piece) {
 					}
 				}
 			}
-			for (var _i3 = this.position.x - 1; _i3 > 0; _i3 -= 1) {
+			for (var _i3 = this.position.x - 1; _i3 >= 0; _i3 -= 1) {
 				var _yTarget3 = this.position.y - _i3 + this.position.x;
-				if (leftDown === true && _yTarget3 >= 1 && _yTarget3 <= 8) {
-					if (check(_i3, _yTarget3) === 'friendly' || check(_i3, _yTarget3) === 'enemy' || _yTarget3 === 1) {
+				if (leftDown === true && _yTarget3 >= 0 && _yTarget3 < 8) {
+					if (check(_i3, _yTarget3) === 'friendly' || check(_i3, _yTarget3) === 'enemy' || _yTarget3 === 0) {
 						leftDown = false;
 					}
 					if (check(_i3, _yTarget3) !== 'friendly') {
@@ -591,8 +591,8 @@ var watchPiece = function watchPiece(piece, obj) {
 				var target = document.createElement('a');
 				target.classList.add('target-position');
 				container.append(target);
-				target.style.left = (i[0] - 1) * 12.5 + '%';
-				target.style.bottom = (i[1] - 1) * 12.5 + '%';
+				target.style.left = i[0] * 12.5 + '%';
+				target.style.bottom = i[1] * 12.5 + '%';
 
 				watchTarget(target, obj, i);
 			}
@@ -663,8 +663,8 @@ for (var player in _app.chess) {
 
 		_piece._toPos = function (pX, pY) {
 			_piece.toPosition(pX, pY);
-			_pieceDom.style.left = (_piece.position.x - 1) * 12.5 + '%';
-			_pieceDom.style.bottom = (_piece.position.y - 1) * 12.5 + '%';
+			_pieceDom.style.left = _piece.position.x * 12.5 + '%';
+			_pieceDom.style.bottom = _piece.position.y * 12.5 + '%';
 		};
 
 		_piece._toPos.apply(_piece, _toConsumableArray(_piece.position));
@@ -682,7 +682,7 @@ for (var player in _app.chess) {
 
 		_piece._watchCapture = function () {
 			// detect if a piece is captured
-			if (_piece.position.x === 0 && _piece.position.y === 0) {
+			if (_piece.position.x === -1 && _piece.position.y === -1) {
 				_pieceDom.style.display = 'none';
 			}
 		};

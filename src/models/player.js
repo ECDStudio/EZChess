@@ -8,22 +8,22 @@ export default class Player {
 		this.side = side;
 		this.isTurn = false;
 		this.pieces = {
-			king: new Piece(side, side === 'white' ? 1 : 8, 4),
-			queen: new Piece(side, side === 'white' ? 1 : 8, 5),
-			rook1: new Rook(side, side === 'white' ? 1 : 8, 1),
-			rook2: new Rook(side, side === 'white' ? 1 : 8, 8),
-			knight1: new Knight(side, side === 'white' ? 1 : 8, 2),
-			knight2: new Knight(side, side === 'white' ? 1 : 8, 7),
-			bishop1: new Bishop(side, side === 'white' ? 1 : 8, 3),
-			bishop2: new Bishop(side, side === 'white' ? 1 : 8, 6),
-			pawn1: new Piece(side, side === 'white' ? 2 : 7, 1),
-			pawn2: new Piece(side, side === 'white' ? 2 : 7, 2),
-			pawn3: new Piece(side, side === 'white' ? 2 : 7, 3),
-			pawn4: new Piece(side, side === 'white' ? 2 : 7, 4),
-			pawn5: new Piece(side, side === 'white' ? 2 : 7, 5),
-			pawn6: new Piece(side, side === 'white' ? 2 : 7, 6),
-			pawn7: new Piece(side, side === 'white' ? 2 : 7, 7),
-			pawn8: new Piece(side, side === 'white' ? 2 : 7, 8),
+			king: new Piece(side, side === 'white' ? 0 : 7, 3),
+			queen: new Piece(side, side === 'white' ? 0 : 7, 4),
+			rook1: new Rook(side, side === 'white' ? 0 : 7, 0),
+			rook2: new Rook(side, side === 'white' ? 0 : 7, 7),
+			knight1: new Knight(side, side === 'white' ? 0 : 7, 1),
+			knight2: new Knight(side, side === 'white' ? 0 : 7, 6),
+			bishop1: new Bishop(side, side === 'white' ? 0 : 7, 2),
+			bishop2: new Bishop(side, side === 'white' ? 0 : 7, 5),
+			pawn1: new Piece(side, side === 'white' ? 1 : 6, 0),
+			pawn2: new Piece(side, side === 'white' ? 1 : 6, 1),
+			pawn3: new Piece(side, side === 'white' ? 1 : 6, 2),
+			pawn4: new Piece(side, side === 'white' ? 1 : 6, 3),
+			pawn5: new Piece(side, side === 'white' ? 1 : 6, 4),
+			pawn6: new Piece(side, side === 'white' ? 1 : 6, 5),
+			pawn7: new Piece(side, side === 'white' ? 1 : 6, 6),
+			pawn8: new Piece(side, side === 'white' ? 1 : 6, 7),
 		}
 	}
 }
