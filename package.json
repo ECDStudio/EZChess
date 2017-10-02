@@ -4,7 +4,8 @@
   "description": "A 'create a chess game in JS' challenge",
   "main": "main.js",
   "scripts": {
-    "test": "karma start"
+    "test": "karma start",
+    "scss": "sass --watch ./css --style compressed"
   },
   "repository": {
     "type": "git",
