@@ -54,4 +54,12 @@ body {
 			cursor: pointer;
 		}
 	}
+	
+	> a {
+		position: absolute;
+		display: block;
+		width: 12.5%;
+		height: 12.5%;
+		background: rgba(150, 150, 150, 0.8);
+	}
 }

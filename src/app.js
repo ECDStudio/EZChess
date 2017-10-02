@@ -14,5 +14,5 @@ class Chess {
 
 export let chess = new Chess();
 
-window.chess = chess;
+// window.chess = chess;
 require('./view.js');
