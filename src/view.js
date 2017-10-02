@@ -28,8 +28,12 @@ const watchTarget = (target, obj, position) => {
 		for (let i of document.getElementsByClassName('target-position')) {
 			setTimeout(function() {
 				i.parentElement.removeChild(i);
-				console.log(i)
 			})
+		}
+		for (let player in chess) {
+			for (let piece in chess[player].pieces) {
+				chess[player].pieces[piece]._watchCapture();
+			}
 		}
 	})
 }
@@ -49,6 +53,7 @@ for (let player in chess) {
 
 		_pieceDom.classList.add('chess-piece');
 		_pieceDom.classList.add(piece);
+		_pieceDom.classList.add(chess[player].side);
 		if (player === 'player1') {
 			player1.append(_pieceDom);
 		} else {
@@ -56,5 +61,13 @@ for (let player in chess) {
 		}
 
 		watchPiece(_pieceDom, _piece);
+
+		_piece._watchCapture = () => {
+			// detect if a piece is captured
+			if (_piece.position.x === 0 &&
+				_piece.position.y === 0) {
+				_pieceDom.style.display = 'none';
+			}
+		}
 	}
 }

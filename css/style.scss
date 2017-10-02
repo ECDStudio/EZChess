@@ -52,6 +52,10 @@ body {
 			border-radius: 500px;
 			border: 1px solid #000;
 			cursor: pointer;
+			
+			&.black {
+				background: #000;
+			}
 		}
 	}
 	

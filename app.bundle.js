@@ -76,6 +76,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _app = __webpack_require__(1);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Piece = function () {
@@ -98,6 +100,17 @@ var Piece = function () {
 					this.position.x = pX;
 					this.position.y = pY;
 					this.step += 1;
+
+					// capture enemy piece in target Position
+					for (var player in _app.chess) {
+						if (_app.chess[player].side !== this.side) {
+							for (var piece in _app.chess[player].pieces) {
+								if (_app.chess[player].pieces[piece].position.x === pX && _app.chess[player].pieces[piece].position.y === pY) {
+									_app.chess[player].pieces[piece].position = { x: 0, y: 0 };
+								}
+							}
+						}
+					}
 				} else if (pX === 0 && pY === 0) {
 					// [0, 0] position is being captured
 					this.position.x = pX;
@@ -607,7 +620,6 @@ var watchTarget = function watchTarget(target, obj, position) {
 		var _loop = function _loop(i) {
 			setTimeout(function () {
 				i.parentElement.removeChild(i);
-				console.log(i);
 			});
 		};
 
@@ -635,6 +647,12 @@ var watchTarget = function watchTarget(target, obj, position) {
 				}
 			}
 		}
+
+		for (var player in _app.chess) {
+			for (var piece in _app.chess[player].pieces) {
+				_app.chess[player].pieces[piece]._watchCapture();
+			}
+		}
 	});
 };
 
@@ -653,6 +671,7 @@ for (var player in _app.chess) {
 
 		_pieceDom.classList.add('chess-piece');
 		_pieceDom.classList.add(piece);
+		_pieceDom.classList.add(_app.chess[player].side);
 		if (player === 'player1') {
 			player1.append(_pieceDom);
 		} else {
@@ -660,6 +679,13 @@ for (var player in _app.chess) {
 		}
 
 		watchPiece(_pieceDom, _piece);
+
+		_piece._watchCapture = function () {
+			// detect if a piece is captured
+			if (_piece.position.x === 0 && _piece.position.y === 0) {
+				_pieceDom.style.display = 'none';
+			}
+		};
 	};
 
 	for (var piece in _app.chess[player].pieces) {
