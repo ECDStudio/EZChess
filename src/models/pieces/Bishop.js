@@ -1,0 +1,77 @@
+import Piece from '../Piece';
+import { checkPosition } from '../../checkPosition';
+
+export default class Bishop extends Piece {
+	constructor(side, pX, pY) {
+		super(side, pX, pY);
+	}
+
+	// returns an array of available positions to move to,
+	// including possible captures;
+	// empty if there is none
+	availableMoves() {
+		// dynamic-static x-y positions to call checkPosition(),
+		// used to determine if there is a friendly or enemy piece at that position
+		const check = (x, y) => {
+			return checkPosition(x, y, this.side);
+		};
+
+		let positions = [],
+			rightUp = true,
+			rightDown = true,
+			leftUp = true,
+			leftDown = true;
+
+		// loop through all possible positions in 4 directions;
+		// stops AT position with a friendly piece,
+		// or AFTER position with an enenmy piece(capture);
+		// the for loop makes sure the position is in bound of the chessboard(1-8),
+		// and is not the position the piece is currently standing
+		for (let i = this.position.x + 1; i <= 8; i += 1) {
+			let yTarget = this.position.y + i - this.position.x;
+			if (rightUp === true && yTarget >= 1 && yTarget <= 8) {
+				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 8) {
+					rightUp = false;
+				}
+				if (check(i, yTarget) !== 'friendly') {
+					positions.push([i, yTarget]);
+				}
+			}
+		}
+		for (let i = this.position.x + 1; i <= 8; i += 1) {
+			let yTarget = this.position.y - i + this.position.x;
+			if (rightDown === true && yTarget >= 1 && yTarget <= 8) {
+				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 1) {
+					rightDown = false;
+				}
+				if (check(i, yTarget) !== 'friendly') {
+					positions.push([i, yTarget]);
+				}
+			}
+		}
+		for (let i = this.position.x - 1; i > 0; i -= 1) {
+			let yTarget = this.position.y + i - this.position.x;
+			if (leftUp === true && yTarget >= 1 && yTarget <= 8) {
+				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 8) {
+					leftUp = false;
+				}
+				if (check(i, yTarget) !== 'friendly') {
+					positions.push([i, yTarget]);
+				}
+			}
+		}
+		for (let i = this.position.x - 1; i > 0; i -= 1) {
+			let yTarget = this.position.y - i + this.position.x;
+			if (leftDown === true && yTarget >= 1 && yTarget <= 8) {
+				if (check(i, yTarget) === 'friendly' || check(i, yTarget) === 'enemy' || yTarget === 1) {
+					leftDown = false;
+				}
+				if (check(i, yTarget) !== 'friendly') {
+					positions.push([i, yTarget]);
+				}
+			}
+		}
+
+		return positions;
+	}
+}
