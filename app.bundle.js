@@ -947,6 +947,9 @@ var Pawn = function (_Piece) {
 
 			return positions;
 		}
+
+		// 3rd boolean argument indicates if this is an en passant move
+
 	}, {
 		key: 'toPosition',
 		value: function toPosition(pX, pY, enPass) {
@@ -975,7 +978,7 @@ var Pawn = function (_Piece) {
 				}
 			}
 			setTimeout(function () {
-				// enPassant to true if conditions are met
+				// indicate being able to be enPassant-ed if conditions are met
 				if (_this3.step === 1 && pX > 2 && _this3.side === 'white' || _this3.step === 1 && pX < 5 && _this3.side === 'black') {
 					for (var _player in _app.chess) {
 						if (_app.chess[_player].side !== _this3.side) {
@@ -990,6 +993,7 @@ var Pawn = function (_Piece) {
 					}
 				}
 			}, 1);
+			// enPassant in action
 			if (enPass === true) {
 				for (var _player2 in _app.chess) {
 					if (_app.chess[_player2].side !== this.side) {
@@ -1003,6 +1007,10 @@ var Pawn = function (_Piece) {
 					}
 				}
 			}
+			//
+			// TO DO: Clear enPassant move availability if not done in the immediate turn
+			//
+
 			return [this.position.x, this.position.y];
 		}
 	}]);

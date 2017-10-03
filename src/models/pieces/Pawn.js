@@ -59,6 +59,7 @@ export default class Pawn extends Piece {
 		return positions;
 	}
 
+	// 3rd boolean argument indicates if this is an en passant move
 	toPosition(pX, pY, enPass) {
 		if (typeof pX === 'number' && typeof pY === 'number') {
 			if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
@@ -84,7 +85,7 @@ export default class Pawn extends Piece {
 			}
 		}
 		setTimeout(() => {
-			// enPassant to true if conditions are met
+			// indicate being able to be enPassant-ed if conditions are met
 			if (this.step === 1 && pX > 2 && this.side === 'white' ||
 				this.step === 1 && pX < 5 && this.side === 'black') {
 				for (let player in chess) {
@@ -102,6 +103,7 @@ export default class Pawn extends Piece {
 				}
 			}
 		}, 1)
+		// enPassant in action
 		if (enPass === true) {
 			for (let player in chess) {
 				if (chess[player].side !== this.side) {
@@ -118,6 +120,10 @@ export default class Pawn extends Piece {
 				}
 			}
 		}
+		//
+		// TO DO: Clear enPassant move availability if not done in the immediate turn
+		//
+		
 		return [this.position.x, this.position.y];
 	}
 }
