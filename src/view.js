@@ -12,23 +12,22 @@ container.append(chessboard);
 chessboard.append(player1, player2);
 
 const watchPiece = (piece, obj, player) => {
-	if (player.isTurn === true) {
-		piece.addEventListener('click', () => {
-			for (let i of obj.availableMoves()) {
+	piece.addEventListener('click', () => {
+		if (player.isTurn === true) {
+			for (let position of obj.availableMoves()) {
 				let target = document.createElement('a');
 				target.classList.add('target-position');
 				chessboard.append(target);
-				target.style.left = `${i[0] * 12.5}%`;
-				target.style.bottom = `${i[1] * 12.5}%`;
+				target.style.left = `${position[0] * 12.5}%`;
+				target.style.bottom = `${position[1] * 12.5}%`;
 
-				watchTarget(target, obj, i);
-				player.isTurn = false;
+				watchTarget(target, position, obj);
 			}
-		})
-	}
+		}
+	})
 }
 
-const watchTarget = (target, obj, position) => {
+const watchTarget = (target, position, obj) => {
 	target.addEventListener('click', () => {
 		obj._toPos(...position);
 		for (let i of document.getElementsByClassName('target-position')) {
@@ -41,6 +40,8 @@ const watchTarget = (target, obj, position) => {
 				chess[player].pieces[piece]._watchCapture();
 			}
 		}
+		chess.switchTurn();
+		indicateTurn();
 	})
 }
 
@@ -69,7 +70,7 @@ for (let player in chess) {
 		} else {
 			player2.append(_pieceDom);
 		}
-
+		
 		watchPiece(_pieceDom, _piece, chess[player]);
 
 		_piece._watchCapture = () => {
@@ -83,3 +84,16 @@ for (let player in chess) {
 		}
 	}
 }
+
+let turnCounter = document.createElement('div');
+
+container.append(turnCounter);
+const indicateTurn = () => {
+	for (let player in chess) {
+		if (chess[player].isTurn === true) {
+			turnCounter.innerHTML = `Current Turn: ${chess[player].side}`;
+		}
+	}
+};
+
+indicateTurn();

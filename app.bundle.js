@@ -160,6 +160,12 @@ var Chess = function () {
 		value: function reset() {
 			this.player1 = new _Player2.default('white'), this.player2 = new _Player2.default('black');
 		}
+	}, {
+		key: 'switchTurn',
+		value: function switchTurn() {
+			this.player1.isTurn = !this.player1.isTurn;
+			this.player2.isTurn = !this.player2.isTurn;
+		}
 	}]);
 
 	return Chess;
@@ -599,24 +605,23 @@ container.append(chessboard);
 chessboard.append(player1, player2);
 
 var watchPiece = function watchPiece(piece, obj, player) {
-	if (player.isTurn === true) {
-		piece.addEventListener('click', function () {
+	piece.addEventListener('click', function () {
+		if (player.isTurn === true) {
 			var _iteratorNormalCompletion = true;
 			var _didIteratorError = false;
 			var _iteratorError = undefined;
 
 			try {
 				for (var _iterator = obj.availableMoves()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var i = _step.value;
+					var position = _step.value;
 
 					var target = document.createElement('a');
 					target.classList.add('target-position');
 					chessboard.append(target);
-					target.style.left = i[0] * 12.5 + '%';
-					target.style.bottom = i[1] * 12.5 + '%';
+					target.style.left = position[0] * 12.5 + '%';
+					target.style.bottom = position[1] * 12.5 + '%';
 
-					watchTarget(target, obj, i);
-					player.isTurn = false;
+					watchTarget(target, position, obj);
 				}
 			} catch (err) {
 				_didIteratorError = true;
@@ -632,11 +637,11 @@ var watchPiece = function watchPiece(piece, obj, player) {
 					}
 				}
 			}
-		});
-	}
+		}
+	});
 };
 
-var watchTarget = function watchTarget(target, obj, position) {
+var watchTarget = function watchTarget(target, position, obj) {
 	target.addEventListener('click', function () {
 		obj._toPos.apply(obj, _toConsumableArray(position));
 
@@ -676,6 +681,8 @@ var watchTarget = function watchTarget(target, obj, position) {
 				_app.chess[player].pieces[piece]._watchCapture();
 			}
 		}
+		_app.chess.switchTurn();
+		indicateTurn();
 	});
 };
 
@@ -721,6 +728,19 @@ for (var player in _app.chess) {
 		_loop2(piece);
 	}
 }
+
+var turnCounter = document.createElement('div');
+
+container.append(turnCounter);
+var indicateTurn = function indicateTurn() {
+	for (var _player in _app.chess) {
+		if (_app.chess[_player].isTurn === true) {
+			turnCounter.innerHTML = 'Current Turn: ' + _app.chess[_player].side;
+		}
+	}
+};
+
+indicateTurn();
 
 /***/ }),
 /* 8 */
