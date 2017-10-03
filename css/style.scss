@@ -1,10 +1,16 @@
+@mixin transition($name, $time, $curve) {
+    -webkit-transition: $name $time $curve;
+    -moz-transition: $name $time $curve;
+    -o-transition: $name $time $curve;
+    -ms-transition: $name $time $curve;
+    transition: $name $time $curve;
+}
+
 @mixin border-box {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-
-
 
 *{
 	background:none;
@@ -32,6 +38,13 @@ body {
 	overflow-x:hidden;
 }
 
+#container {
+	position: relative;
+	margin: auto;
+	width: 100%;
+	max-width: 800px;
+}
+
 #chessboard {
 	position: relative;
 	width: 100%;
@@ -50,11 +63,57 @@ body {
 			height: 10.5%;
 			margin: 1%;
 			border-radius: 500px;
-			border: 1px solid #000;
 			cursor: pointer;
+			background-size: 100% auto;
+			z-index: 1;
+			@include transition(all, 0.5s, ease-in-out);
 			
+			
+			&.white {
+				-webkit-transform: rotate(90deg);
+				transform: rotate(90deg);
+				
+				&.king {
+					background-image: url('img/pieces/kingW.png');
+				}
+				&.queen {
+					background-image: url('img/pieces/queenW.png');
+				}
+				&.rook {
+					background-image: url('img/pieces/rookW.png');
+				}
+				&.knight {
+					background-image: url('img/pieces/knightW.png');
+				}
+				&.bishop {
+					background-image: url('img/pieces/bishopW.png');
+				}
+				&.pawn {
+					background-image: url('img/pieces/pawnW.png');
+				}
+			}
 			&.black {
-				background: #000;
+				-webkit-transform: rotate(-90deg);
+				transform: rotate(-90deg);
+				
+				&.king {
+					background-image: url('img/pieces/kingB.png');
+				}
+				&.queen {
+					background-image: url('img/pieces/queenB.png');
+				}
+				&.rook {
+					background-image: url('img/pieces/rookB.png');
+				}
+				&.knight {
+					background-image: url('img/pieces/knightB.png');
+				}
+				&.bishop {
+					background-image: url('img/pieces/bishopB.png');
+				}
+				&.pawn {
+					background-image: url('img/pieces/pawnB.png');
+				}
 			}
 		}
 	}
@@ -65,5 +124,7 @@ body {
 		width: 12.5%;
 		height: 12.5%;
 		background: rgba(150, 150, 150, 0.8);
+		cursor: pointer;
+		z-index: 2;
 	}
 }

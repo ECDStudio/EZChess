@@ -4,6 +4,7 @@ import { checkPosition } from '../../checkPosition';
 export default class Knight extends Piece {
 	constructor(side, pX, pY) {
 		super(side, pX, pY);
+		this.class = 'knight';
 	}
 
 	// returns an array of available positions to move to,

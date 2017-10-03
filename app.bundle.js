@@ -213,9 +213,13 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _Piece = __webpack_require__(0);
+var _King = __webpack_require__(8);
 
-var _Piece2 = _interopRequireDefault(_Piece);
+var _King2 = _interopRequireDefault(_King);
+
+var _Queen = __webpack_require__(9);
+
+var _Queen2 = _interopRequireDefault(_Queen);
 
 var _Rook = __webpack_require__(4);
 
@@ -229,6 +233,10 @@ var _Bishop = __webpack_require__(6);
 
 var _Bishop2 = _interopRequireDefault(_Bishop);
 
+var _Pawn = __webpack_require__(10);
+
+var _Pawn2 = _interopRequireDefault(_Pawn);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -237,24 +245,24 @@ var Player = function Player(side) {
 	_classCallCheck(this, Player);
 
 	this.side = side;
-	this.isTurn = false;
+	this.isTurn = side === 'white' ? true : false;
 	this.pieces = {
-		king: new _Piece2.default(side, side === 'white' ? 0 : 7, 3),
-		queen: new _Piece2.default(side, side === 'white' ? 0 : 7, 4),
+		king: new _King2.default(side, side === 'white' ? 0 : 7, 3),
+		queen: new _Queen2.default(side, side === 'white' ? 0 : 7, 4),
 		rook1: new _Rook2.default(side, side === 'white' ? 0 : 7, 0),
 		rook2: new _Rook2.default(side, side === 'white' ? 0 : 7, 7),
 		knight1: new _Knight2.default(side, side === 'white' ? 0 : 7, 1),
 		knight2: new _Knight2.default(side, side === 'white' ? 0 : 7, 6),
 		bishop1: new _Bishop2.default(side, side === 'white' ? 0 : 7, 2),
 		bishop2: new _Bishop2.default(side, side === 'white' ? 0 : 7, 5),
-		pawn1: new _Piece2.default(side, side === 'white' ? 1 : 6, 0),
-		pawn2: new _Piece2.default(side, side === 'white' ? 1 : 6, 1),
-		pawn3: new _Piece2.default(side, side === 'white' ? 1 : 6, 2),
-		pawn4: new _Piece2.default(side, side === 'white' ? 1 : 6, 3),
-		pawn5: new _Piece2.default(side, side === 'white' ? 1 : 6, 4),
-		pawn6: new _Piece2.default(side, side === 'white' ? 1 : 6, 5),
-		pawn7: new _Piece2.default(side, side === 'white' ? 1 : 6, 6),
-		pawn8: new _Piece2.default(side, side === 'white' ? 1 : 6, 7)
+		pawn1: new _Pawn2.default(side, side === 'white' ? 1 : 6, 0),
+		pawn2: new _Pawn2.default(side, side === 'white' ? 1 : 6, 1),
+		pawn3: new _Pawn2.default(side, side === 'white' ? 1 : 6, 2),
+		pawn4: new _Pawn2.default(side, side === 'white' ? 1 : 6, 3),
+		pawn5: new _Pawn2.default(side, side === 'white' ? 1 : 6, 4),
+		pawn6: new _Pawn2.default(side, side === 'white' ? 1 : 6, 5),
+		pawn7: new _Pawn2.default(side, side === 'white' ? 1 : 6, 6),
+		pawn8: new _Pawn2.default(side, side === 'white' ? 1 : 6, 7)
 	};
 };
 
@@ -293,7 +301,10 @@ var Rook = function (_Piece) {
 	function Rook(side, pX, pY) {
 		_classCallCheck(this, Rook);
 
-		return _possibleConstructorReturn(this, (Rook.__proto__ || Object.getPrototypeOf(Rook)).call(this, side, pX, pY));
+		var _this = _possibleConstructorReturn(this, (Rook.__proto__ || Object.getPrototypeOf(Rook)).call(this, side, pX, pY));
+
+		_this.class = 'rook';
+		return _this;
 	}
 
 	// returns an array of available positions to move to,
@@ -409,7 +420,10 @@ var Knight = function (_Piece) {
 	function Knight(side, pX, pY) {
 		_classCallCheck(this, Knight);
 
-		return _possibleConstructorReturn(this, (Knight.__proto__ || Object.getPrototypeOf(Knight)).call(this, side, pX, pY));
+		var _this = _possibleConstructorReturn(this, (Knight.__proto__ || Object.getPrototypeOf(Knight)).call(this, side, pX, pY));
+
+		_this.class = 'knight';
+		return _this;
 	}
 
 	// returns an array of available positions to move to,
@@ -475,7 +489,10 @@ var Bishop = function (_Piece) {
 	function Bishop(side, pX, pY) {
 		_classCallCheck(this, Bishop);
 
-		return _possibleConstructorReturn(this, (Bishop.__proto__ || Object.getPrototypeOf(Bishop)).call(this, side, pX, pY));
+		var _this = _possibleConstructorReturn(this, (Bishop.__proto__ || Object.getPrototypeOf(Bishop)).call(this, side, pX, pY));
+
+		_this.class = 'bishop';
+		return _this;
 	}
 
 	// returns an array of available positions to move to,
@@ -571,46 +588,52 @@ var _app = __webpack_require__(1);
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var container = document.createElement('div'),
+    chessboard = document.createElement('div'),
     player1 = document.createElement('ul'),
     player2 = document.createElement('ul');
 
-container.id = 'chessboard';
+container.id = 'container';
+chessboard.id = 'chessboard';
 document.getElementsByTagName('body')[0].append(container);
-container.append(player1, player2);
+container.append(chessboard);
+chessboard.append(player1, player2);
 
-var watchPiece = function watchPiece(piece, obj) {
-	piece.addEventListener('click', function () {
-		var _iteratorNormalCompletion = true;
-		var _didIteratorError = false;
-		var _iteratorError = undefined;
+var watchPiece = function watchPiece(piece, obj, player) {
+	if (player.isTurn === true) {
+		piece.addEventListener('click', function () {
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
 
-		try {
-			for (var _iterator = obj.availableMoves()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-				var i = _step.value;
-
-				var target = document.createElement('a');
-				target.classList.add('target-position');
-				container.append(target);
-				target.style.left = i[0] * 12.5 + '%';
-				target.style.bottom = i[1] * 12.5 + '%';
-
-				watchTarget(target, obj, i);
-			}
-		} catch (err) {
-			_didIteratorError = true;
-			_iteratorError = err;
-		} finally {
 			try {
-				if (!_iteratorNormalCompletion && _iterator.return) {
-					_iterator.return();
+				for (var _iterator = obj.availableMoves()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var i = _step.value;
+
+					var target = document.createElement('a');
+					target.classList.add('target-position');
+					chessboard.append(target);
+					target.style.left = i[0] * 12.5 + '%';
+					target.style.bottom = i[1] * 12.5 + '%';
+
+					watchTarget(target, obj, i);
+					player.isTurn = false;
 				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
 			} finally {
-				if (_didIteratorError) {
-					throw _iteratorError;
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
 				}
 			}
-		}
-	});
+		});
+	}
 };
 
 var watchTarget = function watchTarget(target, obj, position) {
@@ -663,14 +686,18 @@ for (var player in _app.chess) {
 
 		_piece._toPos = function (pX, pY) {
 			_piece.toPosition(pX, pY);
+			_pieceDom.style.zIndex = '20';
 			_pieceDom.style.left = _piece.position.x * 12.5 + '%';
 			_pieceDom.style.bottom = _piece.position.y * 12.5 + '%';
+			setTimeout(function () {
+				_pieceDom.style.zIndex = '1';
+			}, 1000);
 		};
 
 		_piece._toPos.apply(_piece, _toConsumableArray(_piece.position));
 
 		_pieceDom.classList.add('chess-piece');
-		_pieceDom.classList.add(piece);
+		_pieceDom.classList.add(_app.chess[player].pieces[piece].class);
 		_pieceDom.classList.add(_app.chess[player].side);
 		if (player === 'player1') {
 			player1.append(_pieceDom);
@@ -678,12 +705,14 @@ for (var player in _app.chess) {
 			player2.append(_pieceDom);
 		}
 
-		watchPiece(_pieceDom, _piece);
+		watchPiece(_pieceDom, _piece, _app.chess[player]);
 
 		_piece._watchCapture = function () {
 			// detect if a piece is captured
 			if (_piece.position.x === -1 && _piece.position.y === -1) {
-				_pieceDom.style.display = 'none';
+				setTimeout(function () {
+					_pieceDom.style.display = 'none';
+				}, 500);
 			}
 		};
 	};
@@ -692,6 +721,168 @@ for (var player in _app.chess) {
 		_loop2(piece);
 	}
 }
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Piece2 = __webpack_require__(0);
+
+var _Piece3 = _interopRequireDefault(_Piece2);
+
+var _checkPosition = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var King = function (_Piece) {
+	_inherits(King, _Piece);
+
+	function King(side, pX, pY) {
+		_classCallCheck(this, King);
+
+		var _this = _possibleConstructorReturn(this, (King.__proto__ || Object.getPrototypeOf(King)).call(this, side, pX, pY));
+
+		_this.class = 'king';
+		return _this;
+	}
+
+	// returns an array of available positions to move to,
+	// including possible captures;
+	// empty if there is none
+
+
+	_createClass(King, [{
+		key: 'availableMoves',
+		value: function availableMoves() {}
+	}]);
+
+	return King;
+}(_Piece3.default);
+
+exports.default = King;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Piece2 = __webpack_require__(0);
+
+var _Piece3 = _interopRequireDefault(_Piece2);
+
+var _checkPosition = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Queen = function (_Piece) {
+	_inherits(Queen, _Piece);
+
+	function Queen(side, pX, pY) {
+		_classCallCheck(this, Queen);
+
+		var _this = _possibleConstructorReturn(this, (Queen.__proto__ || Object.getPrototypeOf(Queen)).call(this, side, pX, pY));
+
+		_this.class = 'queen';
+		return _this;
+	}
+
+	// returns an array of available positions to move to,
+	// including possible captures;
+	// empty if there is none
+
+
+	_createClass(Queen, [{
+		key: 'availableMoves',
+		value: function availableMoves() {}
+	}]);
+
+	return Queen;
+}(_Piece3.default);
+
+exports.default = Queen;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Piece2 = __webpack_require__(0);
+
+var _Piece3 = _interopRequireDefault(_Piece2);
+
+var _checkPosition = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Pawn = function (_Piece) {
+	_inherits(Pawn, _Piece);
+
+	function Pawn(side, pX, pY) {
+		_classCallCheck(this, Pawn);
+
+		var _this = _possibleConstructorReturn(this, (Pawn.__proto__ || Object.getPrototypeOf(Pawn)).call(this, side, pX, pY));
+
+		_this.class = 'pawn';
+		return _this;
+	}
+
+	// returns an array of available positions to move to,
+	// including possible captures;
+	// empty if there is none
+
+
+	_createClass(Pawn, [{
+		key: 'availableMoves',
+		value: function availableMoves() {}
+	}]);
+
+	return Pawn;
+}(_Piece3.default);
+
+exports.default = Pawn;
 
 /***/ })
 /******/ ]);
