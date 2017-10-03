@@ -56,8 +56,8 @@ for (let player in chess) {
 		const _pieceObj = chess[player].pieces[piece];
 		let _pieceUI = document.createElement('li');
 
-		_pieceObj._toPos = (pX, pY) => {
-			_pieceObj.toPosition(pX, pY);
+		_pieceObj._toPos = (pX, pY, enPass) => {
+			_pieceObj.toPosition(pX, pY, enPass);
 			_pieceUI.style.zIndex = '20';
 			_pieceUI.style.left = `${_pieceObj.position.x * 12.5}%`;
 			_pieceUI.style.bottom = `${_pieceObj.position.y * 12.5}%`;

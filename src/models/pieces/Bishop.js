@@ -11,8 +11,7 @@ export default class Bishop extends Piece {
 	// including possible captures;
 	// empty if there is none
 	availableMoves() {
-		// dynamic-static x-y positions to call checkPosition(),
-		// used to determine if there is a friendly or enemy piece at that position
+		// call checkPosition() to determine if there is a friendly or enemy piece at that position
 		const check = (x, y) => {
 			return checkPosition(x, y, this.side);
 		};

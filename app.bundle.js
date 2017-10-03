@@ -175,7 +175,7 @@ var Chess = function () {
 
 var chess = exports.chess = new Chess();
 
-// window.chess = chess;
+window.chess = chess;
 __webpack_require__(7);
 
 /***/ }),
@@ -511,8 +511,7 @@ var Bishop = function (_Piece) {
 		value: function availableMoves() {
 			var _this2 = this;
 
-			// dynamic-static x-y positions to call checkPosition(),
-			// used to determine if there is a friendly or enemy piece at that position
+			// call checkPosition() to determine if there is a friendly or enemy piece at that position
 			var check = function check(x, y) {
 				return (0, _checkPosition.checkPosition)(x, y, _this2.side);
 			};
@@ -701,8 +700,8 @@ var _loop3 = function _loop3(player) {
 		var _pieceObj = _app.chess[player].pieces[piece];
 		var _pieceUI = document.createElement('li');
 
-		_pieceObj._toPos = function (pX, pY) {
-			_pieceObj.toPosition(pX, pY);
+		_pieceObj._toPos = function (pX, pY, enPass) {
+			_pieceObj.toPosition(pX, pY, enPass);
 			_pieceUI.style.zIndex = '20';
 			_pieceUI.style.left = _pieceObj.position.x * 12.5 + '%';
 			_pieceUI.style.bottom = _pieceObj.position.y * 12.5 + '%';
@@ -869,6 +868,8 @@ var _Piece2 = __webpack_require__(0);
 
 var _Piece3 = _interopRequireDefault(_Piece2);
 
+var _app = __webpack_require__(1);
+
 var _checkPosition = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -888,6 +889,7 @@ var Pawn = function (_Piece) {
 		var _this = _possibleConstructorReturn(this, (Pawn.__proto__ || Object.getPrototypeOf(Pawn)).call(this, side, pX, pY));
 
 		_this.class = 'pawn';
+		_this.enPassant = false;
 		return _this;
 	}
 
@@ -898,7 +900,111 @@ var Pawn = function (_Piece) {
 
 	_createClass(Pawn, [{
 		key: 'availableMoves',
-		value: function availableMoves() {}
+		value: function availableMoves() {
+			var _this2 = this;
+
+			// call checkPosition() to determine if there is a friendly or enemy piece at that position
+			var check = function check(x, y) {
+				return (0, _checkPosition.checkPosition)(x, y, _this2.side);
+			};
+
+			var positions = [];
+
+			// dynamic x direction
+			var xDir = function xDir(x) {
+				return _this2.side === 'white' ? _this2.position.x + x : _this2.position.x - x;
+			};
+
+			// first step can take 2 steps, otherwise 1
+			if (this.step === 0) {
+				if (check(xDir(2), this.position.y) !== 'friendly' && check(xDir(2), this.position.y) !== 'enemy') {
+					positions.push([xDir(2), this.position.y, false]);
+				}
+			}
+			if (check(xDir(1), this.position.y) !== 'friendly' && check(xDir(1), this.position.y) !== 'enemy') {
+				positions.push([xDir(1), this.position.y, false]);
+			}
+			// capture diagonally
+			if (check(xDir(1), this.position.y + 1) === 'enemy') {
+				positions.push([xDir(1), this.position.y + 1, false]);
+			}
+			if (check(xDir(1), this.position.y - 1) === 'enemy') {
+				positions.push([xDir(1), this.position.y - 1, false]);
+			}
+			// if a pawn besides has a true 'enPassant' property, move diagonally
+			for (var player in _app.chess) {
+				for (var piece in _app.chess[player].pieces) {
+					if (_app.chess[player].pieces[piece].enPassant === true && _app.chess[player].pieces[piece].position.x === this.position.x) {
+						if (_app.chess[player].pieces[piece].position.y === this.position.y + 1) {
+							positions.push([xDir(1), this.position.y + 1, true]);
+						}
+						if (_app.chess[player].pieces[piece].position.y === this.position.y - 1) {
+							positions.push([xDir(1), this.position.y - 1, true]);
+						}
+					}
+				}
+			}
+
+			return positions;
+		}
+	}, {
+		key: 'toPosition',
+		value: function toPosition(pX, pY, enPass) {
+			var _this3 = this;
+
+			if (typeof pX === 'number' && typeof pY === 'number') {
+				if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
+					this.position.x = pX;
+					this.position.y = pY;
+					this.step += 1;
+
+					// capture enemy piece in target Position
+					for (var player in _app.chess) {
+						if (_app.chess[player].side !== this.side) {
+							for (var piece in _app.chess[player].pieces) {
+								if (_app.chess[player].pieces[piece].position.x === pX && _app.chess[player].pieces[piece].position.y === pY) {
+									_app.chess[player].pieces[piece].position = { x: -1, y: -1 };
+								}
+							}
+						}
+					}
+				} else if (pX === -1 && pY === -1) {
+					// [-1, -1] position is being captured
+					this.position.x = pX;
+					this.position.y = pY;
+				}
+			}
+			setTimeout(function () {
+				// enPassant to true if conditions are met
+				if (_this3.step === 1 && pX > 2 && _this3.side === 'white' || _this3.step === 1 && pX < 5 && _this3.side === 'black') {
+					for (var _player in _app.chess) {
+						if (_app.chess[_player].side !== _this3.side) {
+							for (var _piece in _app.chess[_player].pieces) {
+								if (_app.chess[_player].pieces[_piece].class === 'pawn') {
+									if (_app.chess[_player].pieces[_piece].position.x === pX && (_app.chess[_player].pieces[_piece].position.y === pY + 1 || _app.chess[_player].pieces[_piece].position.y === pY - 1)) {
+										_this3.enPassant = true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}, 1);
+			if (enPass === true) {
+				for (var _player2 in _app.chess) {
+					if (_app.chess[_player2].side !== this.side) {
+						for (var _piece2 in _app.chess[_player2].pieces) {
+							if (_app.chess[_player2].pieces[_piece2].class === 'pawn') {
+								if (_app.chess[_player2].pieces[_piece2].enPassant === true && _app.chess[_player2].pieces[_piece2].position.y === pY && (_app.chess[_player2].pieces[_piece2].position.x === pX + 1 || _app.chess[_player2].pieces[_piece2].position.x === pX - 1)) {
+									_app.chess[_player2].pieces[_piece2].position = { x: -1, y: -1 };
+								}
+							}
+						}
+					}
+				}
+			}
+			return [this.position.x, this.position.y];
+		}
 	}]);
 
 	return Pawn;
