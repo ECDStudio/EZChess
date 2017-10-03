@@ -12,84 +12,82 @@ document.getElementsByTagName('body')[0].append(container);
 container.append(chessboard, turnCounter);
 chessboard.append(player1, player2);
 
-const watchPiece = (piece, obj, player) => {
-	piece.addEventListener('click', () => {
-		if (player.isTurn === true) {
-			for (let position of obj.availableMoves()) {
-				let target = document.createElement('a');
-				target.classList.add('target-position');
-				chessboard.append(target);
-				target.style.left = `${position[0] * 12.5}%`;
-				target.style.bottom = `${position[1] * 12.5}%`;
-
-				watchTarget(target, position, obj);
-			}
-		}
-	})
-}
-
-const watchTarget = (target, position, obj) => {
-	target.addEventListener('click', () => {
-		obj._toPos(...position);
-		for (let i of document.getElementsByClassName('target-position')) {
-			setTimeout(function() {
-				i.parentElement.removeChild(i);
-			})
-		}
-		for (let player in chess) {
-			for (let piece in chess[player].pieces) {
-				chess[player].pieces[piece]._watchCapture();
-			}
-		}
-		chess.switchTurn();
-		indicateTurn();
-	})
-}
-
-for (let player in chess) {
-	for (let piece in chess[player].pieces) {
-		const _piece = chess[player].pieces[piece];
-		let _pieceDom = document.createElement('li');
-
-		_piece._toPos = (pX, pY) => {
-			_piece.toPosition(pX, pY);
-			_pieceDom.style.zIndex = '20';
-			_pieceDom.style.left = `${_piece.position.x * 12.5}%`;
-			_pieceDom.style.bottom = `${_piece.position.y * 12.5}%`;
-			setTimeout(function() {
-				_pieceDom.style.zIndex = '1';
-			}, 1000)
-		}
-
-		_piece._toPos(..._piece.position);
-
-		_pieceDom.classList.add('chess-piece', chess[player].side, _piece.class);
-		if (player === 'player1') {
-			player1.append(_pieceDom);
-		} else {
-			player2.append(_pieceDom);
-		}
-		
-		watchPiece(_pieceDom, _piece, chess[player]);
-
-		_piece._watchCapture = () => {
-			// detect if a piece is captured
-			if (_piece.position.x === -1 &&
-				_piece.position.y === -1) {
-				setTimeout(function() {
-					_pieceDom.style.display = 'none';
-				}, 500)
-			}
-		}
-	}
-}
-
 const indicateTurn = () => {
+	// indicate player of current turn
 	for (let player in chess) {
 		if (chess[player].isTurn === true) {
 			turnCounter.innerHTML = `Current Turn: ${chess[player].side}`;
 		}
 	}
 };
-
 indicateTurn();
+
+const watchPiece = (obj) => {
+	// create positions for a piece to move to on the UI
+	for (let position of obj.availableMoves()) {
+		let target = document.createElement('a');
+
+		chessboard.append(target);
+		target.classList.add('target-position');
+		target.style.left = `${position[0] * 12.5}%`;
+		target.style.bottom = `${position[1] * 12.5}%`;
+		target.addEventListener('click', () => {
+			obj._toPos(...position);
+			for (let i of document.getElementsByClassName('target-position')) {
+				// remove all targets after selecting one
+				setTimeout(function() {
+					i.parentElement.removeChild(i);
+				})
+			}
+			for (let player in chess) {
+				for (let piece in chess[player].pieces) {
+					chess[player].pieces[piece]._watchCapture();
+				}
+			}
+			chess.switchTurn();
+			indicateTurn();
+		})
+	}
+}
+
+for (let player in chess) {
+	for (let piece in chess[player].pieces) {
+		// bind the piece on the UI to the vitual object
+		const _pieceObj = chess[player].pieces[piece];
+		let _pieceUI = document.createElement('li');
+
+		_pieceObj._toPos = (pX, pY) => {
+			_pieceObj.toPosition(pX, pY);
+			_pieceUI.style.zIndex = '20';
+			_pieceUI.style.left = `${_pieceObj.position.x * 12.5}%`;
+			_pieceUI.style.bottom = `${_pieceObj.position.y * 12.5}%`;
+			setTimeout(function() {
+				_pieceUI.style.zIndex = '1';
+			}, 1000);
+		}
+
+		_pieceObj._toPos(..._pieceObj.position);
+		_pieceObj._watchCapture = () => {
+			// detect if a piece is captured, hide it on the UI
+			if (_pieceObj.position.x === -1 &&
+				_pieceObj.position.y === -1) {
+				setTimeout(function() {
+					_pieceUI.style.display = 'none';
+				}, 500)
+			}
+		}
+
+		_pieceUI.classList.add('chess-piece', chess[player].side, _pieceObj.class);
+		if (player === 'player1') {
+			player1.append(_pieceUI);
+		} else {
+			player2.append(_pieceUI);
+		}
+		_pieceUI.addEventListener('click', () => {
+			// select a piece and move if it's its player's turn
+			if (chess[player].isTurn === true) {
+				watchPiece(_pieceObj);
+			}
+		})
+	}
+}

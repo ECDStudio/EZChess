@@ -605,138 +605,144 @@ document.getElementsByTagName('body')[0].append(container);
 container.append(chessboard, turnCounter);
 chessboard.append(player1, player2);
 
-var watchPiece = function watchPiece(piece, obj, player) {
-	piece.addEventListener('click', function () {
-		if (player.isTurn === true) {
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
+var indicateTurn = function indicateTurn() {
+	// indicate player of current turn
+	for (var player in _app.chess) {
+		if (_app.chess[player].isTurn === true) {
+			turnCounter.innerHTML = 'Current Turn: ' + _app.chess[player].side;
+		}
+	}
+};
+indicateTurn();
+
+var watchPiece = function watchPiece(obj) {
+	var _loop = function _loop(position) {
+		var target = document.createElement('a');
+
+		chessboard.append(target);
+		target.classList.add('target-position');
+		target.style.left = position[0] * 12.5 + '%';
+		target.style.bottom = position[1] * 12.5 + '%';
+		target.addEventListener('click', function () {
+			obj._toPos.apply(obj, _toConsumableArray(position));
+
+			var _loop2 = function _loop2(i) {
+				// remove all targets after selecting one
+				setTimeout(function () {
+					i.parentElement.removeChild(i);
+				});
+			};
+
+			var _iteratorNormalCompletion2 = true;
+			var _didIteratorError2 = false;
+			var _iteratorError2 = undefined;
 
 			try {
-				for (var _iterator = obj.availableMoves()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var position = _step.value;
+				for (var _iterator2 = document.getElementsByClassName('target-position')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+					var i = _step2.value;
 
-					var target = document.createElement('a');
-					target.classList.add('target-position');
-					chessboard.append(target);
-					target.style.left = position[0] * 12.5 + '%';
-					target.style.bottom = position[1] * 12.5 + '%';
-
-					watchTarget(target, position, obj);
+					_loop2(i);
 				}
 			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
+				_didIteratorError2 = true;
+				_iteratorError2 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
+					if (!_iteratorNormalCompletion2 && _iterator2.return) {
+						_iterator2.return();
 					}
 				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
+					if (_didIteratorError2) {
+						throw _iteratorError2;
 					}
 				}
 			}
+
+			for (var player in _app.chess) {
+				for (var piece in _app.chess[player].pieces) {
+					_app.chess[player].pieces[piece]._watchCapture();
+				}
+			}
+			_app.chess.switchTurn();
+			indicateTurn();
+		});
+	};
+
+	// create positions for a piece to move to on the UI
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+		for (var _iterator = obj.availableMoves()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var position = _step.value;
+
+			_loop(position);
 		}
-	});
-};
-
-var watchTarget = function watchTarget(target, position, obj) {
-	target.addEventListener('click', function () {
-		obj._toPos.apply(obj, _toConsumableArray(position));
-
-		var _loop = function _loop(i) {
-			setTimeout(function () {
-				i.parentElement.removeChild(i);
-			});
-		};
-
-		var _iteratorNormalCompletion2 = true;
-		var _didIteratorError2 = false;
-		var _iteratorError2 = undefined;
-
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
 		try {
-			for (var _iterator2 = document.getElementsByClassName('target-position')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-				var i = _step2.value;
-
-				_loop(i);
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
 			}
-		} catch (err) {
-			_didIteratorError2 = true;
-			_iteratorError2 = err;
 		} finally {
-			try {
-				if (!_iteratorNormalCompletion2 && _iterator2.return) {
-					_iterator2.return();
-				}
-			} finally {
-				if (_didIteratorError2) {
-					throw _iteratorError2;
-				}
+			if (_didIteratorError) {
+				throw _iteratorError;
 			}
 		}
-
-		for (var player in _app.chess) {
-			for (var piece in _app.chess[player].pieces) {
-				_app.chess[player].pieces[piece]._watchCapture();
-			}
-		}
-		_app.chess.switchTurn();
-		indicateTurn();
-	});
+	}
 };
 
-for (var player in _app.chess) {
-	var _loop2 = function _loop2(piece) {
-		var _piece = _app.chess[player].pieces[piece];
-		var _pieceDom = document.createElement('li');
+var _loop3 = function _loop3(player) {
+	var _loop4 = function _loop4(piece) {
+		// bind the piece on the UI to the vitual object
+		var _pieceObj = _app.chess[player].pieces[piece];
+		var _pieceUI = document.createElement('li');
 
-		_piece._toPos = function (pX, pY) {
-			_piece.toPosition(pX, pY);
-			_pieceDom.style.zIndex = '20';
-			_pieceDom.style.left = _piece.position.x * 12.5 + '%';
-			_pieceDom.style.bottom = _piece.position.y * 12.5 + '%';
+		_pieceObj._toPos = function (pX, pY) {
+			_pieceObj.toPosition(pX, pY);
+			_pieceUI.style.zIndex = '20';
+			_pieceUI.style.left = _pieceObj.position.x * 12.5 + '%';
+			_pieceUI.style.bottom = _pieceObj.position.y * 12.5 + '%';
 			setTimeout(function () {
-				_pieceDom.style.zIndex = '1';
+				_pieceUI.style.zIndex = '1';
 			}, 1000);
 		};
 
-		_piece._toPos.apply(_piece, _toConsumableArray(_piece.position));
-
-		_pieceDom.classList.add('chess-piece', _app.chess[player].side, _piece.class);
-		if (player === 'player1') {
-			player1.append(_pieceDom);
-		} else {
-			player2.append(_pieceDom);
-		}
-
-		watchPiece(_pieceDom, _piece, _app.chess[player]);
-
-		_piece._watchCapture = function () {
-			// detect if a piece is captured
-			if (_piece.position.x === -1 && _piece.position.y === -1) {
+		_pieceObj._toPos.apply(_pieceObj, _toConsumableArray(_pieceObj.position));
+		_pieceObj._watchCapture = function () {
+			// detect if a piece is captured, hide it on the UI
+			if (_pieceObj.position.x === -1 && _pieceObj.position.y === -1) {
 				setTimeout(function () {
-					_pieceDom.style.display = 'none';
+					_pieceUI.style.display = 'none';
 				}, 500);
 			}
 		};
+
+		_pieceUI.classList.add('chess-piece', _app.chess[player].side, _pieceObj.class);
+		if (player === 'player1') {
+			player1.append(_pieceUI);
+		} else {
+			player2.append(_pieceUI);
+		}
+		_pieceUI.addEventListener('click', function () {
+			// select a piece and move if it's its player's turn
+			if (_app.chess[player].isTurn === true) {
+				watchPiece(_pieceObj);
+			}
+		});
 	};
 
 	for (var piece in _app.chess[player].pieces) {
-		_loop2(piece);
-	}
-}
-
-var indicateTurn = function indicateTurn() {
-	for (var _player in _app.chess) {
-		if (_app.chess[_player].isTurn === true) {
-			turnCounter.innerHTML = 'Current Turn: ' + _app.chess[_player].side;
-		}
+		_loop4(piece);
 	}
 };
 
-indicateTurn();
+for (var player in _app.chess) {
+	_loop3(player);
+}
 
 /***/ }),
 /* 8 */
