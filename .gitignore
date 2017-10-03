@@ -1,3 +1,4 @@
 node_modules
 app.bundle.map
 *.css.map
+.sass-cache/

@@ -596,12 +596,13 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var container = document.createElement('div'),
     chessboard = document.createElement('div'),
     player1 = document.createElement('ul'),
-    player2 = document.createElement('ul');
+    player2 = document.createElement('ul'),
+    turnCounter = document.createElement('div');
 
 container.id = 'container';
 chessboard.id = 'chessboard';
 document.getElementsByTagName('body')[0].append(container);
-container.append(chessboard);
+container.append(chessboard, turnCounter);
 chessboard.append(player1, player2);
 
 var watchPiece = function watchPiece(piece, obj, player) {
@@ -703,9 +704,7 @@ for (var player in _app.chess) {
 
 		_piece._toPos.apply(_piece, _toConsumableArray(_piece.position));
 
-		_pieceDom.classList.add('chess-piece');
-		_pieceDom.classList.add(_app.chess[player].pieces[piece].class);
-		_pieceDom.classList.add(_app.chess[player].side);
+		_pieceDom.classList.add('chess-piece', _app.chess[player].side, _piece.class);
 		if (player === 'player1') {
 			player1.append(_pieceDom);
 		} else {
@@ -729,9 +728,6 @@ for (var player in _app.chess) {
 	}
 }
 
-var turnCounter = document.createElement('div');
-
-container.append(turnCounter);
 var indicateTurn = function indicateTurn() {
 	for (var _player in _app.chess) {
 		if (_app.chess[_player].isTurn === true) {

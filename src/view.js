@@ -3,12 +3,13 @@ import { chess } from './app';
 let container = document.createElement('div'),
 	chessboard = document.createElement('div'),
 	player1 = document.createElement('ul'),
-	player2 = document.createElement('ul');
+	player2 = document.createElement('ul'),
+	turnCounter = document.createElement('div');
 
 container.id = 'container';
 chessboard.id = 'chessboard';
 document.getElementsByTagName('body')[0].append(container);
-container.append(chessboard);
+container.append(chessboard, turnCounter);
 chessboard.append(player1, player2);
 
 const watchPiece = (piece, obj, player) => {
@@ -62,9 +63,7 @@ for (let player in chess) {
 
 		_piece._toPos(..._piece.position);
 
-		_pieceDom.classList.add('chess-piece');
-		_pieceDom.classList.add(chess[player].pieces[piece].class);
-		_pieceDom.classList.add(chess[player].side);
+		_pieceDom.classList.add('chess-piece', chess[player].side, _piece.class);
 		if (player === 'player1') {
 			player1.append(_pieceDom);
 		} else {
@@ -85,9 +84,6 @@ for (let player in chess) {
 	}
 }
 
-let turnCounter = document.createElement('div');
-
-container.append(turnCounter);
 const indicateTurn = () => {
 	for (let player in chess) {
 		if (chess[player].isTurn === true) {
