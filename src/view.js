@@ -23,6 +23,16 @@ const indicateTurn = () => {
 indicateTurn();
 
 const watchPiece = (obj) => {
+	// first clear all targets if there is any
+	const clearTargets = () => {
+		for (let i of document.getElementsByClassName('target-position')) {
+			// remove all targets after selecting one
+			setTimeout(function() {
+				i.parentElement.removeChild(i);
+			})
+		}
+	}
+	clearTargets();
 	// create positions for a piece to move to on the UI
 	for (let position of obj.availableMoves()) {
 		let target = document.createElement('a');
@@ -33,12 +43,7 @@ const watchPiece = (obj) => {
 		target.style.bottom = `${position[1] * 12.5}%`;
 		target.addEventListener('click', () => {
 			obj._toPos(...position);
-			for (let i of document.getElementsByClassName('target-position')) {
-				// remove all targets after selecting one
-				setTimeout(function() {
-					i.parentElement.removeChild(i);
-				})
-			}
+			clearTargets();
 			for (let player in chess) {
 				for (let piece in chess[player].pieces) {
 					chess[player].pieces[piece]._watchCapture();

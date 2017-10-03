@@ -615,7 +615,44 @@ var indicateTurn = function indicateTurn() {
 indicateTurn();
 
 var watchPiece = function watchPiece(obj) {
-	var _loop = function _loop(position) {
+	// first clear all targets if there is any
+	var clearTargets = function clearTargets() {
+		var _loop = function _loop(i) {
+			// remove all targets after selecting one
+			setTimeout(function () {
+				i.parentElement.removeChild(i);
+			});
+		};
+
+		var _iteratorNormalCompletion = true;
+		var _didIteratorError = false;
+		var _iteratorError = undefined;
+
+		try {
+			for (var _iterator = document.getElementsByClassName('target-position')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				var i = _step.value;
+
+				_loop(i);
+			}
+		} catch (err) {
+			_didIteratorError = true;
+			_iteratorError = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion && _iterator.return) {
+					_iterator.return();
+				}
+			} finally {
+				if (_didIteratorError) {
+					throw _iteratorError;
+				}
+			}
+		}
+	};
+	clearTargets();
+	// create positions for a piece to move to on the UI
+
+	var _loop2 = function _loop2(position) {
 		var target = document.createElement('a');
 
 		chessboard.append(target);
@@ -624,39 +661,7 @@ var watchPiece = function watchPiece(obj) {
 		target.style.bottom = position[1] * 12.5 + '%';
 		target.addEventListener('click', function () {
 			obj._toPos.apply(obj, _toConsumableArray(position));
-
-			var _loop2 = function _loop2(i) {
-				// remove all targets after selecting one
-				setTimeout(function () {
-					i.parentElement.removeChild(i);
-				});
-			};
-
-			var _iteratorNormalCompletion2 = true;
-			var _didIteratorError2 = false;
-			var _iteratorError2 = undefined;
-
-			try {
-				for (var _iterator2 = document.getElementsByClassName('target-position')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-					var i = _step2.value;
-
-					_loop2(i);
-				}
-			} catch (err) {
-				_didIteratorError2 = true;
-				_iteratorError2 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion2 && _iterator2.return) {
-						_iterator2.return();
-					}
-				} finally {
-					if (_didIteratorError2) {
-						throw _iteratorError2;
-					}
-				}
-			}
-
+			clearTargets();
 			for (var player in _app.chess) {
 				for (var piece in _app.chess[player].pieces) {
 					_app.chess[player].pieces[piece]._watchCapture();
@@ -667,28 +672,27 @@ var watchPiece = function watchPiece(obj) {
 		});
 	};
 
-	// create positions for a piece to move to on the UI
-	var _iteratorNormalCompletion = true;
-	var _didIteratorError = false;
-	var _iteratorError = undefined;
+	var _iteratorNormalCompletion2 = true;
+	var _didIteratorError2 = false;
+	var _iteratorError2 = undefined;
 
 	try {
-		for (var _iterator = obj.availableMoves()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-			var position = _step.value;
+		for (var _iterator2 = obj.availableMoves()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+			var position = _step2.value;
 
-			_loop(position);
+			_loop2(position);
 		}
 	} catch (err) {
-		_didIteratorError = true;
-		_iteratorError = err;
+		_didIteratorError2 = true;
+		_iteratorError2 = err;
 	} finally {
 		try {
-			if (!_iteratorNormalCompletion && _iterator.return) {
-				_iterator.return();
+			if (!_iteratorNormalCompletion2 && _iterator2.return) {
+				_iterator2.return();
 			}
 		} finally {
-			if (_didIteratorError) {
-				throw _iteratorError;
+			if (_didIteratorError2) {
+				throw _iteratorError2;
 			}
 		}
 	}
