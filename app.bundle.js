@@ -916,12 +916,12 @@ var Pawn = function (_Piece) {
 				return (0, _checkPosition.checkPosition)(x, y, _this2.side);
 			};
 
-			var positions = [];
-
 			// dynamic x direction
 			var xDir = function xDir(x) {
 				return _this2.side === 'white' ? _this2.position.x + x : _this2.position.x - x;
 			};
+
+			var positions = [];
 
 			// first step can take 2 steps, otherwise 1
 			if (this.step === 0) {
@@ -939,14 +939,15 @@ var Pawn = function (_Piece) {
 			if (check(xDir(1), this.position.y - 1) === 'enemy') {
 				positions.push([xDir(1), this.position.y - 1, false]);
 			}
-			// if a pawn besides has a true 'enPassant' property, move diagonally
+			// if a pawn besides has a true 'enPassant' property from the turn before, move diagonally
 			for (var player in _app.chess) {
 				for (var piece in _app.chess[player].pieces) {
-					if (_app.chess[player].pieces[piece].enPassant === true && _app.chess[player].pieces[piece].enPassTurn === _app.chess.turn && _app.chess[player].pieces[piece].position.x === this.position.x) {
-						if (_app.chess[player].pieces[piece].position.y === this.position.y + 1) {
+					var enemyPawn = _app.chess[player].pieces[piece];
+					if (enemyPawn.enPassant === true && enemyPawn.enPassTurn === _app.chess.turn && enemyPawn.position.x === this.position.x) {
+						if (enemyPawn.position.y === this.position.y + 1) {
 							positions.push([xDir(1), this.position.y + 1, true]);
 						}
-						if (_app.chess[player].pieces[piece].position.y === this.position.y - 1) {
+						if (enemyPawn.position.y === this.position.y - 1) {
 							positions.push([xDir(1), this.position.y - 1, true]);
 						}
 					}
@@ -956,7 +957,7 @@ var Pawn = function (_Piece) {
 			return positions;
 		}
 
-		// 3rd boolean argument indicates if this is an en passant move
+		// 3rd boolean parameter indicates if this is an en passant move
 
 	}, {
 		key: 'toPosition',
@@ -986,13 +987,14 @@ var Pawn = function (_Piece) {
 				}
 			}
 			setTimeout(function () {
-				// indicate being able to be enPassant-ed if conditions are met
+				// indicate this move makes it able to be captured by en passant the next turn
 				if (_this3.step === 1 && pX === 3 && _this3.side === 'white' || _this3.step === 1 && pX === 4 && _this3.side === 'black') {
 					for (var _player in _app.chess) {
 						if (_app.chess[_player].side !== _this3.side) {
 							for (var _piece in _app.chess[_player].pieces) {
 								if (_app.chess[_player].pieces[_piece].class === 'pawn') {
-									if (_app.chess[_player].pieces[_piece].position.x === pX && (_app.chess[_player].pieces[_piece].position.y === pY + 1 || _app.chess[_player].pieces[_piece].position.y === pY - 1)) {
+									var enemyPawn = _app.chess[_player].pieces[_piece];
+									if (enemyPawn.position.x === pX && (enemyPawn.position.y === pY + 1 || enemyPawn.position.y === pY - 1)) {
 										_this3.enPassant = true;
 										_this3.enPassTurn = _app.chess.turn;
 									}
@@ -1002,15 +1004,14 @@ var Pawn = function (_Piece) {
 					}
 				}
 			}, 1);
-			// enPassant in action
+			// This is for an offensive en passant move that captures an enemy pawn
 			if (enPassMove === true) {
 				for (var _player2 in _app.chess) {
 					if (_app.chess[_player2].side !== this.side) {
 						for (var _piece2 in _app.chess[_player2].pieces) {
-							if (_app.chess[_player2].pieces[_piece2].class === 'pawn') {
-								if (_app.chess[_player2].pieces[_piece2].enPassant === true && _app.chess[_player2].pieces[_piece2].enPassTurn === _app.chess.turn && _app.chess[_player2].pieces[_piece2].position.y === pY && (_app.chess[_player2].pieces[_piece2].position.x === pX + 1 || _app.chess[_player2].pieces[_piece2].position.x === pX - 1)) {
-									_app.chess[_player2].pieces[_piece2].position = { x: -1, y: -1 };
-								}
+							var enemyPawn = _app.chess[_player2].pieces[_piece2];
+							if (enemyPawn.enPassant === true && enemyPawn.enPassTurn === _app.chess.turn && enemyPawn.position.y === pY && (enemyPawn.position.x === pX + 1 || enemyPawn.position.x === pX - 1)) {
+								enemyPawn.position = { x: -1, y: -1 };
 							}
 						}
 					}
