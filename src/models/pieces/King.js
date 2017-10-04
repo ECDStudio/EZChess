@@ -41,15 +41,6 @@ export default class King extends Piece {
 		// King side castle
 		for (let player in chess.players) {
 			let pathEmpty = true;
-			if (chess.players[player].side !== this.side) {
-				for (let pos in chess.players[player].pieces.queen.availableMoves()) {
-					let match = chess.players[player].pieces.queen.availableMoves()[pos];
-					if (match[0] === this.position.x &&
-						(match[1] === 1 || match[1] === 2 || match[1] === 3)) {
-						return;
-					}
-				}
-			}
 			if (chess.players[player].side === this.side) {
 				for (let piece in chess.players[player].pieces) {
 					let blockingPiece = chess.players[player].pieces[piece];

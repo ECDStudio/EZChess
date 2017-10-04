@@ -836,14 +836,6 @@ var King = function (_Piece) {
 			// King side castle
 			for (var player in _app.chess.players) {
 				var pathEmpty = true;
-				if (_app.chess.players[player].side !== this.side) {
-					for (var _pos in _app.chess.players[player].pieces.queen.availableMoves()) {
-						var match = _app.chess.players[player].pieces.queen.availableMoves()[_pos];
-						if (match[0] === this.position.x && (match[1] === 1 || match[1] === 2 || match[1] === 3)) {
-							return;
-						}
-					}
-				}
 				if (_app.chess.players[player].side === this.side) {
 					for (var piece in _app.chess.players[player].pieces) {
 						var blockingPiece = _app.chess.players[player].pieces[piece];
