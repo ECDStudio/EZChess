@@ -850,7 +850,123 @@ var Queen = function (_Piece) {
 
 	_createClass(Queen, [{
 		key: 'availableMoves',
-		value: function availableMoves() {}
+		value: function availableMoves() {
+			var _this2 = this;
+
+			// call checkPosition() to determine if there is a friendly or enemy piece at that position
+			var checkX = function checkX(target) {
+				return (0, _checkPosition.checkPosition)(target, _this2.position.y, _this2.side);
+			},
+			    checkY = function checkY(target) {
+				return (0, _checkPosition.checkPosition)(_this2.position.x, target, _this2.side);
+			};
+			var check = function check(x, y) {
+				return (0, _checkPosition.checkPosition)(x, y, _this2.side);
+			};
+
+			var positions = [],
+			    xUp = true,
+			    xDown = true,
+			    yUp = true,
+			    yDown = true,
+			    rightUp = true,
+			    rightDown = true,
+			    leftUp = true,
+			    leftDown = true;
+
+			// loop through all possible positions in vertical and horizontal directions;
+			// stops AT position with a friendly piece,
+			// or AFTER position with an enenmy piece(capture);
+			// the for loop makes sure the position is in bound of the chessboard(1-8),
+			// and is not the position the piece is currently standing
+			for (var i = this.position.x + 1; i < 8; i += 1) {
+				if (xUp === true) {
+					if (checkX(i) === 'friendly' || checkX(i) === 'enemy') {
+						xUp = false;
+					}
+					if (checkX(i) !== 'friendly') {
+						positions.push([i, this.position.y]);
+					}
+				}
+			}
+			for (var _i = this.position.x - 1; _i >= 0; _i -= 1) {
+				if (xDown === true) {
+					if (checkX(_i) === 'friendly' || checkX(_i) === 'enemy') {
+						xDown = false;
+					}
+					if (checkX(_i) !== 'friendly') {
+						positions.push([_i, this.position.y]);
+					}
+				}
+			}
+			for (var _i2 = this.position.y + 1; _i2 < 8; _i2 += 1) {
+				if (yUp === true) {
+					if (checkY(_i2) === 'friendly' || checkY(_i2) === 'enemy') {
+						yUp = false;
+					}
+					if (checkY(_i2) !== 'friendly') {
+						positions.push([this.position.x, _i2]);
+					}
+				}
+			}
+			for (var _i3 = this.position.y - 1; _i3 >= 0; _i3 -= 1) {
+				if (yDown === true) {
+					if (checkY(_i3) === 'friendly' || checkY(_i3) === 'enemy') {
+						yDown = false;
+					}
+					if (checkY(_i3) !== 'friendly') {
+						positions.push([this.position.x, _i3]);
+					}
+				}
+			}
+			// loop through all possible positions in diagonal directions;
+			for (var _i4 = this.position.x + 1; _i4 < 8; _i4 += 1) {
+				var yTarget = this.position.y + _i4 - this.position.x;
+				if (rightUp === true && yTarget >= 0 && yTarget < 8) {
+					if (check(_i4, yTarget) === 'friendly' || check(_i4, yTarget) === 'enemy' || yTarget === 7) {
+						rightUp = false;
+					}
+					if (check(_i4, yTarget) !== 'friendly') {
+						positions.push([_i4, yTarget]);
+					}
+				}
+			}
+			for (var _i5 = this.position.x + 1; _i5 < 8; _i5 += 1) {
+				var _yTarget = this.position.y - _i5 + this.position.x;
+				if (rightDown === true && _yTarget >= 0 && _yTarget < 8) {
+					if (check(_i5, _yTarget) === 'friendly' || check(_i5, _yTarget) === 'enemy' || _yTarget === 0) {
+						rightDown = false;
+					}
+					if (check(_i5, _yTarget) !== 'friendly') {
+						positions.push([_i5, _yTarget]);
+					}
+				}
+			}
+			for (var _i6 = this.position.x - 1; _i6 >= 0; _i6 -= 1) {
+				var _yTarget2 = this.position.y + _i6 - this.position.x;
+				if (leftUp === true && _yTarget2 >= 0 && _yTarget2 < 8) {
+					if (check(_i6, _yTarget2) === 'friendly' || check(_i6, _yTarget2) === 'enemy' || _yTarget2 === 7) {
+						leftUp = false;
+					}
+					if (check(_i6, _yTarget2) !== 'friendly') {
+						positions.push([_i6, _yTarget2]);
+					}
+				}
+			}
+			for (var _i7 = this.position.x - 1; _i7 >= 0; _i7 -= 1) {
+				var _yTarget3 = this.position.y - _i7 + this.position.x;
+				if (leftDown === true && _yTarget3 >= 0 && _yTarget3 < 8) {
+					if (check(_i7, _yTarget3) === 'friendly' || check(_i7, _yTarget3) === 'enemy' || _yTarget3 === 0) {
+						leftDown = false;
+					}
+					if (check(_i7, _yTarget3) !== 'friendly') {
+						positions.push([_i7, _yTarget3]);
+					}
+				}
+			}
+
+			return positions;
+		}
 	}]);
 
 	return Queen;
