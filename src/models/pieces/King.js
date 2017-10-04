@@ -38,19 +38,47 @@ export default class King extends Piece {
 			}
 		};
 		
-		// king side castle
-		for (let player in chess) {
-			if (chess[player].side === this.side) {
-				let pathEmpty = true;
-				for (let piece in chess[player].pieces) {
-					let blockingPiece = chess[player].pieces[piece];
+		// King side castle
+		for (let player in chess.players) {
+			let pathEmpty = true;
+			if (chess.players[player].side !== this.side) {
+				for (let pos in chess.players[player].pieces.queen.availableMoves()) {
+					let match = chess.players[player].pieces.queen.availableMoves()[pos];
+					if (match[0] === this.position.x &&
+						(match[1] === 1 || match[1] === 2 || match[1] === 3)) {
+						return;
+					}
+				}
+			}
+			if (chess.players[player].side === this.side) {
+				for (let piece in chess.players[player].pieces) {
+					let blockingPiece = chess.players[player].pieces[piece];
 					if (blockingPiece.position.x === this.position.x &&
 						(blockingPiece.position.y === 1 || blockingPiece.position.y === 2)) {
 						pathEmpty = false;
 					}
 				}
-				if (pathEmpty === true && chess[player].pieces.rook1.step === 0 && this.step === 0) {
+				if (pathEmpty === true && chess.players[player].pieces.rook1.step === 0 && this.step === 0) {
 					positions.push([this.position.x, 1, 'king-castle']);
+				}
+			}
+		}
+		
+		// Queen side castle
+		for (let player in chess.players) {
+			let pathEmpty = true;
+			if (chess.players[player].side === this.side) {
+				for (let piece in chess.players[player].pieces) {
+					let blockingPiece = chess.players[player].pieces[piece];
+					if (blockingPiece.position.x === this.position.x &&
+						(blockingPiece.position.y === 4 ||
+						blockingPiece.position.y === 5 ||
+						blockingPiece.position.y === 6)) {
+						pathEmpty = false;
+					}
+				}
+				if (pathEmpty === true && chess.players[player].pieces.rook2.step === 0 && this.step === 0) {
+					positions.push([this.position.x, 5, 'queen-castle']);
 				}
 			}
 		}
@@ -66,12 +94,12 @@ export default class King extends Piece {
 				this.step += 1;
 				
 				// capture enemy piece in target Position
-				for (let player in chess) {
-					if (chess[player].side !== this.side) {
-						for (let piece in chess[player].pieces) {
-							if (chess[player].pieces[piece].position.x === pX &&
-								chess[player].pieces[piece].position.y === pY) {
-								chess[player].pieces[piece].position = {x: -1, y: -1};
+				for (let player in chess.players) {
+					if (chess.players[player].side !== this.side) {
+						for (let piece in chess.players[player].pieces) {
+							if (chess.players[player].pieces[piece].position.x === pX &&
+								chess.players[player].pieces[piece].position.y === pY) {
+								chess.players[player].pieces[piece].position = {x: -1, y: -1};
 							}
 						}
 					}
@@ -84,9 +112,17 @@ export default class King extends Piece {
 		}
 		// King side castle, rook1 needs to move
 		if (castle === 'king-castle') {
-			for (let player in chess) {
-				if (chess[player].side === this.side) {
-					chess[player].pieces.rook1.toPosition(this.position.x, 2);
+			for (let player in chess.players) {
+				if (chess.players[player].side === this.side) {
+					chess.players[player].pieces.rook1.toPosition(this.position.x, 2);
+				}
+			}
+		}
+		// Queen side castle, rook2 needs to move
+		if (castle === 'queen-castle') {
+			for (let player in chess.players) {
+				if (chess.players[player].side === this.side) {
+					chess.players[player].pieces.rook2.toPosition(this.position.x, 4);
 				}
 			}
 		}

@@ -18,12 +18,12 @@ export default class Piece {
 				this.step += 1;
 				
 				// capture enemy piece in target Position
-				for (let player in chess) {
-					if (chess[player].side !== this.side) {
-						for (let piece in chess[player].pieces) {
-							if (chess[player].pieces[piece].position.x === pX &&
-								chess[player].pieces[piece].position.y === pY) {
-								chess[player].pieces[piece].position = {x: -1, y: -1};
+				for (let player in chess.players) {
+					if (chess.players[player].side !== this.side) {
+						for (let piece in chess.players[player].pieces) {
+							if (chess.players[player].pieces[piece].position.x === pX &&
+								chess.players[player].pieces[piece].position.y === pY) {
+								chess.players[player].pieces[piece].position = {x: -1, y: -1};
 							}
 						}
 					}

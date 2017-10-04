@@ -5,7 +5,7 @@ describe('availableMoves', function() {
 
   beforeEach(function () {
     chess.reset();
-    _rook = chess.player1.pieces.rook1;
+    _rook = chess.players.player1.pieces.rook1;
   });
   afterEach(function () {
     chess.reset();
@@ -18,7 +18,7 @@ describe('availableMoves', function() {
     expect(_rook.availableMoves().length).toEqual(11);
   });
   it('should return a list of 9 positions', function() {
-    chess.player1.pieces.pawn1.toPosition(3, 0);
+    chess.players.player1.pieces.pawn1.toPosition(3, 0);
     _rook.toPosition(2, 0);
     expect(_rook.availableMoves().length).toEqual(9);
   });

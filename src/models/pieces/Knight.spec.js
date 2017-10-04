@@ -5,7 +5,7 @@ describe('availableMoves', function() {
   
   beforeEach(function () {
     chess.reset();
-    _knight = chess.player1.pieces.knight1;
+    _knight = chess.players.player1.pieces.knight1;
   });
   afterEach(function () {
     chess.reset();

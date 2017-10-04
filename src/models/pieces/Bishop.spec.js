@@ -5,7 +5,7 @@ describe('availableMoves', function() {
 
   beforeEach(function () {
     chess.reset();
-    _bishop = chess.player1.pieces.bishop1;
+    _bishop = chess.players.player1.pieces.bishop1;
   });
   afterEach(function () {
     chess.reset();

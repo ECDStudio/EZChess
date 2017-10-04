@@ -45,9 +45,9 @@ export default class Pawn extends Piece {
 			positions.push([xDir(1), this.position.y - 1, false]);
 		}
 		// if a pawn besides has a true 'enPassant' property from the turn before, move diagonally
-		for (let player in chess) {
-			for (let piece in chess[player].pieces) {
-				let enemyPawn = chess[player].pieces[piece];
+		for (let player in chess.players) {
+			for (let piece in chess.players[player].pieces) {
+				let enemyPawn = chess.players[player].pieces[piece];
 				if (enemyPawn.enPassant === true && enemyPawn.enPassTurn === chess.turn &&
 					enemyPawn.position.x === this.position.x) {
 					if (enemyPawn.position.y === this.position.y + 1) {
@@ -72,12 +72,12 @@ export default class Pawn extends Piece {
 				this.step += 1;
 				
 				// capture enemy piece in target Position
-				for (let player in chess) {
-					if (chess[player].side !== this.side) {
-						for (let piece in chess[player].pieces) {
-							if (chess[player].pieces[piece].position.x === pX &&
-								chess[player].pieces[piece].position.y === pY) {
-								chess[player].pieces[piece].position = {x: -1, y: -1};
+				for (let player in chess.players) {
+					if (chess.players[player].side !== this.side) {
+						for (let piece in chess.players[player].pieces) {
+							if (chess.players[player].pieces[piece].position.x === pX &&
+								chess.players[player].pieces[piece].position.y === pY) {
+								chess.players[player].pieces[piece].position = {x: -1, y: -1};
 							}
 						}
 					}
@@ -92,11 +92,11 @@ export default class Pawn extends Piece {
 			// indicate this move makes it able to be captured by en passant the next turn
 			if (this.step === 1 && pX === 3 && this.side === 'white' ||
 				this.step === 1 && pX === 4 && this.side === 'black') {
-				for (let player in chess) {
-					if (chess[player].side !== this.side) {
-						for (let piece in chess[player].pieces) {
-							if (chess[player].pieces[piece].class === 'pawn') {
-								let enemyPawn = chess[player].pieces[piece];
+				for (let player in chess.players) {
+					if (chess.players[player].side !== this.side) {
+						for (let piece in chess.players[player].pieces) {
+							if (chess.players[player].pieces[piece].class === 'pawn') {
+								let enemyPawn = chess.players[player].pieces[piece];
 								if (enemyPawn.position.x === pX &&
 									(enemyPawn.position.y === pY + 1 || enemyPawn.position.y === pY - 1)) {
 									this.enPassant = true;
@@ -110,10 +110,10 @@ export default class Pawn extends Piece {
 		}, 1)
 		// This is for an offensive en passant move that captures an enemy pawn
 		if (enPassMove === true) {
-			for (let player in chess) {
-				if (chess[player].side !== this.side) {
-					for (let piece in chess[player].pieces) {
-						let enemyPawn = chess[player].pieces[piece];
+			for (let player in chess.players) {
+				if (chess.players[player].side !== this.side) {
+					for (let piece in chess.players[player].pieces) {
+						let enemyPawn = chess.players[player].pieces[piece];
 						if (enemyPawn.enPassant === true && enemyPawn.enPassTurn === chess.turn &&
 							enemyPawn.position.y === pY &&
 							(enemyPawn.position.x === pX + 1 || enemyPawn.position.x === pX - 1)) {

@@ -102,11 +102,11 @@ var Piece = function () {
 					this.step += 1;
 
 					// capture enemy piece in target Position
-					for (var player in _app.chess) {
-						if (_app.chess[player].side !== this.side) {
-							for (var piece in _app.chess[player].pieces) {
-								if (_app.chess[player].pieces[piece].position.x === pX && _app.chess[player].pieces[piece].position.y === pY) {
-									_app.chess[player].pieces[piece].position = { x: -1, y: -1 };
+					for (var player in _app.chess.players) {
+						if (_app.chess.players[player].side !== this.side) {
+							for (var piece in _app.chess.players[player].pieces) {
+								if (_app.chess.players[player].pieces[piece].position.x === pX && _app.chess.players[player].pieces[piece].position.y === pY) {
+									_app.chess.players[player].pieces[piece].position = { x: -1, y: -1 };
 								}
 							}
 						}
@@ -153,21 +153,27 @@ var Chess = function () {
 		_classCallCheck(this, Chess);
 
 		this.turn = 0;
-		this.player1 = new _Player2.default('white'), this.player2 = new _Player2.default('black');
+		this.players = {
+			player1: new _Player2.default('white'),
+			player2: new _Player2.default('black')
+		};
 	}
 
 	_createClass(Chess, [{
 		key: 'reset',
 		value: function reset() {
 			this.turn = 0;
-			this.player1 = new _Player2.default('white'), this.player2 = new _Player2.default('black');
+			this.players = {
+				player1: new _Player2.default('white'),
+				player2: new _Player2.default('black')
+			};
 		}
 	}, {
 		key: 'switchTurn',
 		value: function switchTurn() {
 			this.turn += 1;
-			this.player1.isTurn = !this.player1.isTurn;
-			this.player2.isTurn = !this.player2.isTurn;
+			this.players.player1.isTurn = !this.players.player1.isTurn;
+			this.players.player2.isTurn = !this.players.player2.isTurn;
 		}
 	}]);
 
@@ -196,10 +202,10 @@ exports.checkPosition = undefined;
 var _app = __webpack_require__(1);
 
 var checkPosition = exports.checkPosition = function checkPosition(x, y, side) {
-	for (var player in _app.chess) {
-		for (var piece in _app.chess[player].pieces) {
-			if (_app.chess[player].pieces[piece].position.x === x && _app.chess[player].pieces[piece].position.y === y) {
-				if (_app.chess[player].side === side) {
+	for (var player in _app.chess.players) {
+		for (var piece in _app.chess.players[player].pieces) {
+			if (_app.chess.players[player].pieces[piece].position.x === x && _app.chess.players[player].pieces[piece].position.y === y) {
+				if (_app.chess.players[player].side === side) {
 					// check if there is piece from the same side
 					return 'friendly';
 				} else {
@@ -609,9 +615,9 @@ chessboard.append(player1, player2);
 
 var indicateTurn = function indicateTurn() {
 	// indicate player of current turn
-	for (var player in _app.chess) {
-		if (_app.chess[player].isTurn === true) {
-			turnCounter.innerHTML = 'Current Turn: ' + _app.chess[player].side;
+	for (var player in _app.chess.players) {
+		if (_app.chess.players[player].isTurn === true) {
+			turnCounter.innerHTML = 'Current Turn: ' + _app.chess.players[player].side;
 		}
 	}
 };
@@ -665,16 +671,16 @@ var watchPiece = function watchPiece(piece) {
 		target.addEventListener('click', function () {
 			piece._toPos.apply(piece, _toConsumableArray(position));
 			clearTargets();
-			for (var player in _app.chess) {
+			for (var player in _app.chess.players) {
 				var _loop3 = function _loop3(_piece) {
-					var allPieces = _app.chess[player].pieces[_piece];
+					var allPieces = _app.chess.players[player].pieces[_piece];
 					allPieces._watchCapture();
 					setTimeout(function () {
 						allPieces._toPos(allPieces.position.x, allPieces, position.y);
 					}, 500);
 				};
 
-				for (var _piece in _app.chess[player].pieces) {
+				for (var _piece in _app.chess.players[player].pieces) {
 					_loop3(_piece);
 				}
 			}
@@ -712,7 +718,7 @@ var watchPiece = function watchPiece(piece) {
 var _loop4 = function _loop4(player) {
 	var _loop5 = function _loop5(piece) {
 		// bind the piece on the UI to the virtual object
-		var _pieceObj = _app.chess[player].pieces[piece];
+		var _pieceObj = _app.chess.players[player].pieces[piece];
 		var _pieceUI = document.createElement('li');
 
 		_pieceObj._toPos = function (pX, pY, specialMove) {
@@ -735,7 +741,7 @@ var _loop4 = function _loop4(player) {
 			}
 		};
 
-		_pieceUI.classList.add('chess-piece', _app.chess[player].side, _pieceObj.class);
+		_pieceUI.classList.add('chess-piece', _app.chess.players[player].side, _pieceObj.class);
 		if (player === 'player1') {
 			player1.append(_pieceUI);
 		} else {
@@ -743,18 +749,18 @@ var _loop4 = function _loop4(player) {
 		}
 		_pieceUI.addEventListener('click', function () {
 			// select a piece and move if it's its player's turn
-			if (_app.chess[player].isTurn === true) {
+			if (_app.chess.players[player].isTurn === true) {
 				watchPiece(_pieceObj);
 			}
 		});
 	};
 
-	for (var piece in _app.chess[player].pieces) {
+	for (var piece in _app.chess.players[player].pieces) {
 		_loop5(piece);
 	}
 };
 
-for (var player in _app.chess) {
+for (var player in _app.chess.players) {
 	_loop4(player);
 }
 
@@ -827,18 +833,42 @@ var King = function (_Piece) {
 				}
 			};
 
-			// king side castle
-			for (var player in _app.chess) {
-				if (_app.chess[player].side === this.side) {
-					var pathEmpty = true;
-					for (var piece in _app.chess[player].pieces) {
-						var blockingPiece = _app.chess[player].pieces[piece];
+			// King side castle
+			for (var player in _app.chess.players) {
+				var pathEmpty = true;
+				if (_app.chess.players[player].side !== this.side) {
+					for (var _pos in _app.chess.players[player].pieces.queen.availableMoves()) {
+						var match = _app.chess.players[player].pieces.queen.availableMoves()[_pos];
+						if (match[0] === this.position.x && (match[1] === 1 || match[1] === 2 || match[1] === 3)) {
+							return;
+						}
+					}
+				}
+				if (_app.chess.players[player].side === this.side) {
+					for (var piece in _app.chess.players[player].pieces) {
+						var blockingPiece = _app.chess.players[player].pieces[piece];
 						if (blockingPiece.position.x === this.position.x && (blockingPiece.position.y === 1 || blockingPiece.position.y === 2)) {
 							pathEmpty = false;
 						}
 					}
-					if (pathEmpty === true && _app.chess[player].pieces.rook1.step === 0 && this.step === 0) {
+					if (pathEmpty === true && _app.chess.players[player].pieces.rook1.step === 0 && this.step === 0) {
 						positions.push([this.position.x, 1, 'king-castle']);
+					}
+				}
+			}
+
+			// Queen side castle
+			for (var _player in _app.chess.players) {
+				var _pathEmpty = true;
+				if (_app.chess.players[_player].side === this.side) {
+					for (var _piece in _app.chess.players[_player].pieces) {
+						var _blockingPiece = _app.chess.players[_player].pieces[_piece];
+						if (_blockingPiece.position.x === this.position.x && (_blockingPiece.position.y === 4 || _blockingPiece.position.y === 5 || _blockingPiece.position.y === 6)) {
+							_pathEmpty = false;
+						}
+					}
+					if (_pathEmpty === true && _app.chess.players[_player].pieces.rook2.step === 0 && this.step === 0) {
+						positions.push([this.position.x, 5, 'queen-castle']);
 					}
 				}
 			}
@@ -855,11 +885,11 @@ var King = function (_Piece) {
 					this.step += 1;
 
 					// capture enemy piece in target Position
-					for (var player in _app.chess) {
-						if (_app.chess[player].side !== this.side) {
-							for (var piece in _app.chess[player].pieces) {
-								if (_app.chess[player].pieces[piece].position.x === pX && _app.chess[player].pieces[piece].position.y === pY) {
-									_app.chess[player].pieces[piece].position = { x: -1, y: -1 };
+					for (var player in _app.chess.players) {
+						if (_app.chess.players[player].side !== this.side) {
+							for (var piece in _app.chess.players[player].pieces) {
+								if (_app.chess.players[player].pieces[piece].position.x === pX && _app.chess.players[player].pieces[piece].position.y === pY) {
+									_app.chess.players[player].pieces[piece].position = { x: -1, y: -1 };
 								}
 							}
 						}
@@ -872,9 +902,17 @@ var King = function (_Piece) {
 			}
 			// King side castle, rook1 needs to move
 			if (castle === 'king-castle') {
-				for (var _player in _app.chess) {
-					if (_app.chess[_player].side === this.side) {
-						_app.chess[_player].pieces.rook1.toPosition(this.position.x, 2);
+				for (var _player2 in _app.chess.players) {
+					if (_app.chess.players[_player2].side === this.side) {
+						_app.chess.players[_player2].pieces.rook1.toPosition(this.position.x, 2);
+					}
+				}
+			}
+			// Queen side castle, rook2 needs to move
+			if (castle === 'queen-castle') {
+				for (var _player3 in _app.chess.players) {
+					if (_app.chess.players[_player3].side === this.side) {
+						_app.chess.players[_player3].pieces.rook2.toPosition(this.position.x, 4);
 					}
 				}
 			}
@@ -1139,9 +1177,9 @@ var Pawn = function (_Piece) {
 				positions.push([xDir(1), this.position.y - 1, false]);
 			}
 			// if a pawn besides has a true 'enPassant' property from the turn before, move diagonally
-			for (var player in _app.chess) {
-				for (var piece in _app.chess[player].pieces) {
-					var enemyPawn = _app.chess[player].pieces[piece];
+			for (var player in _app.chess.players) {
+				for (var piece in _app.chess.players[player].pieces) {
+					var enemyPawn = _app.chess.players[player].pieces[piece];
 					if (enemyPawn.enPassant === true && enemyPawn.enPassTurn === _app.chess.turn && enemyPawn.position.x === this.position.x) {
 						if (enemyPawn.position.y === this.position.y + 1) {
 							positions.push([xDir(1), this.position.y + 1, true]);
@@ -1170,11 +1208,11 @@ var Pawn = function (_Piece) {
 					this.step += 1;
 
 					// capture enemy piece in target Position
-					for (var player in _app.chess) {
-						if (_app.chess[player].side !== this.side) {
-							for (var piece in _app.chess[player].pieces) {
-								if (_app.chess[player].pieces[piece].position.x === pX && _app.chess[player].pieces[piece].position.y === pY) {
-									_app.chess[player].pieces[piece].position = { x: -1, y: -1 };
+					for (var player in _app.chess.players) {
+						if (_app.chess.players[player].side !== this.side) {
+							for (var piece in _app.chess.players[player].pieces) {
+								if (_app.chess.players[player].pieces[piece].position.x === pX && _app.chess.players[player].pieces[piece].position.y === pY) {
+									_app.chess.players[player].pieces[piece].position = { x: -1, y: -1 };
 								}
 							}
 						}
@@ -1188,11 +1226,11 @@ var Pawn = function (_Piece) {
 			setTimeout(function () {
 				// indicate this move makes it able to be captured by en passant the next turn
 				if (_this3.step === 1 && pX === 3 && _this3.side === 'white' || _this3.step === 1 && pX === 4 && _this3.side === 'black') {
-					for (var _player in _app.chess) {
-						if (_app.chess[_player].side !== _this3.side) {
-							for (var _piece in _app.chess[_player].pieces) {
-								if (_app.chess[_player].pieces[_piece].class === 'pawn') {
-									var enemyPawn = _app.chess[_player].pieces[_piece];
+					for (var _player in _app.chess.players) {
+						if (_app.chess.players[_player].side !== _this3.side) {
+							for (var _piece in _app.chess.players[_player].pieces) {
+								if (_app.chess.players[_player].pieces[_piece].class === 'pawn') {
+									var enemyPawn = _app.chess.players[_player].pieces[_piece];
 									if (enemyPawn.position.x === pX && (enemyPawn.position.y === pY + 1 || enemyPawn.position.y === pY - 1)) {
 										_this3.enPassant = true;
 										_this3.enPassTurn = _app.chess.turn;
@@ -1205,10 +1243,10 @@ var Pawn = function (_Piece) {
 			}, 1);
 			// This is for an offensive en passant move that captures an enemy pawn
 			if (enPassMove === true) {
-				for (var _player2 in _app.chess) {
-					if (_app.chess[_player2].side !== this.side) {
-						for (var _piece2 in _app.chess[_player2].pieces) {
-							var enemyPawn = _app.chess[_player2].pieces[_piece2];
+				for (var _player2 in _app.chess.players) {
+					if (_app.chess.players[_player2].side !== this.side) {
+						for (var _piece2 in _app.chess.players[_player2].pieces) {
+							var enemyPawn = _app.chess.players[_player2].pieces[_piece2];
 							if (enemyPawn.enPassant === true && enemyPawn.enPassTurn === _app.chess.turn && enemyPawn.position.y === pY && (enemyPawn.position.x === pX + 1 || enemyPawn.position.x === pX - 1)) {
 								enemyPawn.position = { x: -1, y: -1 };
 							}

@@ -3,20 +3,24 @@ import Player from './models/Player';
 class Chess {
 	constructor() {
 		this.turn = 0;
-		this.player1 = new Player('white'),
-		this.player2 = new Player('black')
+		this.players = {
+			player1: new Player('white'),
+			player2: new Player('black')
+		}
 	}
 
 	reset() {
 		this.turn = 0;
-		this.player1 = new Player('white'),
-		this.player2 = new Player('black')
+		this.players = {
+			player1: new Player('white'),
+			player2: new Player('black')
+		}
 	}
 	
 	switchTurn() {
 		this.turn += 1;
-		this.player1.isTurn = !this.player1.isTurn;
-		this.player2.isTurn = !this.player2.isTurn;
+		this.players.player1.isTurn = !this.players.player1.isTurn;
+		this.players.player2.isTurn = !this.players.player2.isTurn;
 	}
 };
 

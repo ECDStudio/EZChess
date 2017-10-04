@@ -14,9 +14,9 @@ chessboard.append(player1, player2);
 
 const indicateTurn = () => {
 	// indicate player of current turn
-	for (let player in chess) {
-		if (chess[player].isTurn === true) {
-			turnCounter.innerHTML = `Current Turn: ${chess[player].side}`;
+	for (let player in chess.players) {
+		if (chess.players[player].isTurn === true) {
+			turnCounter.innerHTML = `Current Turn: ${chess.players[player].side}`;
 		}
 	}
 };
@@ -44,9 +44,9 @@ const watchPiece = (piece) => {
 		target.addEventListener('click', () => {
 			piece._toPos(...position);
 			clearTargets();
-			for (let player in chess) {
-				for (let piece in chess[player].pieces) {
-					let allPieces = chess[player].pieces[piece];
+			for (let player in chess.players) {
+				for (let piece in chess.players[player].pieces) {
+					let allPieces = chess.players[player].pieces[piece];
 					allPieces._watchCapture();
 					setTimeout(function() {
 						allPieces._toPos(allPieces.position.x, allPieces,position.y);
@@ -59,10 +59,10 @@ const watchPiece = (piece) => {
 	}
 }
 
-for (let player in chess) {
-	for (let piece in chess[player].pieces) {
+for (let player in chess.players) {
+	for (let piece in chess.players[player].pieces) {
 		// bind the piece on the UI to the virtual object
-		const _pieceObj = chess[player].pieces[piece];
+		const _pieceObj = chess.players[player].pieces[piece];
 		let _pieceUI = document.createElement('li');
 
 		_pieceObj._toPos = (pX, pY, specialMove) => {
@@ -86,7 +86,7 @@ for (let player in chess) {
 			}
 		}
 
-		_pieceUI.classList.add('chess-piece', chess[player].side, _pieceObj.class);
+		_pieceUI.classList.add('chess-piece', chess.players[player].side, _pieceObj.class);
 		if (player === 'player1') {
 			player1.append(_pieceUI);
 		} else {
@@ -94,7 +94,7 @@ for (let player in chess) {
 		}
 		_pieceUI.addEventListener('click', () => {
 			// select a piece and move if it's its player's turn
-			if (chess[player].isTurn === true) {
+			if (chess.players[player].isTurn === true) {
 				watchPiece(_pieceObj);
 			}
 		})
