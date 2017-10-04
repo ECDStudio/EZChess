@@ -833,10 +833,32 @@ var King = function (_Piece) {
 				}
 			};
 
+			var checkpath = function checkpath() {
+				for (var player in _app.chess.players) {
+					if (_app.chess.players[player].side !== _this2.side) {
+						var targets = [];
+						for (var piece in _app.chess.players[player].pieces) {
+							if (piece !== 'king') {
+								targets.push(_app.chess.players[player].pieces[piece].availableMoves());
+							}
+						}
+						return targets;
+					}
+				}
+			};
+
 			// King side castle
 			for (var player in _app.chess.players) {
-				var pathEmpty = true;
 				if (_app.chess.players[player].side === this.side) {
+					var pathEmpty = true;
+					for (var _pos in checkpath()) {
+						if (checkpath()[_pos].length !== 0) {
+							if (checkpath()[_pos][0] === this.position.x && (checkpath()[_pos][1] === 1 || checkpath()[_pos][1] === 2 || checkpath()[_pos][1] === 3)) {
+								console.log('123');
+								pathEmpty = false;;
+							}
+						}
+					}
 					for (var piece in _app.chess.players[player].pieces) {
 						var blockingPiece = _app.chess.players[player].pieces[piece];
 						if (blockingPiece.position.x === this.position.x && (blockingPiece.position.y === 1 || blockingPiece.position.y === 2)) {
@@ -851,8 +873,8 @@ var King = function (_Piece) {
 
 			// Queen side castle
 			for (var _player in _app.chess.players) {
-				var _pathEmpty = true;
 				if (_app.chess.players[_player].side === this.side) {
+					var _pathEmpty = true;
 					for (var _piece in _app.chess.players[_player].pieces) {
 						var _blockingPiece = _app.chess.players[_player].pieces[_piece];
 						if (_blockingPiece.position.x === this.position.x && (_blockingPiece.position.y === 4 || _blockingPiece.position.y === 5 || _blockingPiece.position.y === 6)) {

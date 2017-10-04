@@ -38,10 +38,33 @@ export default class King extends Piece {
 			}
 		};
 		
+		const checkpath = () => {
+			for (let player in chess.players) {
+				if (chess.players[player].side !== this.side) {
+					let targets = [];
+					for (let piece in chess.players[player].pieces) {
+						if (piece !== 'king') {
+							targets.push(chess.players[player].pieces[piece].availableMoves());
+						}
+					}
+					return targets;
+				}
+			}
+		}
+		
 		// King side castle
 		for (let player in chess.players) {
-			let pathEmpty = true;
 			if (chess.players[player].side === this.side) {
+				let pathEmpty = true;
+				for (let pos in checkpath()) {
+					if (checkpath()[pos].length !== 0) {
+						if (checkpath()[pos][0] === this.position.x &&
+							(checkpath()[pos][1] === 1 || checkpath()[pos][1] === 2 || checkpath()[pos][1] === 3)) {
+							console.log('123')
+							pathEmpty = false;;
+						}
+					}
+				}
 				for (let piece in chess.players[player].pieces) {
 					let blockingPiece = chess.players[player].pieces[piece];
 					if (blockingPiece.position.x === this.position.x &&
@@ -57,8 +80,8 @@ export default class King extends Piece {
 		
 		// Queen side castle
 		for (let player in chess.players) {
-			let pathEmpty = true;
 			if (chess.players[player].side === this.side) {
+				let pathEmpty = true;
 				for (let piece in chess.players[player].pieces) {
 					let blockingPiece = chess.players[player].pieces[piece];
 					if (blockingPiece.position.x === this.position.x &&
