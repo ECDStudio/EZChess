@@ -46,7 +46,11 @@ const watchPiece = (piece) => {
 			clearTargets();
 			for (let player in chess) {
 				for (let piece in chess[player].pieces) {
-					chess[player].pieces[piece]._watchCapture();
+					let allPieces = chess[player].pieces[piece];
+					allPieces._watchCapture();
+					setTimeout(function() {
+						allPieces._toPos(allPieces.position.x, allPieces,position.y);
+					}, 500)
 				}
 			}
 			chess.switchTurn();
@@ -61,8 +65,8 @@ for (let player in chess) {
 		const _pieceObj = chess[player].pieces[piece];
 		let _pieceUI = document.createElement('li');
 
-		_pieceObj._toPos = (pX, pY, enPassMove) => {
-			_pieceObj.toPosition(pX, pY, enPassMove);
+		_pieceObj._toPos = (pX, pY, specialMove) => {
+			_pieceObj.toPosition(pX, pY, specialMove);
 			_pieceUI.style.zIndex = '20';
 			_pieceUI.style.left = `${_pieceObj.position.x * 12.5}%`;
 			_pieceUI.style.bottom = `${_pieceObj.position.y * 12.5}%`;

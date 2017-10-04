@@ -666,8 +666,16 @@ var watchPiece = function watchPiece(piece) {
 			piece._toPos.apply(piece, _toConsumableArray(position));
 			clearTargets();
 			for (var player in _app.chess) {
+				var _loop3 = function _loop3(_piece) {
+					var allPieces = _app.chess[player].pieces[_piece];
+					allPieces._watchCapture();
+					setTimeout(function () {
+						allPieces._toPos(allPieces.position.x, allPieces, position.y);
+					}, 500);
+				};
+
 				for (var _piece in _app.chess[player].pieces) {
-					_app.chess[player].pieces[_piece]._watchCapture();
+					_loop3(_piece);
 				}
 			}
 			_app.chess.switchTurn();
@@ -701,14 +709,14 @@ var watchPiece = function watchPiece(piece) {
 	}
 };
 
-var _loop3 = function _loop3(player) {
-	var _loop4 = function _loop4(piece) {
+var _loop4 = function _loop4(player) {
+	var _loop5 = function _loop5(piece) {
 		// bind the piece on the UI to the virtual object
 		var _pieceObj = _app.chess[player].pieces[piece];
 		var _pieceUI = document.createElement('li');
 
-		_pieceObj._toPos = function (pX, pY, enPassMove) {
-			_pieceObj.toPosition(pX, pY, enPassMove);
+		_pieceObj._toPos = function (pX, pY, specialMove) {
+			_pieceObj.toPosition(pX, pY, specialMove);
 			_pieceUI.style.zIndex = '20';
 			_pieceUI.style.left = _pieceObj.position.x * 12.5 + '%';
 			_pieceUI.style.bottom = _pieceObj.position.y * 12.5 + '%';
@@ -742,12 +750,12 @@ var _loop3 = function _loop3(player) {
 	};
 
 	for (var piece in _app.chess[player].pieces) {
-		_loop4(piece);
+		_loop5(piece);
 	}
 };
 
 for (var player in _app.chess) {
-	_loop3(player);
+	_loop4(player);
 }
 
 /***/ }),
@@ -766,6 +774,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _Piece2 = __webpack_require__(0);
 
 var _Piece3 = _interopRequireDefault(_Piece2);
+
+var _app = __webpack_require__(1);
 
 var _checkPosition = __webpack_require__(2);
 
@@ -817,7 +827,58 @@ var King = function (_Piece) {
 				}
 			};
 
+			// king side castle
+			for (var player in _app.chess) {
+				if (_app.chess[player].side === this.side) {
+					var pathEmpty = true;
+					for (var piece in _app.chess[player].pieces) {
+						var blockingPiece = _app.chess[player].pieces[piece];
+						if (blockingPiece.position.x === this.position.x && (blockingPiece.position.y === 1 || blockingPiece.position.y === 2)) {
+							pathEmpty = false;
+						}
+					}
+					if (pathEmpty === true && _app.chess[player].pieces.rook1.step === 0 && this.step === 0) {
+						positions.push([this.position.x, 1, 'king-castle']);
+					}
+				}
+			}
+
 			return positions;
+		}
+	}, {
+		key: 'toPosition',
+		value: function toPosition(pX, pY, castle) {
+			if (typeof pX === 'number' && typeof pY === 'number') {
+				if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
+					this.position.x = pX;
+					this.position.y = pY;
+					this.step += 1;
+
+					// capture enemy piece in target Position
+					for (var player in _app.chess) {
+						if (_app.chess[player].side !== this.side) {
+							for (var piece in _app.chess[player].pieces) {
+								if (_app.chess[player].pieces[piece].position.x === pX && _app.chess[player].pieces[piece].position.y === pY) {
+									_app.chess[player].pieces[piece].position = { x: -1, y: -1 };
+								}
+							}
+						}
+					}
+				} else if (pX === -1 && pY === -1) {
+					// [-1, -1] position is being captured
+					this.position.x = pX;
+					this.position.y = pY;
+				}
+			}
+			// King side castle, rook1 needs to move
+			if (castle === 'king-castle') {
+				for (var _player in _app.chess) {
+					if (_app.chess[_player].side === this.side) {
+						_app.chess[_player].pieces.rook1.toPosition(this.position.x, 2);
+					}
+				}
+			}
+			return [this.position.x, this.position.y];
 		}
 	}]);
 
