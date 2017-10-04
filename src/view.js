@@ -22,7 +22,7 @@ const indicateTurn = () => {
 };
 indicateTurn();
 
-const watchPiece = (obj) => {
+const watchPiece = (piece) => {
 	// first clear all targets if there is any
 	const clearTargets = () => {
 		for (let i of document.getElementsByClassName('target-position')) {
@@ -34,7 +34,7 @@ const watchPiece = (obj) => {
 	}
 	clearTargets();
 	// create positions for a piece to move to on the UI
-	for (let position of obj.availableMoves()) {
+	for (let position of piece.availableMoves()) {
 		let target = document.createElement('a');
 
 		chessboard.append(target);
@@ -42,7 +42,7 @@ const watchPiece = (obj) => {
 		target.style.left = `${position[0] * 12.5}%`;
 		target.style.bottom = `${position[1] * 12.5}%`;
 		target.addEventListener('click', () => {
-			obj._toPos(...position);
+			piece._toPos(...position);
 			clearTargets();
 			for (let player in chess) {
 				for (let piece in chess[player].pieces) {
@@ -57,7 +57,7 @@ const watchPiece = (obj) => {
 
 for (let player in chess) {
 	for (let piece in chess[player].pieces) {
-		// bind the piece on the UI to the vitual object
+		// bind the piece on the UI to the virtual object
 		const _pieceObj = chess[player].pieces[piece];
 		let _pieceUI = document.createElement('li');
 

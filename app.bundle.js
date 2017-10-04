@@ -617,7 +617,7 @@ var indicateTurn = function indicateTurn() {
 };
 indicateTurn();
 
-var watchPiece = function watchPiece(obj) {
+var watchPiece = function watchPiece(piece) {
 	// first clear all targets if there is any
 	var clearTargets = function clearTargets() {
 		var _loop = function _loop(i) {
@@ -663,11 +663,11 @@ var watchPiece = function watchPiece(obj) {
 		target.style.left = position[0] * 12.5 + '%';
 		target.style.bottom = position[1] * 12.5 + '%';
 		target.addEventListener('click', function () {
-			obj._toPos.apply(obj, _toConsumableArray(position));
+			piece._toPos.apply(piece, _toConsumableArray(position));
 			clearTargets();
 			for (var player in _app.chess) {
-				for (var piece in _app.chess[player].pieces) {
-					_app.chess[player].pieces[piece]._watchCapture();
+				for (var _piece in _app.chess[player].pieces) {
+					_app.chess[player].pieces[_piece]._watchCapture();
 				}
 			}
 			_app.chess.switchTurn();
@@ -680,7 +680,7 @@ var watchPiece = function watchPiece(obj) {
 	var _iteratorError2 = undefined;
 
 	try {
-		for (var _iterator2 = obj.availableMoves()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+		for (var _iterator2 = piece.availableMoves()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 			var position = _step2.value;
 
 			_loop2(position);
@@ -703,7 +703,7 @@ var watchPiece = function watchPiece(obj) {
 
 var _loop3 = function _loop3(player) {
 	var _loop4 = function _loop4(piece) {
-		// bind the piece on the UI to the vitual object
+		// bind the piece on the UI to the virtual object
 		var _pieceObj = _app.chess[player].pieces[piece];
 		var _pieceUI = document.createElement('li');
 
