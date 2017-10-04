@@ -7,6 +7,7 @@ export default class Pawn extends Piece {
 		super(side, pX, pY);
 		this.class = 'pawn';
 		this.enPassant = false;
+		this.enPassTurn = 0;
 	}
 
 	// returns an array of available positions to move to,
@@ -45,6 +46,7 @@ export default class Pawn extends Piece {
 		for (let player in chess) {
 			for (let piece in chess[player].pieces) {
 				if (chess[player].pieces[piece].enPassant === true &&
+					chess[player].pieces[piece].enPassTurn === chess.turn &&
 					chess[player].pieces[piece].position.x === this.position.x) {
 					if (chess[player].pieces[piece].position.y === this.position.y + 1) {
 						positions.push([xDir(1), this.position.y + 1, true]);
@@ -60,7 +62,7 @@ export default class Pawn extends Piece {
 	}
 
 	// 3rd boolean argument indicates if this is an en passant move
-	toPosition(pX, pY, enPass) {
+	toPosition(pX, pY, enPassMove) {
 		if (typeof pX === 'number' && typeof pY === 'number') {
 			if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
 				this.position.x = pX;
@@ -86,8 +88,8 @@ export default class Pawn extends Piece {
 		}
 		setTimeout(() => {
 			// indicate being able to be enPassant-ed if conditions are met
-			if (this.step === 1 && pX > 2 && this.side === 'white' ||
-				this.step === 1 && pX < 5 && this.side === 'black') {
+			if (this.step === 1 && pX === 3 && this.side === 'white' ||
+				this.step === 1 && pX === 4 && this.side === 'black') {
 				for (let player in chess) {
 					if (chess[player].side !== this.side) {
 						for (let piece in chess[player].pieces) {
@@ -96,6 +98,7 @@ export default class Pawn extends Piece {
 									(chess[player].pieces[piece].position.y === pY + 1 ||
 									 chess[player].pieces[piece].position.y === pY - 1)) {
 									this.enPassant = true;
+									this.enPassTurn = chess.turn;
 								}
 							}
 						}
@@ -104,12 +107,13 @@ export default class Pawn extends Piece {
 			}
 		}, 1)
 		// enPassant in action
-		if (enPass === true) {
+		if (enPassMove === true) {
 			for (let player in chess) {
 				if (chess[player].side !== this.side) {
 					for (let piece in chess[player].pieces) {
 						if (chess[player].pieces[piece].class === 'pawn') {
 							if (chess[player].pieces[piece].enPassant === true &&
+								chess[player].pieces[piece].enPassTurn === chess.turn &&
 								chess[player].pieces[piece].position.y === pY &&
 								(chess[player].pieces[piece].position.x === pX + 1 ||
 								 chess[player].pieces[piece].position.x === pX - 1)) {
@@ -120,10 +124,6 @@ export default class Pawn extends Piece {
 				}
 			}
 		}
-		//
-		// TO DO: Clear enPassant move availability if not done in the immediate turn
-		//
-		
 		return [this.position.x, this.position.y];
 	}
 }

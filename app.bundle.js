@@ -152,17 +152,20 @@ var Chess = function () {
 	function Chess() {
 		_classCallCheck(this, Chess);
 
+		this.turn = 0;
 		this.player1 = new _Player2.default('white'), this.player2 = new _Player2.default('black');
 	}
 
 	_createClass(Chess, [{
 		key: 'reset',
 		value: function reset() {
+			this.turn = 0;
 			this.player1 = new _Player2.default('white'), this.player2 = new _Player2.default('black');
 		}
 	}, {
 		key: 'switchTurn',
 		value: function switchTurn() {
+			this.turn += 1;
 			this.player1.isTurn = !this.player1.isTurn;
 			this.player2.isTurn = !this.player2.isTurn;
 		}
@@ -175,7 +178,7 @@ var Chess = function () {
 
 var chess = exports.chess = new Chess();
 
-window.chess = chess;
+// window.chess = chess;
 __webpack_require__(7);
 
 /***/ }),
@@ -704,8 +707,8 @@ var _loop3 = function _loop3(player) {
 		var _pieceObj = _app.chess[player].pieces[piece];
 		var _pieceUI = document.createElement('li');
 
-		_pieceObj._toPos = function (pX, pY, enPass) {
-			_pieceObj.toPosition(pX, pY, enPass);
+		_pieceObj._toPos = function (pX, pY, enPassMove) {
+			_pieceObj.toPosition(pX, pY, enPassMove);
 			_pieceUI.style.zIndex = '20';
 			_pieceUI.style.left = _pieceObj.position.x * 12.5 + '%';
 			_pieceUI.style.bottom = _pieceObj.position.y * 12.5 + '%';
@@ -894,6 +897,7 @@ var Pawn = function (_Piece) {
 
 		_this.class = 'pawn';
 		_this.enPassant = false;
+		_this.enPassTurn = 0;
 		return _this;
 	}
 
@@ -938,7 +942,7 @@ var Pawn = function (_Piece) {
 			// if a pawn besides has a true 'enPassant' property, move diagonally
 			for (var player in _app.chess) {
 				for (var piece in _app.chess[player].pieces) {
-					if (_app.chess[player].pieces[piece].enPassant === true && _app.chess[player].pieces[piece].position.x === this.position.x) {
+					if (_app.chess[player].pieces[piece].enPassant === true && _app.chess[player].pieces[piece].enPassTurn === _app.chess.turn && _app.chess[player].pieces[piece].position.x === this.position.x) {
 						if (_app.chess[player].pieces[piece].position.y === this.position.y + 1) {
 							positions.push([xDir(1), this.position.y + 1, true]);
 						}
@@ -956,7 +960,7 @@ var Pawn = function (_Piece) {
 
 	}, {
 		key: 'toPosition',
-		value: function toPosition(pX, pY, enPass) {
+		value: function toPosition(pX, pY, enPassMove) {
 			var _this3 = this;
 
 			if (typeof pX === 'number' && typeof pY === 'number') {
@@ -983,13 +987,14 @@ var Pawn = function (_Piece) {
 			}
 			setTimeout(function () {
 				// indicate being able to be enPassant-ed if conditions are met
-				if (_this3.step === 1 && pX > 2 && _this3.side === 'white' || _this3.step === 1 && pX < 5 && _this3.side === 'black') {
+				if (_this3.step === 1 && pX === 3 && _this3.side === 'white' || _this3.step === 1 && pX === 4 && _this3.side === 'black') {
 					for (var _player in _app.chess) {
 						if (_app.chess[_player].side !== _this3.side) {
 							for (var _piece in _app.chess[_player].pieces) {
 								if (_app.chess[_player].pieces[_piece].class === 'pawn') {
 									if (_app.chess[_player].pieces[_piece].position.x === pX && (_app.chess[_player].pieces[_piece].position.y === pY + 1 || _app.chess[_player].pieces[_piece].position.y === pY - 1)) {
 										_this3.enPassant = true;
+										_this3.enPassTurn = _app.chess.turn;
 									}
 								}
 							}
@@ -998,12 +1003,12 @@ var Pawn = function (_Piece) {
 				}
 			}, 1);
 			// enPassant in action
-			if (enPass === true) {
+			if (enPassMove === true) {
 				for (var _player2 in _app.chess) {
 					if (_app.chess[_player2].side !== this.side) {
 						for (var _piece2 in _app.chess[_player2].pieces) {
 							if (_app.chess[_player2].pieces[_piece2].class === 'pawn') {
-								if (_app.chess[_player2].pieces[_piece2].enPassant === true && _app.chess[_player2].pieces[_piece2].position.y === pY && (_app.chess[_player2].pieces[_piece2].position.x === pX + 1 || _app.chess[_player2].pieces[_piece2].position.x === pX - 1)) {
+								if (_app.chess[_player2].pieces[_piece2].enPassant === true && _app.chess[_player2].pieces[_piece2].enPassTurn === _app.chess.turn && _app.chess[_player2].pieces[_piece2].position.y === pY && (_app.chess[_player2].pieces[_piece2].position.x === pX + 1 || _app.chess[_player2].pieces[_piece2].position.x === pX - 1)) {
 									_app.chess[_player2].pieces[_piece2].position = { x: -1, y: -1 };
 								}
 							}
@@ -1011,10 +1016,6 @@ var Pawn = function (_Piece) {
 					}
 				}
 			}
-			//
-			// TO DO: Clear enPassant move availability if not done in the immediate turn
-			//
-
 			return [this.position.x, this.position.y];
 		}
 	}]);
