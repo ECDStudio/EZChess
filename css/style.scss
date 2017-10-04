@@ -1,15 +1,22 @@
 @mixin transition($name, $time, $curve) {
-    -webkit-transition: $name $time $curve;
-    -moz-transition: $name $time $curve;
-    -o-transition: $name $time $curve;
-    -ms-transition: $name $time $curve;
-    transition: $name $time $curve;
+	-webkit-transition: $name $time $curve;
+	-moz-transition: $name $time $curve;
+	-o-transition: $name $time $curve;
+	-ms-transition: $name $time $curve;
+	transition: $name $time $curve;
+}
+
+@mixin rotate($degree) {
+	-ms-transform: rotate(#{$degree}deg);
+	-moz-transform: rotate(#{$degree}deg);
+	-webkit-transform: rotate(#{$degree}deg);
+	transform: rotate(#{$degree}deg);
 }
 
 @mixin border-box {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 *{
@@ -56,6 +63,7 @@ body {
 	padding: 50% 0;
 	overflow: hidden;
 	@include border-box;
+	@include rotate(-90);
 	
 	ul {
 		display:inline;
@@ -74,8 +82,7 @@ body {
 			
 			
 			&.white {
-				-webkit-transform: rotate(90deg);
-				transform: rotate(90deg);
+				@include rotate(90);
 				
 				&.king {
 					background-image: url('img/pieces/kingW.png');
@@ -97,8 +104,7 @@ body {
 				}
 			}
 			&.black {
-				-webkit-transform: rotate(-90deg);
-				transform: rotate(-90deg);
+				@include rotate(-90);
 				
 				&.king {
 					background-image: url('img/pieces/kingB.png');
