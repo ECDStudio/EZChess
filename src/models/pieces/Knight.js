@@ -7,7 +7,7 @@ export default class Knight extends Piece {
 		this.class = 'knight';
 	}
 
-	// returns an array of available positions to move to,
+	// Returns an array of available positions to move to,
 	// including possible captures;
 	// empty if there is none
 	availableMoves() {
@@ -24,10 +24,10 @@ export default class Knight extends Piece {
 		]
 
 		for (let i = 0; i < targets.length; i += 1) {
-			// first loop makes sure target position's in bound (0 - 7)
+			// First loop makes sure target position's in bound (0 - 7)
 			if (targets[i][0] >= 0 && targets[i][0] < 8 &&
 				targets[i][1] >= 0 && targets[i][1] < 8) {
-				// second loop makes sure no friendly piece in target position
+				// Second loop makes sure no friendly piece in target position
 				if (checkPosition(targets[i][0], targets[i][1], this.side) !== 'friendly') {
 					positions.push([targets[i][0], targets[i][1]]);
 				}

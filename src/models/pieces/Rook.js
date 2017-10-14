@@ -7,7 +7,7 @@ export default class Rook extends Piece {
 		this.class = 'rook';
 	}
 
-	// returns an array of available positions to move to,
+	// Returns an array of available positions to move to,
 	// including possible captures;
 	// empty if there is none
 	availableMoves() {
@@ -26,7 +26,7 @@ export default class Rook extends Piece {
 			yUp = true,
 			yDown = true;
 
-		// loop through all possible positions in 4 directions;
+		// Loop through all possible positions in 4 directions;
 		// stops AT position with a friendly piece,
 		// or AFTER position with an enenmy piece(capture);
 		// the for loop makes sure the position is in bound of the chessboard(1-8),

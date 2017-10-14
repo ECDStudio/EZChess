@@ -7,11 +7,11 @@ export default class Queen extends Piece {
 		this.class = 'queen';
 	}
 
-	// returns an array of available positions to move to,
+	// Returns an array of available positions to move to,
 	// including possible captures;
 	// empty if there is none
 	availableMoves() {
-		// call checkPosition() to determine if there is a friendly or enemy piece at that position
+		// Call checkPosition() to determine if there is a friendly or enemy piece at that position
 		const checkX = (target) => {
 			return checkPosition(target, this.position.y, this.side);
 		},
@@ -32,7 +32,7 @@ export default class Queen extends Piece {
 			leftUp = true,
 			leftDown = true;
 
-		// loop through all possible positions in vertical and horizontal directions;
+		// Loop through all possible positions in vertical and horizontal directions;
 		// stops AT position with a friendly piece,
 		// or AFTER position with an enenmy piece(capture);
 		// the for loop makes sure the position is in bound of the chessboard(1-8),
@@ -77,7 +77,7 @@ export default class Queen extends Piece {
 				}
 			}
 		}
-		// loop through all possible positions in diagonal directions;
+		// Loop through all possible positions in diagonal directions;
 		for (let i = this.position.x + 1; i < 8; i += 1) {
 			let yTarget = this.position.y + i - this.position.x;
 			if (rightUp === true && yTarget >= 0 && yTarget < 8) {

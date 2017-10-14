@@ -10,23 +10,23 @@ export default class Pawn extends Piece {
 		this.enPassTurn = 0;
 	}
 
-	// returns an array of available positions to move to,
+	// Returns an array of available positions to move to,
 	// including possible captures;
 	// empty if there is none
 	availableMoves() {
-		// call checkPosition() to determine if there is a friendly or enemy piece at that position
+		// Call checkPosition() to determine if there is a friendly or enemy piece at that position
 		const check = (x, y) => {
 			return checkPosition(x, y, this.side);
 		};
 
-		// dynamic x direction
+		// Dynamic x direction
 		const xDir = (x) => {
 			return this.side === 'white' ? this.position.x + x : this.position.x - x;
 		}
 
 		let positions = [];
 		
-		// first step can take 2 steps, otherwise 1
+		// First step can take 2 steps, otherwise 1
 		if (this.step === 0) {
 			if (check(xDir(2), this.position.y) !== 'friendly' &&
 				check(xDir(2), this.position.y) !== 'enemy') {
@@ -37,23 +37,23 @@ export default class Pawn extends Piece {
 			check(xDir(1), this.position.y) !== 'enemy') {
 			positions.push([xDir(1), this.position.y, false]);
 		}
-		// capture diagonally
+		// Capture diagonally
 		if (check(xDir(1), this.position.y + 1) === 'enemy') {
 			positions.push([xDir(1), this.position.y + 1, false]);
 		}
 		if (check(xDir(1), this.position.y - 1) === 'enemy') {
 			positions.push([xDir(1), this.position.y - 1, false]);
 		}
-		// if a pawn besides has a true 'enPassant' property from the turn before, move diagonally
+		// If a pawn besides has a true 'enPassant' property from the turn before, move diagonally
 		for (let player in chess.players) {
-			for (let piece in chess.players[player].pieces) {
-				let enemyPawn = chess.players[player].pieces[piece];
-				if (enemyPawn.enPassant === true && enemyPawn.enPassTurn === chess.turn &&
-					enemyPawn.position.x === this.position.x) {
-					if (enemyPawn.position.y === this.position.y + 1) {
+			for (let p in chess.players[player].pieces) {
+				const piece = chess.players[player].pieces[p];
+				if (piece.enPassant === true && piece.enPassTurn === chess.turn &&
+					piece.position.x === this.position.x) {
+					if (piece.position.y === this.position.y + 1) {
 						positions.push([xDir(1), this.position.y + 1, true]);
 					}
-					if (enemyPawn.position.y === this.position.y - 1) {
+					if (piece.position.y === this.position.y - 1) {
 						positions.push([xDir(1), this.position.y - 1, true]);
 					}
 				}
@@ -71,13 +71,14 @@ export default class Pawn extends Piece {
 				this.position.y = pY;
 				this.step += 1;
 				
-				// capture enemy piece in target Position
+				// Capture enemy piece in target Position
 				for (let player in chess.players) {
 					if (chess.players[player].side !== this.side) {
-						for (let piece in chess.players[player].pieces) {
-							if (chess.players[player].pieces[piece].position.x === pX &&
-								chess.players[player].pieces[piece].position.y === pY) {
-								chess.players[player].pieces[piece].position = {x: -1, y: -1};
+						for (let p in chess.players[player].pieces) {
+							const piece = chess.players[player].pieces[p];
+							if (piece.position.x === pX && piece.position.y === pY) {
+								piece.position.x = -1;
+								piece.position.y = -1;
 							}
 						}
 					}
@@ -89,16 +90,16 @@ export default class Pawn extends Piece {
 			}
 		}
 		setTimeout(() => {
-			// indicate this move makes it able to be captured by en passant the next turn
+			// Indicate this move makes it able to be captured by en passant the next turn
 			if (this.step === 1 && pX === 3 && this.side === 'white' ||
 				this.step === 1 && pX === 4 && this.side === 'black') {
 				for (let player in chess.players) {
 					if (chess.players[player].side !== this.side) {
-						for (let piece in chess.players[player].pieces) {
-							if (chess.players[player].pieces[piece].class === 'pawn') {
-								let enemyPawn = chess.players[player].pieces[piece];
-								if (enemyPawn.position.x === pX &&
-									(enemyPawn.position.y === pY + 1 || enemyPawn.position.y === pY - 1)) {
+						for (let p in chess.players[player].pieces) {
+							const piece = chess.players[player].pieces[p];
+							if (piece.class === 'pawn') {
+								if (piece.position.x === pX &&
+									(piece.position.y === pY + 1 || piece.position.y === pY - 1)) {
 									this.enPassant = true;
 									this.enPassTurn = chess.turn;
 								}
@@ -112,12 +113,13 @@ export default class Pawn extends Piece {
 		if (enPassMove === true) {
 			for (let player in chess.players) {
 				if (chess.players[player].side !== this.side) {
-					for (let piece in chess.players[player].pieces) {
-						let enemyPawn = chess.players[player].pieces[piece];
-						if (enemyPawn.enPassant === true && enemyPawn.enPassTurn === chess.turn &&
-							enemyPawn.position.y === pY &&
-							(enemyPawn.position.x === pX + 1 || enemyPawn.position.x === pX - 1)) {
-							enemyPawn.position = { x: -1, y: -1 };
+					for (let p in chess.players[player].pieces) {
+						const piece = chess.players[player].pieces[p];
+						if (piece.enPassant === true && piece.enPassTurn === chess.turn &&
+							piece.position.y === pY &&
+							(piece.position.x === pX + 1 || piece.position.x === pX - 1)) {
+							piece.position.x = -1;
+							piece.position.y = -1;
 						}
 					}
 				}

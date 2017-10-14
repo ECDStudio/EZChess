@@ -8,22 +8,23 @@ export default class King extends Piece {
 		this.class = 'king';
 	}
 
-	// returns an array of available positions to move to,
+	// Returns an array of available positions to move to,
 	// including possible captures;
 	// empty if there is none
 	availableMoves() {
-		// call checkPosition() to determine if there is a friendly or enemy piece at that position
+		// Call checkPosition() to determine if there is a friendly or enemy piece at that position
 		const check = (x, y) => {
 			return checkPosition(x, y, this.side);
 		},
 		safeCheck = () => {
-			// make sure won't end up in check
+			// Make sure won't end up in check
 			for (let player in chess.players) {
 				if (chess.players[player].side !== this.side) {
 					let targets = [];
-					for (let piece in chess.players[player].pieces) {
-						if (piece === 'king') {
-							let kingPos = chess.players[player].pieces[piece].position;
+					for (let p in chess.players[player].pieces) {
+						const piece = chess.players[player].pieces[p];
+						if (p === 'king') {
+							let kingPos = piece.position;
 							targets.push([kingPos.x + 1, kingPos.y]);
 							targets.push([kingPos.x - 1, kingPos.y]);
 							targets.push([kingPos.x + 1, kingPos.y + 1]);
@@ -32,8 +33,8 @@ export default class King extends Piece {
 							targets.push([kingPos.x - 1, kingPos.y - 1]);
 							targets.push([kingPos.x, kingPos.y + 1]);
 							targets.push([kingPos.x, kingPos.y - 1]);
-						} else if (chess.players[player].pieces[piece].class === 'pawn') {
-							const pawnPos = chess.players[player].pieces[piece].position;
+						} else if (piece.class === 'pawn') {
+							const pawnPos = piece.position;
 							if (chess.players[player].side === 'white') {
 								targets.push([pawnPos.x + 1, pawnPos.y + 1]);
 								targets.push([pawnPos.x + 1, pawnPos.y - 1]);
@@ -48,7 +49,7 @@ export default class King extends Piece {
 							const currenty = this.position.y;
 							this.position.x = -1;
 							this.position.y = -1;
-							const pieceMoves = chess.players[player].pieces[piece].availableMoves();
+							const pieceMoves = piece.availableMoves();
 							if (pieceMoves.length !== 0) {
 								for (let move of pieceMoves) {
 									targets.push(move);
@@ -105,10 +106,10 @@ export default class King extends Piece {
 						pathEmpty = false;
 					}
 				}
-				for (let piece in chess.players[player].pieces) {
-					let blockingPiece = chess.players[player].pieces[piece];
-					if (blockingPiece.position.x === this.position.x &&
-						(blockingPiece.position.y === 1 || blockingPiece.position.y === 2)) {
+				for (let p in chess.players[player].pieces) {
+					const piece = chess.players[player].pieces[p];
+					if (piece.position.x === this.position.x &&
+						(piece.position.y === 1 || piece.position.y === 2)) {
 						pathEmpty = false;
 					}
 				}
@@ -128,12 +129,10 @@ export default class King extends Piece {
 						pathEmpty = false;
 					}
 				}
-				for (let piece in chess.players[player].pieces) {
-					let blockingPiece = chess.players[player].pieces[piece];
-					if (blockingPiece.position.x === this.position.x &&
-						(blockingPiece.position.y === 4 ||
-						blockingPiece.position.y === 5 ||
-						blockingPiece.position.y === 6)) {
+				for (let p in chess.players[player].pieces) {
+					const piece = chess.players[player].pieces[p];
+					if (piece.position.x === this.position.x &&
+						(piece.position.y === 4 || piece.position.y === 5 || piece.position.y === 6)) {
 						pathEmpty = false;
 					}
 				}
@@ -153,13 +152,13 @@ export default class King extends Piece {
 				this.position.y = pY;
 				this.step += 1;
 				
-				// capture enemy piece in target Position
+				// Capture enemy piece in target Position
 				for (let player in chess.players) {
 					if (chess.players[player].side !== this.side) {
-						for (let piece in chess.players[player].pieces) {
-							if (chess.players[player].pieces[piece].position.x === pX &&
-								chess.players[player].pieces[piece].position.y === pY) {
-								chess.players[player].pieces[piece].position = {x: -1, y: -1};
+						for (let p in chess.players[player].pieces) {
+							const piece = chess.players[player].pieces[p];
+							if (piece.position.x === pX && piece.position.y === pY) {
+								piece.position = {x: -1, y: -1};
 							}
 						}
 					}
