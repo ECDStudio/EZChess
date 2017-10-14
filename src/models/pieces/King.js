@@ -45,7 +45,23 @@ export default class King extends Piece {
 					let targets = [];
 					for (let piece in chess.players[player].pieces) {
 						if (piece !== 'king') {
-							targets.push(chess.players[player].pieces[piece].availableMoves());
+							const pieceMoves = chess.players[player].pieces[piece].availableMoves();
+							if (pieceMoves.length !== 0) {
+								for (let move of pieceMoves) {
+									targets.push(move);
+								}
+							}
+						}
+						if (piece === 'king') {
+							let kingPos = chess.players[player].pieces[piece].position;
+							targets.push([kingPos.x + 1, kingPos.y]);
+							targets.push([kingPos.x - 1, kingPos.y]);
+							targets.push([kingPos.x + 1, kingPos.y + 1]);
+							targets.push([kingPos.x + 1, kingPos.y - 1]);
+							targets.push([kingPos.x - 1, kingPos.y + 1]);
+							targets.push([kingPos.x - 1, kingPos.y - 1]);
+							targets.push([kingPos.x, kingPos.y + 1]);
+							targets.push([kingPos.x, kingPos.y - 1]);
 						}
 					}
 					return targets;
@@ -58,11 +74,11 @@ export default class King extends Piece {
 			if (chess.players[player].side === this.side) {
 				let pathEmpty = true;
 				for (let pos in checkpath()) {
-					if (checkpath()[pos].length !== 0) {
-						if (checkpath()[pos][0] === this.position.x &&
-							(checkpath()[pos][1] === 1 || checkpath()[pos][1] === 2 || checkpath()[pos][1] === 3)) {
-							pathEmpty = false;
-						}
+					console.log(checkpath()[pos])
+					if (checkpath()[pos][0] === this.position.x &&
+						(checkpath()[pos][1] === 0 || checkpath()[pos][1] === 1 ||
+							checkpath()[pos][1] === 2 || checkpath()[pos][1] === 3)) {
+						pathEmpty = false;
 					}
 				}
 				for (let piece in chess.players[player].pieces) {
@@ -82,6 +98,14 @@ export default class King extends Piece {
 		for (let player in chess.players) {
 			if (chess.players[player].side === this.side) {
 				let pathEmpty = true;
+				for (let pos in checkpath()) {
+					console.log(checkpath()[pos])
+					if (checkpath()[pos][0] === this.position.x &&
+						(checkpath()[pos][1] === 3 || checkpath()[pos][1] === 4 || checkpath()[pos][1] === 5 ||
+							checkpath()[pos][1] === 6 || checkpath()[pos][1] === 7)) {
+						pathEmpty = false;
+					}
+				}
 				for (let piece in chess.players[player].pieces) {
 					let blockingPiece = chess.players[player].pieces[piece];
 					if (blockingPiece.position.x === this.position.x &&
