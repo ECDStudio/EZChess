@@ -16,7 +16,6 @@ describe('Piece', function() {
   });
 
   describe('toPosition', function() {
-
     it('should change the position of the piece to [5, 5]', function() {
       piece.toPosition(5, 5);
       expect(piece.position.x).toEqual(5);
