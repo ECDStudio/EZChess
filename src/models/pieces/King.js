@@ -14,7 +14,7 @@ export default class King extends Piece {
 	availableMoves() {
 		// Call checkPosition() to determine if there is a friendly or enemy piece at that position
 		const check = (x, y) => {
-			return checkPosition(x, y, this.side);
+			return checkPosition(x, y, this.side, chess);
 		},
 		safeCheck = () => {
 			// Make sure won't end up in check

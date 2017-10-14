@@ -160,16 +160,12 @@ exports.default = Piece;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.checkPosition = undefined;
-
-var _app = __webpack_require__(0);
-
-var checkPosition = exports.checkPosition = function checkPosition(x, y, side) {
-	for (var player in _app.chess.players) {
-		for (var p in _app.chess.players[player].pieces) {
-			var piece = _app.chess.players[player].pieces[p];
+var checkPosition = exports.checkPosition = function checkPosition(x, y, side, game) {
+	for (var player in game.players) {
+		for (var p in game.players[player].pieces) {
+			var piece = game.players[player].pieces[p];
 			if (piece.position.x === x && piece.position.y === y) {
-				if (_app.chess.players[player].side === side) {
+				if (game.players[player].side === side) {
 					// Check if there is piece from the same side
 					return 'friendly';
 				} else {
@@ -357,7 +353,7 @@ var King = function (_Piece) {
 
 			// Call checkPosition() to determine if there is a friendly or enemy piece at that position
 			var check = function check(x, y) {
-				return (0, _checkPosition.checkPosition)(x, y, _this2.side);
+				return (0, _checkPosition.checkPosition)(x, y, _this2.side, _app.chess);
 			},
 			    safeCheck = function safeCheck() {
 				// Make sure won't end up in check
@@ -560,6 +556,8 @@ var _Piece2 = __webpack_require__(1);
 
 var _Piece3 = _interopRequireDefault(_Piece2);
 
+var _app = __webpack_require__(0);
+
 var _checkPosition = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -594,13 +592,13 @@ var Queen = function (_Piece) {
 
 			// Call checkPosition() to determine if there is a friendly or enemy piece at that position
 			var checkX = function checkX(target) {
-				return (0, _checkPosition.checkPosition)(target, _this2.position.y, _this2.side);
+				return (0, _checkPosition.checkPosition)(target, _this2.position.y, _this2.side, _app.chess);
 			},
 			    checkY = function checkY(target) {
-				return (0, _checkPosition.checkPosition)(_this2.position.x, target, _this2.side);
+				return (0, _checkPosition.checkPosition)(_this2.position.x, target, _this2.side, _app.chess);
 			};
 			var check = function check(x, y) {
-				return (0, _checkPosition.checkPosition)(x, y, _this2.side);
+				return (0, _checkPosition.checkPosition)(x, y, _this2.side, _app.chess);
 			};
 
 			var positions = [],
@@ -730,6 +728,8 @@ var _Piece2 = __webpack_require__(1);
 
 var _Piece3 = _interopRequireDefault(_Piece2);
 
+var _app = __webpack_require__(0);
+
 var _checkPosition = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -765,10 +765,10 @@ var Rook = function (_Piece) {
 			// dynamic-static x-y positions to call checkPosition(),
 			// used to determine if there is a friendly or enemy piece at that position
 			var checkX = function checkX(target) {
-				return (0, _checkPosition.checkPosition)(target, _this2.position.y, _this2.side);
+				return (0, _checkPosition.checkPosition)(target, _this2.position.y, _this2.side, _app.chess);
 			},
 			    checkY = function checkY(target) {
-				return (0, _checkPosition.checkPosition)(_this2.position.x, target, _this2.side);
+				return (0, _checkPosition.checkPosition)(_this2.position.x, target, _this2.side, _app.chess);
 			};
 
 			var positions = [],
@@ -849,6 +849,8 @@ var _Piece2 = __webpack_require__(1);
 
 var _Piece3 = _interopRequireDefault(_Piece2);
 
+var _app = __webpack_require__(0);
+
 var _checkPosition = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -886,7 +888,7 @@ var Knight = function (_Piece) {
 				// First loop makes sure target position's in bound (0 - 7)
 				if (targets[i][0] >= 0 && targets[i][0] < 8 && targets[i][1] >= 0 && targets[i][1] < 8) {
 					// Second loop makes sure no friendly piece in target position
-					if ((0, _checkPosition.checkPosition)(targets[i][0], targets[i][1], this.side) !== 'friendly') {
+					if ((0, _checkPosition.checkPosition)(targets[i][0], targets[i][1], this.side, _app.chess) !== 'friendly') {
 						positions.push([targets[i][0], targets[i][1]]);
 					}
 				}
@@ -913,6 +915,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _app = __webpack_require__(0);
 
 var _Piece2 = __webpack_require__(1);
 
@@ -952,7 +956,7 @@ var Bishop = function (_Piece) {
 
 			// call checkPosition() to determine if there is a friendly or enemy piece at that position
 			var check = function check(x, y) {
-				return (0, _checkPosition.checkPosition)(x, y, _this2.side);
+				return (0, _checkPosition.checkPosition)(x, y, _this2.side, _app.chess);
 			};
 
 			var positions = [],
@@ -1075,7 +1079,7 @@ var Pawn = function (_Piece) {
 
 			// Call checkPosition() to determine if there is a friendly or enemy piece at that position
 			var check = function check(x, y) {
-				return (0, _checkPosition.checkPosition)(x, y, _this2.side);
+				return (0, _checkPosition.checkPosition)(x, y, _this2.side, _app.chess);
 			};
 
 			// Dynamic x direction

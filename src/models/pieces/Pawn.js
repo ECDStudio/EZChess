@@ -16,7 +16,7 @@ export default class Pawn extends Piece {
 	availableMoves() {
 		// Call checkPosition() to determine if there is a friendly or enemy piece at that position
 		const check = (x, y) => {
-			return checkPosition(x, y, this.side);
+			return checkPosition(x, y, this.side, chess);
 		};
 
 		// Dynamic x direction

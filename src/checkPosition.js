@@ -1,11 +1,9 @@
-import { chess } from './app';
-
-export const checkPosition = (x, y, side) => {
-	for (let player in chess.players) {
-		for (let p in chess.players[player].pieces) {
-			const piece = chess.players[player].pieces[p];
+export const checkPosition = (x, y, side, game) => {
+	for (let player in game.players) {
+		for (let p in game.players[player].pieces) {
+			const piece = game.players[player].pieces[p];
 			if (piece.position.x === x && piece.position.y === y) {
-				if (chess.players[player].side === side) {
+				if (game.players[player].side === side) {
 					// Check if there is piece from the same side
 					return 'friendly';
 				} else {

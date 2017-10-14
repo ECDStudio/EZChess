@@ -1,3 +1,4 @@
+import { chess } from '../../app';
 import Piece from '../Piece';
 import { checkPosition } from '../../checkPosition';
 
@@ -13,7 +14,7 @@ export default class Bishop extends Piece {
 	availableMoves() {
 		// call checkPosition() to determine if there is a friendly or enemy piece at that position
 		const check = (x, y) => {
-			return checkPosition(x, y, this.side);
+			return checkPosition(x, y, this.side, chess);
 		};
 
 		let positions = [],
