@@ -1203,177 +1203,203 @@ var _app = __webpack_require__(0);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var container = document.createElement('div'),
-    chessboard = document.createElement('div'),
-    player1 = document.createElement('ul'),
-    player2 = document.createElement('ul'),
-    turnCounter = document.createElement('div');
+var initChess = function initChess(container) {
+	var chessboard = document.createElement('div'),
+	    player1 = document.createElement('ul'),
+	    player2 = document.createElement('ul'),
+	    turnCounter = document.createElement('div');
 
-container.id = 'container';
-chessboard.id = 'chessboard';
-document.getElementsByTagName('body')[0].append(container);
-container.append(chessboard, turnCounter);
-chessboard.append(player1, player2);
+	container.append(chessboard, turnCounter);
+	chessboard.append(player1, player2);
+	chessboard.classList.add('chessboard');
 
-_app.chess.indicateTurn = function () {
-	// Indicate player of current turn in the DOM
-	for (var player in _app.chess.players) {
-		if (_app.chess.players[player].isTurn === true) {
-			turnCounter.innerHTML = 'Current Turn: ' + _app.chess.players[player].side;
-		}
-	}
-};
-_app.chess.indicateTurn();
-
-var _loop = function _loop(player) {
-	var _loop5 = function _loop5(p) {
-		var piece = _app.chess.players[player].pieces[p];
-
-		// Bind a DOM element to each piece
-		piece.ui = document.createElement('li');
-		// Extend the original toPosition() method to include DOM stuff
-		piece.moveTo = function (pX, pY, specialMove) {
-			piece.toPosition(pX, pY, specialMove);
-			piece.ui.style.zIndex = '20';
-			piece.ui.style.left = piece.position.x * 12.5 + '%';
-			piece.ui.style.bottom = piece.position.y * 12.5 + '%';
-			setTimeout(function () {
-				piece.ui.style.zIndex = '1';
-			}, 1000);
-		};
-		piece.moveTo.apply(piece, _toConsumableArray(piece.position));
-
-		piece.watchCapture = function () {
-			// Detect if a piece is captured, hide the DOM element
-			if (piece.position.x === -1 && piece.position.y === -1) {
-				setTimeout(function () {
-					piece.ui.style.display = 'none';
-				}, 500);
-			}
-		};
-		// Add classes to DOM element for proper CSS
-		piece.ui.classList.add('chess-piece', _app.chess.players[player].side, piece.class);
-		piece.ui.addEventListener('click', function () {
-			// Select a piece and move if it's its player's turn
+	_app.chess.indicateTurn = function () {
+		// Indicate player of current turn in the DOM
+		for (var player in _app.chess.players) {
 			if (_app.chess.players[player].isTurn === true) {
-				pieceClicked(piece);
+				turnCounter.innerHTML = 'Current Turn: ' + _app.chess.players[player].side;
 			}
-		});
-
-		if (player === 'player1') {
-			player1.append(piece.ui);
-		} else {
-			player2.append(piece.ui);
 		}
 	};
+	_app.chess.indicateTurn();
 
-	for (var p in _app.chess.players[player].pieces) {
-		_loop5(p);
-	}
-};
+	var _loop = function _loop(player) {
+		var _loop5 = function _loop5(p) {
+			var piece = _app.chess.players[player].pieces[p];
 
-for (var player in _app.chess.players) {
-	_loop(player);
-}
+			// Bind a DOM element to each piece
+			piece.ui = document.createElement('li');
+			// Extend the original toPosition() method to include DOM stuff
+			piece.moveTo = function (pX, pY, specialMove) {
+				piece.toPosition(pX, pY, specialMove);
+				piece.ui.style.zIndex = '20';
+				piece.ui.style.left = piece.position.x * 12.5 + '%';
+				piece.ui.style.bottom = piece.position.y * 12.5 + '%';
+				setTimeout(function () {
+					piece.ui.style.zIndex = '1';
+				}, 1000);
+			};
+			piece.moveTo.apply(piece, _toConsumableArray(piece.position));
 
-var pieceClicked = function pieceClicked(piece) {
-	// First clear all targets if there is any
-	clearTargets();
-	// Create selectable targets in the DOM
+			piece.watchCapture = function () {
+				// Detect if a piece is captured, hide the DOM element
+				if (piece.position.x === -1 && piece.position.y === -1) {
+					setTimeout(function () {
+						piece.ui.style.display = 'none';
+					}, 500);
+				}
+			};
+			// Add classes to DOM element for proper CSS
+			piece.ui.classList.add('chess-piece', _app.chess.players[player].side, piece.class);
+			piece.ui.addEventListener('click', function () {
+				// Select a piece and move if it's its player's turn
+				if (_app.chess.players[player].isTurn === true) {
+					pieceClicked(piece);
+				}
+			});
 
-	var _loop2 = function _loop2(position) {
-		var target = document.createElement('a');
-
-		chessboard.append(target);
-		target.classList.add('target-position');
-		target.style.left = position[0] * 12.5 + '%';
-		target.style.bottom = position[1] * 12.5 + '%';
-		target.addEventListener('click', function () {
-			return targetClicked(piece, position);
-		});
-	};
-
-	var _iteratorNormalCompletion = true;
-	var _didIteratorError = false;
-	var _iteratorError = undefined;
-
-	try {
-		for (var _iterator = piece.availableMoves()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-			var position = _step.value;
-
-			_loop2(position);
-		}
-	} catch (err) {
-		_didIteratorError = true;
-		_iteratorError = err;
-	} finally {
-		try {
-			if (!_iteratorNormalCompletion && _iterator.return) {
-				_iterator.return();
+			if (player === 'player1') {
+				player1.append(piece.ui);
+			} else {
+				player2.append(piece.ui);
 			}
-		} finally {
-			if (_didIteratorError) {
-				throw _iteratorError;
-			}
-		}
-	}
-};
-
-var targetClicked = function targetClicked(piece, position) {
-	piece.moveTo.apply(piece, _toConsumableArray(position));
-	clearTargets();
-	// Make sure captured pieces are hidden in the DOM
-	for (var player in _app.chess.players) {
-		var _loop3 = function _loop3(p) {
-			var pieces = _app.chess.players[player].pieces[p];
-			pieces.watchCapture();
-			setTimeout(function () {
-				pieces.moveTo(pieces.position.x, pieces, position.y);
-			}, 500);
 		};
 
 		for (var p in _app.chess.players[player].pieces) {
-			_loop3(p);
+			_loop5(p);
 		}
-	}
-	// Pass the turn to the other player
-	_app.chess.switchTurn();
-	_app.chess.indicateTurn();
-};
-
-var clearTargets = function clearTargets() {
-	var _loop4 = function _loop4(i) {
-		setTimeout(function () {
-			i.parentElement.removeChild(i);
-		});
 	};
 
-	// Remove all pieces' selectable targets in the DOM
-	var _iteratorNormalCompletion2 = true;
-	var _didIteratorError2 = false;
-	var _iteratorError2 = undefined;
+	for (var player in _app.chess.players) {
+		_loop(player);
+	}
 
-	try {
-		for (var _iterator2 = document.getElementsByClassName('target-position')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-			var i = _step2.value;
+	var pieceClicked = function pieceClicked(piece) {
+		// First clear all targets if there is any
+		clearTargets();
+		// Create selectable targets in the DOM
 
-			_loop4(i);
-		}
-	} catch (err) {
-		_didIteratorError2 = true;
-		_iteratorError2 = err;
-	} finally {
+		var _loop2 = function _loop2(position) {
+			var target = document.createElement('a');
+
+			chessboard.append(target);
+			target.classList.add('target-position');
+			target.style.left = position[0] * 12.5 + '%';
+			target.style.bottom = position[1] * 12.5 + '%';
+			target.addEventListener('click', function () {
+				return targetClicked(piece, position);
+			});
+		};
+
+		var _iteratorNormalCompletion = true;
+		var _didIteratorError = false;
+		var _iteratorError = undefined;
+
 		try {
-			if (!_iteratorNormalCompletion2 && _iterator2.return) {
-				_iterator2.return();
+			for (var _iterator = piece.availableMoves()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				var position = _step.value;
+
+				_loop2(position);
 			}
+		} catch (err) {
+			_didIteratorError = true;
+			_iteratorError = err;
 		} finally {
-			if (_didIteratorError2) {
-				throw _iteratorError2;
+			try {
+				if (!_iteratorNormalCompletion && _iterator.return) {
+					_iterator.return();
+				}
+			} finally {
+				if (_didIteratorError) {
+					throw _iteratorError;
+				}
 			}
+		}
+	};
+
+	var targetClicked = function targetClicked(piece, position) {
+		piece.moveTo.apply(piece, _toConsumableArray(position));
+		clearTargets();
+		// Make sure captured pieces are hidden in the DOM
+		for (var player in _app.chess.players) {
+			var _loop3 = function _loop3(p) {
+				var pieces = _app.chess.players[player].pieces[p];
+				pieces.watchCapture();
+				setTimeout(function () {
+					pieces.moveTo(pieces.position.x, pieces, position.y);
+				}, 500);
+			};
+
+			for (var p in _app.chess.players[player].pieces) {
+				_loop3(p);
+			}
+		}
+		// Pass the turn to the other player
+		_app.chess.switchTurn();
+		_app.chess.indicateTurn();
+	};
+
+	var clearTargets = function clearTargets() {
+		var _loop4 = function _loop4(i) {
+			setTimeout(function () {
+				i.parentElement.removeChild(i);
+			});
+		};
+
+		// Remove all pieces' selectable targets in the DOM
+		var _iteratorNormalCompletion2 = true;
+		var _didIteratorError2 = false;
+		var _iteratorError2 = undefined;
+
+		try {
+			for (var _iterator2 = container.getElementsByClassName('target-position')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+				var i = _step2.value;
+
+				_loop4(i);
+			}
+		} catch (err) {
+			_didIteratorError2 = true;
+			_iteratorError2 = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion2 && _iterator2.return) {
+					_iterator2.return();
+				}
+			} finally {
+				if (_didIteratorError2) {
+					throw _iteratorError2;
+				}
+			}
+		}
+	};
+};
+
+var _iteratorNormalCompletion3 = true;
+var _didIteratorError3 = false;
+var _iteratorError3 = undefined;
+
+try {
+	for (var _iterator3 = document.getElementsByClassName('chess-container')[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+		var i = _step3.value;
+
+		if (i) {
+			initChess(i);
 		}
 	}
-};
+} catch (err) {
+	_didIteratorError3 = true;
+	_iteratorError3 = err;
+} finally {
+	try {
+		if (!_iteratorNormalCompletion3 && _iterator3.return) {
+			_iterator3.return();
+		}
+	} finally {
+		if (_didIteratorError3) {
+			throw _iteratorError3;
+		}
+	}
+}
 
 /***/ })
 /******/ ]);

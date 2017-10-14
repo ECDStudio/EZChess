@@ -45,7 +45,7 @@ body {
 	overflow-x:hidden;
 }
 
-#container {
+.chess-container {
 	position: relative;
 	margin: auto;
 	width: 100%;
@@ -56,7 +56,7 @@ body {
 	}
 }
 
-#chessboard {
+.chessboard {
 	position: relative;
 	width: 100%;
 	height: 0;
