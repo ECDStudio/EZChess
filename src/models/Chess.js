@@ -22,4 +22,4 @@ export default class Chess {
 		this.players.player1.isTurn = !this.players.player1.isTurn;
 		this.players.player2.isTurn = !this.players.player2.isTurn;
 	}
-};
+}

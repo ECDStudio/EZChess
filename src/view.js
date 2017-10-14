@@ -1,6 +1,6 @@
 import { chess } from './app';
 
-const initChess = (container) => {
+chess.initChess = (container) => {
 	let chessboard = document.createElement('div'),
 		player1 = document.createElement('ul'),
 		player2 = document.createElement('ul'),
@@ -109,6 +109,6 @@ const initChess = (container) => {
 
 for (let i of document.getElementsByClassName('chess-container')) {
 	if (i) {
-		initChess(i);
+		chess.initChess(i);
 	}
 }

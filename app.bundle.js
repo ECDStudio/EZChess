@@ -235,7 +235,6 @@ var Chess = function () {
 }();
 
 exports.default = Chess;
-;
 
 /***/ }),
 /* 4 */
@@ -1203,7 +1202,7 @@ var _app = __webpack_require__(0);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var initChess = function initChess(container) {
+_app.chess.initChess = function (container) {
 	var chessboard = document.createElement('div'),
 	    player1 = document.createElement('ul'),
 	    player2 = document.createElement('ul'),
@@ -1383,7 +1382,7 @@ try {
 		var i = _step3.value;
 
 		if (i) {
-			initChess(i);
+			_app.chess.initChess(i);
 		}
 	}
 } catch (err) {
