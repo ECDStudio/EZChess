@@ -38,6 +38,7 @@ export default class King extends Piece {
 			}
 		};
 		
+		// For castling, make sure path is safe
 		const checkpath = () => {
 			for (let player in chess.players) {
 				if (chess.players[player].side !== this.side) {
@@ -60,8 +61,7 @@ export default class King extends Piece {
 					if (checkpath()[pos].length !== 0) {
 						if (checkpath()[pos][0] === this.position.x &&
 							(checkpath()[pos][1] === 1 || checkpath()[pos][1] === 2 || checkpath()[pos][1] === 3)) {
-							console.log('123')
-							pathEmpty = false;;
+							pathEmpty = false;
 						}
 					}
 				}

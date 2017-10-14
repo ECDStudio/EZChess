@@ -833,6 +833,7 @@ var King = function (_Piece) {
 				}
 			};
 
+			// For castling, make sure path is safe
 			var checkpath = function checkpath() {
 				for (var player in _app.chess.players) {
 					if (_app.chess.players[player].side !== _this2.side) {
@@ -854,8 +855,7 @@ var King = function (_Piece) {
 					for (var _pos in checkpath()) {
 						if (checkpath()[_pos].length !== 0) {
 							if (checkpath()[_pos][0] === this.position.x && (checkpath()[_pos][1] === 1 || checkpath()[_pos][1] === 2 || checkpath()[_pos][1] === 3)) {
-								console.log('123');
-								pathEmpty = false;;
+								pathEmpty = false;
 							}
 						}
 					}
