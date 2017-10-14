@@ -42,6 +42,8 @@ export default class King extends Piece {
 								targets.push([pawnPos.x - 1, pawnPos.y - 1]);
 							}
 						} else {
+							// Make sure to detect all positions,
+							// including those the King is currently blocking
 							const currentX = this.position.x;
 							const currenty = this.position.y;
 							this.position.x = -1;
