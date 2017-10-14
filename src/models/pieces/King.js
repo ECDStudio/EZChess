@@ -29,29 +29,12 @@ export default class King extends Piece {
 		
 		let positions = [];
 		
-		for (let pos in toBeChecked) {
-			if (toBeChecked[pos][0] >= 0 && toBeChecked[pos][0] < 8 &&
-				toBeChecked[pos][1] >= 0 && toBeChecked[pos][1] < 8) {
-				if (check(...toBeChecked[pos]) !== 'friendly') {
-					positions.push(toBeChecked[pos]);
-				}
-			}
-		};
-		
-		// For castling, make sure path is safe
-		const checkpath = () => {
+		// make sure won't get in check
+		const safeCheck = () => {
 			for (let player in chess.players) {
 				if (chess.players[player].side !== this.side) {
 					let targets = [];
 					for (let piece in chess.players[player].pieces) {
-						if (piece !== 'king') {
-							const pieceMoves = chess.players[player].pieces[piece].availableMoves();
-							if (pieceMoves.length !== 0) {
-								for (let move of pieceMoves) {
-									targets.push(move);
-								}
-							}
-						}
 						if (piece === 'king') {
 							let kingPos = chess.players[player].pieces[piece].position;
 							targets.push([kingPos.x + 1, kingPos.y]);
@@ -62,6 +45,22 @@ export default class King extends Piece {
 							targets.push([kingPos.x - 1, kingPos.y - 1]);
 							targets.push([kingPos.x, kingPos.y + 1]);
 							targets.push([kingPos.x, kingPos.y - 1]);
+						} else if (chess.players[player].pieces[piece].class === 'pawn') {
+							const pawnPos = chess.players[player].pieces[piece].position;
+							if (chess.players[player].side === 'white') {
+								targets.push([pawnPos.x + 1, pawnPos.y + 1]);
+								targets.push([pawnPos.x + 1, pawnPos.y - 1]);
+							} else {
+								targets.push([pawnPos.x - 1, pawnPos.y + 1]);
+								targets.push([pawnPos.x - 1, pawnPos.y - 1]);
+							}
+						} else {
+							const pieceMoves = chess.players[player].pieces[piece].availableMoves();
+							if (pieceMoves.length !== 0) {
+								for (let move of pieceMoves) {
+									targets.push(move);
+								}
+							}
 						}
 					}
 					return targets;
@@ -69,15 +68,33 @@ export default class King extends Piece {
 			}
 		}
 		
+		for (let pos in toBeChecked) {
+			if (toBeChecked[pos][0] >= 0 && toBeChecked[pos][0] < 8 &&
+				toBeChecked[pos][1] >= 0 && toBeChecked[pos][1] < 8) {
+				if (check(...toBeChecked[pos]) !== 'friendly') {
+					let inCheck = false;
+
+					for (let safePos in safeCheck()) {
+						if (safeCheck()[safePos][0] === toBeChecked[pos][0] &&
+							safeCheck()[safePos][1] === toBeChecked[pos][1]) {
+							inCheck = true;
+						}
+					}
+					if (inCheck === false) {
+						positions.push(toBeChecked[pos]);
+					}
+				}
+			}
+		};
+		
 		// King side castle
 		for (let player in chess.players) {
 			if (chess.players[player].side === this.side) {
 				let pathEmpty = true;
-				for (let pos in checkpath()) {
-					console.log(checkpath()[pos])
-					if (checkpath()[pos][0] === this.position.x &&
-						(checkpath()[pos][1] === 0 || checkpath()[pos][1] === 1 ||
-							checkpath()[pos][1] === 2 || checkpath()[pos][1] === 3)) {
+				for (let pos in safeCheck()) {
+					if (safeCheck()[pos][0] === this.position.x &&
+						(safeCheck()[pos][1] === 1 ||
+							safeCheck()[pos][1] === 2 || safeCheck()[pos][1] === 3)) {
 						pathEmpty = false;
 					}
 				}
@@ -98,11 +115,9 @@ export default class King extends Piece {
 		for (let player in chess.players) {
 			if (chess.players[player].side === this.side) {
 				let pathEmpty = true;
-				for (let pos in checkpath()) {
-					console.log(checkpath()[pos])
-					if (checkpath()[pos][0] === this.position.x &&
-						(checkpath()[pos][1] === 3 || checkpath()[pos][1] === 4 || checkpath()[pos][1] === 5 ||
-							checkpath()[pos][1] === 6 || checkpath()[pos][1] === 7)) {
+				for (let pos in safeCheck()) {
+					if (safeCheck()[pos][0] === this.position.x &&
+						(safeCheck()[pos][1] === 3 || safeCheck()[pos][1] === 4 || safeCheck()[pos][1] === 5)) {
 						pathEmpty = false;
 					}
 				}
