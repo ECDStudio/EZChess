@@ -16,21 +16,8 @@ export default class King extends Piece {
 		const check = (x, y) => {
 			return checkPosition(x, y, this.side);
 		},
-		toBeChecked = [
-			[this.position.x + 1, this.position.y],
-			[this.position.x - 1, this.position.y],
-			[this.position.x + 1, this.position.y + 1],
-			[this.position.x + 1, this.position.y - 1],
-			[this.position.x - 1, this.position.y + 1],
-			[this.position.x - 1, this.position.y - 1],
-			[this.position.x, this.position.y + 1],
-			[this.position.x, this.position.y - 1],
-		];
-		
-		let positions = [];
-		
-		// make sure won't get in check
-		const safeCheck = () => {
+		safeCheck = () => {
+			// make sure won't end up in check
 			for (let player in chess.players) {
 				if (chess.players[player].side !== this.side) {
 					let targets = [];
@@ -66,22 +53,34 @@ export default class King extends Piece {
 					return targets;
 				}
 			}
-		}
-		
-		for (let pos in toBeChecked) {
-			if (toBeChecked[pos][0] >= 0 && toBeChecked[pos][0] < 8 &&
-				toBeChecked[pos][1] >= 0 && toBeChecked[pos][1] < 8) {
-				if (check(...toBeChecked[pos]) !== 'friendly') {
+		},
+		possiblePos = [
+			[this.position.x + 1, this.position.y],
+			[this.position.x - 1, this.position.y],
+			[this.position.x + 1, this.position.y + 1],
+			[this.position.x + 1, this.position.y - 1],
+			[this.position.x - 1, this.position.y + 1],
+			[this.position.x - 1, this.position.y - 1],
+			[this.position.x, this.position.y + 1],
+			[this.position.x, this.position.y - 1],
+		];
+
+		let finalPos = [];
+
+		for (let pos in possiblePos) {
+			if (possiblePos[pos][0] >= 0 && possiblePos[pos][0] < 8 &&
+				possiblePos[pos][1] >= 0 && possiblePos[pos][1] < 8) {
+				if (check(...possiblePos[pos]) !== 'friendly') {
 					let inCheck = false;
 
 					for (let safePos in safeCheck()) {
-						if (safeCheck()[safePos][0] === toBeChecked[pos][0] &&
-							safeCheck()[safePos][1] === toBeChecked[pos][1]) {
+						if (safeCheck()[safePos][0] === possiblePos[pos][0] &&
+							safeCheck()[safePos][1] === possiblePos[pos][1]) {
 							inCheck = true;
 						}
 					}
 					if (inCheck === false) {
-						positions.push(toBeChecked[pos]);
+						finalPos.push(possiblePos[pos]);
 					}
 				}
 			}
@@ -106,7 +105,7 @@ export default class King extends Piece {
 					}
 				}
 				if (pathEmpty === true && chess.players[player].pieces.rook1.step === 0 && this.step === 0) {
-					positions.push([this.position.x, 1, 'king-castle']);
+					finalPos.push([this.position.x, 1, 'king-castle']);
 				}
 			}
 		}
@@ -131,12 +130,12 @@ export default class King extends Piece {
 					}
 				}
 				if (pathEmpty === true && chess.players[player].pieces.rook2.step === 0 && this.step === 0) {
-					positions.push([this.position.x, 5, 'queen-castle']);
+					finalPos.push([this.position.x, 5, 'queen-castle']);
 				}
 			}
 		}
 
-		return positions;
+		return finalPos;
 	}
 	
 	toPosition(pX, pY, castle) {
