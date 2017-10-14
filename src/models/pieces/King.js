@@ -42,12 +42,18 @@ export default class King extends Piece {
 								targets.push([pawnPos.x - 1, pawnPos.y - 1]);
 							}
 						} else {
+							const currentX = this.position.x;
+							const currenty = this.position.y;
+							this.position.x = -1;
+							this.position.y = -1;
 							const pieceMoves = chess.players[player].pieces[piece].availableMoves();
 							if (pieceMoves.length !== 0) {
 								for (let move of pieceMoves) {
 									targets.push(move);
 								}
 							}
+							this.position.x = currentX;
+							this.position.y = currenty;
 						}
 					}
 					return targets;
