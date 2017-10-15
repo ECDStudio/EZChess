@@ -1307,7 +1307,7 @@ var Pawn = function (_Piece) {
 			return positions;
 		}
 
-		// 3rd boolean parameter indicates if this is an en passant move
+		// 4th boolean parameter indicates if this is an en passant move
 
 	}, {
 		key: 'toPosition',
