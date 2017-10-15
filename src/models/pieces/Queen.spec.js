@@ -14,11 +14,11 @@ describe('availableMoves', function() {
     expect(_queen.availableMoves(chess)).toEqual([]);
   });
   it('should return a list of 19 positions', function() {
-    _queen.toPosition(3, 3, chess);
+    _queen.toPosition(chess, 3, 3);
     expect(_queen.availableMoves(chess).length).toEqual(19);
   });
   it('should return a list of 15 positions', function() {
-    _queen.toPosition(2, 0, chess);
+    _queen.toPosition(chess, 2, 0);
     expect(_queen.availableMoves(chess).length).toEqual(15);
   });
 });

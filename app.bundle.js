@@ -114,7 +114,7 @@ var Piece = function () {
 
 	_createClass(Piece, [{
 		key: 'toPosition',
-		value: function toPosition(pX, pY, game) {
+		value: function toPosition(game, pX, pY) {
 			if (typeof pX === 'number' && typeof pY === 'number') {
 				if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
 					this.position.x = pX;
@@ -487,7 +487,7 @@ var King = function (_Piece) {
 		}
 	}, {
 		key: 'toPosition',
-		value: function toPosition(pX, pY, castle, game) {
+		value: function toPosition(game, pX, pY, castle) {
 			if (typeof pX === 'number' && typeof pY === 'number') {
 				if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
 					this.position.x = pX;
@@ -515,7 +515,7 @@ var King = function (_Piece) {
 			if (castle === 'king-castle') {
 				for (var _player2 in game.players) {
 					if (game.players[_player2].side === this.side) {
-						game.players[_player2].pieces.rook1.toPosition(this.position.x, 2, game);
+						game.players[_player2].pieces.rook1.toPosition(game, this.position.x, 2);
 					}
 				}
 			}
@@ -523,7 +523,7 @@ var King = function (_Piece) {
 			if (castle === 'queen-castle') {
 				for (var _player3 in game.players) {
 					if (game.players[_player3].side === this.side) {
-						game.players[_player3].pieces.rook2.toPosition(this.position.x, 4, game);
+						game.players[_player3].pieces.rook2.toPosition(game, this.position.x, 4);
 					}
 				}
 			}
@@ -1114,7 +1114,7 @@ var Pawn = function (_Piece) {
 
 	}, {
 		key: 'toPosition',
-		value: function toPosition(pX, pY, enPassMove, game) {
+		value: function toPosition(game, pX, pY, enPassMove) {
 			var _this3 = this;
 
 			if (typeof pX === 'number' && typeof pY === 'number') {
@@ -1220,8 +1220,8 @@ _app.chess.initChess = function (container) {
 			// Bind a DOM element to each piece
 			piece.ui = document.createElement('li');
 			// Extend the original toPosition() method to include DOM stuff
-			piece.moveTo = function (pX, pY, specialMove, game) {
-				piece.toPosition(pX, pY, specialMove, game);
+			piece.moveTo = function (game, pX, pY, specialMove) {
+				piece.toPosition(game, pX, pY, specialMove);
 				piece.ui.style.zIndex = '20';
 				piece.ui.style.left = piece.position.x * 12.5 + '%';
 				piece.ui.style.bottom = piece.position.y * 12.5 + '%';
@@ -1308,15 +1308,17 @@ _app.chess.initChess = function (container) {
 	};
 
 	var targetClicked = function targetClicked(piece, position) {
-		piece.moveTo.apply(piece, _toConsumableArray(position).concat([_app.chess]));
+		piece.moveTo.apply(piece, [_app.chess].concat(_toConsumableArray(position)));
 		clearTargets();
-		// Make sure captured pieces are hidden in the DOM
 		for (var player in _app.chess.players) {
 			var _loop3 = function _loop3(p) {
 				var pieces = _app.chess.players[player].pieces[p];
+				// Make sure captured pieces are hidden in the DOM
 				pieces.watchCapture();
 				setTimeout(function () {
-					pieces.moveTo(pieces.position.x, pieces, position.y);
+					// This is for stuff that moves automatically at turn's end
+					// mainly rook during a castle move
+					pieces.moveTo(_app.chess, pieces.position.x, pieces, position.y);
 				}, 500);
 			};
 

@@ -27,8 +27,8 @@ chess.initChess = (container) => {
 			// Bind a DOM element to each piece
 			piece.ui = document.createElement('li');
 			// Extend the original toPosition() method to include DOM stuff
-			piece.moveTo = (pX, pY, specialMove, game) => {
-				piece.toPosition(pX, pY, specialMove, game);
+			piece.moveTo = (game, pX, pY, specialMove) => {
+				piece.toPosition(game, pX, pY, specialMove);
 				piece.ui.style.zIndex = '20';
 				piece.ui.style.left = `${piece.position.x * 12.5}%`;
 				piece.ui.style.bottom = `${piece.position.y * 12.5}%`;
@@ -80,15 +80,17 @@ chess.initChess = (container) => {
 	}
 
 	const targetClicked = (piece, position) => {
-		piece.moveTo(...position, chess);
+		piece.moveTo(chess, ...position);
 		clearTargets();
-		// Make sure captured pieces are hidden in the DOM
 		for (let player in chess.players) {
 			for (let p in chess.players[player].pieces) {
 				let pieces = chess.players[player].pieces[p];
+				// Make sure captured pieces are hidden in the DOM
 				pieces.watchCapture();
 				setTimeout(function() {
-					pieces.moveTo(pieces.position.x, pieces,position.y);
+					// This is for stuff that moves automatically at turn's end
+					// mainly rook during a castle move
+					pieces.moveTo(chess, pieces.position.x, pieces,position.y);
 				}, 500)
 			}
 		}

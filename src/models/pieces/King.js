@@ -145,7 +145,7 @@ export default class King extends Piece {
 		return finalPos;
 	}
 	
-	toPosition(pX, pY, castle, game) {
+	toPosition(game, pX, pY, castle) {
 		if (typeof pX === 'number' && typeof pY === 'number') {
 			if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
 				this.position.x = pX;
@@ -173,7 +173,7 @@ export default class King extends Piece {
 		if (castle === 'king-castle') {
 			for (let player in game.players) {
 				if (game.players[player].side === this.side) {
-					game.players[player].pieces.rook1.toPosition(this.position.x, 2, game);
+					game.players[player].pieces.rook1.toPosition(game, this.position.x, 2);
 				}
 			}
 		}
@@ -181,7 +181,7 @@ export default class King extends Piece {
 		if (castle === 'queen-castle') {
 			for (let player in game.players) {
 				if (game.players[player].side === this.side) {
-					game.players[player].pieces.rook2.toPosition(this.position.x, 4, game);
+					game.players[player].pieces.rook2.toPosition(game, this.position.x, 4);
 				}
 			}
 		}

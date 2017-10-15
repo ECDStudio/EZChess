@@ -63,7 +63,7 @@ export default class Pawn extends Piece {
 	}
 
 	// 3rd boolean parameter indicates if this is an en passant move
-	toPosition(pX, pY, enPassMove, game) {
+	toPosition(game, pX, pY, enPassMove) {
 		if (typeof pX === 'number' && typeof pY === 'number') {
 			if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
 				this.position.x = pX;
