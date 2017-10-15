@@ -124,6 +124,11 @@ export default class Pawn extends Piece {
 				}
 			}
 		}
-		return [this.position.x, this.position.y];
+		
+		let promotion = false;
+		if ((pX === 7 && this.side === 'white') || (pX === 0 && this.side === 'black')) {
+			promotion = true;
+		}
+		return [this.position.x, this.position.y, promotion];
 	}
 }

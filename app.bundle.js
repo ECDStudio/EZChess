@@ -1370,7 +1370,12 @@ var Pawn = function (_Piece) {
 					}
 				}
 			}
-			return [this.position.x, this.position.y];
+
+			var promotion = false;
+			if (pX === 7 && this.side === 'white' || pX === 0 && this.side === 'black') {
+				promotion = true;
+			}
+			return [this.position.x, this.position.y, promotion];
 		}
 	}]);
 

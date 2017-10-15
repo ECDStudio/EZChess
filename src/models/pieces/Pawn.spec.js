@@ -62,4 +62,18 @@ describe('availableMoves', function() {
       jasmine.clock().uninstall();
     });
   })
+  describe('Promotion', function() {
+    it('should return false', function() {
+      expect(pawn1.toPosition(chess, 4, 2)[2]).toEqual(false);
+    });
+    it('should return true', function() {
+      expect(pawn1.toPosition(chess, 7, 2)[2]).toEqual(true);
+    });
+    it('should return false', function() {
+      expect(pawn2.toPosition(chess, 4, 1)[2]).toEqual(false);
+    });
+    it('should return true', function() {
+      expect(pawn2.toPosition(chess, 0, 1)[2]).toEqual(true);
+    });
+  })
 })
