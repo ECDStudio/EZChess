@@ -1,7 +1,8 @@
-import { chess } from '../app';
+import Chess from './Chess';
 import Piece from './Piece';
 
 describe('Piece', function() {
+  let chess = new Chess();
   let piece;
 
   beforeEach(function () {

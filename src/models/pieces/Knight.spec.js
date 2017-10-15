@@ -1,6 +1,7 @@
-import { chess } from '../../app';
+import Chess from '../Chess';
 
 describe('availableMoves', function() {
+  let chess = new Chess();
   let _knight;
   
   beforeEach(function () {

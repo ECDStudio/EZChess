@@ -1,4 +1,3 @@
-import { chess } from '../app';
 import Chess from './Chess';
 
 describe('Chess', function() {
