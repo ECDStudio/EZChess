@@ -27,8 +27,8 @@ chess.initChess = (container) => {
 			// Bind a DOM element to each piece
 			piece.ui = document.createElement('li');
 			// Extend the original toPosition() method to include DOM stuff
-			piece.moveTo = (pX, pY, specialMove) => {
-				piece.toPosition(pX, pY, specialMove);
+			piece.moveTo = (pX, pY, specialMove, game) => {
+				piece.toPosition(pX, pY, specialMove, game);
 				piece.ui.style.zIndex = '20';
 				piece.ui.style.left = `${piece.position.x * 12.5}%`;
 				piece.ui.style.bottom = `${piece.position.y * 12.5}%`;
@@ -68,7 +68,7 @@ chess.initChess = (container) => {
 		// First clear all targets if there is any
 		clearTargets();
 		// Create selectable targets in the DOM
-		for (let position of piece.availableMoves()) {
+		for (let position of piece.availableMoves(chess)) {
 			let target = document.createElement('a');
 
 			chessboard.append(target);
@@ -80,7 +80,7 @@ chess.initChess = (container) => {
 	}
 
 	const targetClicked = (piece, position) => {
-		piece.moveTo(...position);
+		piece.moveTo(...position, chess);
 		clearTargets();
 		// Make sure captured pieces are hidden in the DOM
 		for (let player in chess.players) {

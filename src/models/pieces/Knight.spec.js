@@ -11,14 +11,14 @@ describe('availableMoves', function() {
     chess.reset();
   });
   it('should return a list of 2 positions', function() {
-    expect(_knight.availableMoves().length).toEqual(2);
+    expect(_knight.availableMoves(chess).length).toEqual(2);
   });
   it('should return a list of 6 positions', function() {
-    _knight.toPosition(3, 3);
-    expect(_knight.availableMoves().length).toEqual(6);
+    _knight.toPosition(3, 3, chess);
+    expect(_knight.availableMoves(chess).length).toEqual(6);
   });
   it('should return a list of 4 positions', function() {
-    _knight.toPosition(3, 1);
-    expect(_knight.availableMoves().length).toEqual(4);
+    _knight.toPosition(3, 1, chess);
+    expect(_knight.availableMoves(chess).length).toEqual(4);
   });
 });

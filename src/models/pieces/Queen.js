@@ -1,5 +1,4 @@
 import Piece from '../Piece';
-import { chess } from '../../app';
 import { checkPosition } from '../../checkPosition';
 
 export default class Queen extends Piece {
@@ -11,16 +10,16 @@ export default class Queen extends Piece {
 	// Returns an array of available positions to move to,
 	// including possible captures;
 	// empty if there is none
-	availableMoves() {
+	availableMoves(game) {
 		// Call checkPosition() to determine if there is a friendly or enemy piece at that position
 		const checkX = (target) => {
-			return checkPosition(target, this.position.y, this.side, chess);
+			return checkPosition(target, this.position.y, this.side, game);
 		},
 		checkY = (target) => {
-			return checkPosition(this.position.x, target, this.side, chess);
+			return checkPosition(this.position.x, target, this.side, game);
 		};
 		const check = (x, y) => {
-			return checkPosition(x, y, this.side, chess);
+			return checkPosition(x, y, this.side, game);
 		};
 
 		let positions = [],

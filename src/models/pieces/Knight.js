@@ -1,5 +1,4 @@
 import Piece from '../Piece';
-import { chess } from '../../app';
 import { checkPosition } from '../../checkPosition';
 
 export default class Knight extends Piece {
@@ -11,7 +10,7 @@ export default class Knight extends Piece {
 	// Returns an array of available positions to move to,
 	// including possible captures;
 	// empty if there is none
-	availableMoves() {
+	availableMoves(game) {
 		let positions = [],
 		targets = [
 			[this.position.x + 1, this.position.y + 2],
@@ -29,7 +28,7 @@ export default class Knight extends Piece {
 			if (targets[i][0] >= 0 && targets[i][0] < 8 &&
 				targets[i][1] >= 0 && targets[i][1] < 8) {
 				// Second loop makes sure no friendly piece in target position
-				if (checkPosition(targets[i][0], targets[i][1], this.side, chess) !== 'friendly') {
+				if (checkPosition(targets[i][0], targets[i][1], this.side, game) !== 'friendly') {
 					positions.push([targets[i][0], targets[i][1]]);
 				}
 			}
