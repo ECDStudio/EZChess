@@ -1,7 +1,9 @@
-import { chess } from './app';
+import Chess from './models/Chess';
 import { checkPosition } from './checkPosition';
 
 describe('checkPosition', function() {
+  let chess = new Chess();
+
   it('should return "friendly" in a position with a piece from the same side', function() {
   	let target = checkPosition(1, 1, 'white', chess);
     expect(target).toEqual('friendly');
