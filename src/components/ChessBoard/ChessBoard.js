@@ -7,13 +7,13 @@ class ChessBoard extends Component {
 
     const player1 = Object.keys(players.player1.pieces).map((piece) => {
       return (
-        <Piece game={this.props.game} model={players.player1.pieces[piece]} />
+        <Piece game={this.props.game} model={players.player1.pieces[piece]} key={piece} />
       )
     })
 
     const player2 = Object.keys(players.player2.pieces).map((piece) => {
       return (
-        <Piece game={this.props.game} model={players.player2.pieces[piece]} />
+        <Piece game={this.props.game} model={players.player2.pieces[piece]} key={piece} />
       )
     })
 
