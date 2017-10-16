@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Chess from './models/Chess';
-import TurnIndicator from './TurnIndicator/TurnIndicator';
+import ChessBoard from './components/ChessBoard/ChessBoard';
+import TurnIndicator from './components/TurnIndicator/TurnIndicator';
 
 class App extends Component {
   chess = new Chess();
@@ -9,12 +10,7 @@ class App extends Component {
   render() {
     return (
       <div className="chess-container">
-        <div className="chessboard">
-          <ul>
-          </ul>
-          <ul>
-          </ul>
-        </div>
+        <ChessBoard game={this.chess} />
         <TurnIndicator game={this.chess} />
       </div>
     );

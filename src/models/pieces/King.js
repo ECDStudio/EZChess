@@ -1,5 +1,5 @@
 import Piece from '../Piece';
-import { checkPosition } from '../../checkPosition';
+import { checkPosition } from '../checkPosition';
 
 export default class King extends Piece {
 	constructor(side, pX, pY) {
