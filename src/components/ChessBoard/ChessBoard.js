@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
+import Piece from '../Piece/Piece';
 
 class ChessBoard extends Component {
   render() {
     const players = this.props.game.players;
 
-    const player1 = Object.keys(players.player1.pieces).map(function(piece) {
+    const player1 = Object.keys(players.player1.pieces).map((piece) => {
       return (
-        <li className={"chess-piece white " + players.player1.pieces[piece].class}></li>
+        <Piece game={this.props.game} model={players.player1.pieces[piece]} />
       )
     })
 
-    const player2 = Object.keys(players.player2.pieces).map(function(piece) {
+    const player2 = Object.keys(players.player2.pieces).map((piece) => {
       return (
-        <li className={"chess-piece black " + players.player2.pieces[piece].class}></li>
+        <Piece game={this.props.game} model={players.player2.pieces[piece]} />
       )
     })
 
