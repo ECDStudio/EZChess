@@ -13,20 +13,24 @@ class Piece extends Component {
     }, 1);
   };
 
-  toggleTargets(model) {
-    const targets = (() => {
-      return (
-        <TargetPositions model={model} game={this.state.game} updateGame={this.updateGame} />
-      )
-    })();
-    this.props.setCurrent(this.props.id);
-    setTimeout(() => {
-      if (this.props.current === this.props.id) {
-        this.setState({
-          targets: targets,
-        });
+  toggleTargets(model, game) {
+    for (let p in game.players) {
+      if (game.players[p].side === model.side && game.players[p].isTurn === true) {
+        const targets = (() => {
+          return (
+            <TargetPositions model={model} game={this.state.game} updateGame={this.updateGame} />
+          )
+        })();
+        this.props.setCurrent(this.props.id);
+        setTimeout(() => {
+          if (this.props.current === this.props.id) {
+            this.setState({
+              targets: targets,
+            });
+          }
+        }, 1)
       }
-    }, 1)
+    }
   }
 
   componentWillReceiveProps() {
@@ -46,7 +50,7 @@ class Piece extends Component {
       <li>
           <a className={`chess-piece ${this.props.model.side} ${this.props.model.class}`}
           style={style}
-          onClick={() => this.toggleTargets(this.props.model)}>
+          onClick={() => this.toggleTargets(this.props.model, this.state.game)}>
           </a>
           {this.state.targets}
       </li>
