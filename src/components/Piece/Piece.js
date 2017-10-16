@@ -8,9 +8,7 @@ class Piece extends Component {
   };
 
   updateGame = () => {
-    setTimeout(() => {
-      this.props.updateGame();
-    }, 1);
+    this.props.updateGame();
   };
 
   toggleTargets(model, game) {
