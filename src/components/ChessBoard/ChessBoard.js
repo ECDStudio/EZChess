@@ -2,31 +2,37 @@ import React, { Component } from 'react';
 import Piece from '../Piece/Piece';
 
 class ChessBoard extends Component {
+  state = {
+    game: this.props.game,
+  }
+
   updateGame = () => {
     this.props.updateGame();
+    this.setState({
+      game: this.state.game,
+    })
   }
-  
-  players = this.props.game.players;
 
-  player1 = Object.keys(this.players.player1.pieces).map((piece) => {
-    return (
-      <Piece game={this.props.game} model={this.players.player1.pieces[piece]} updateGame={this.updateGame} key={piece} />
-    )
-  })
-
-  player2 = Object.keys(this.players.player2.pieces).map((piece) => {
-    return (
-      <Piece game={this.props.game} model={this.players.player2.pieces[piece]} updateGame={this.updateGame} key={piece} />
-    )
-  })
   render() {
+    let player1 = Object.keys(this.state.game.players.player1.pieces).map((piece) => {
+      return (
+        <Piece game={this.state.game} model={this.state.game.players.player1.pieces[piece]} updateGame={this.updateGame} key={piece} />
+      )
+    })
+
+    let player2 = Object.keys(this.state.game.players.player2.pieces).map((piece) => {
+      return (
+        <Piece game={this.state.game} model={this.state.game.players.player2.pieces[piece]} updateGame={this.updateGame} key={piece} />
+      )
+    })
+
     return (
       <div className="chessboard">
         <ul>
-          {this.player1}
+          {player1}
         </ul>
         <ul>
-          {this.player2}
+          {player2}
         </ul>
       </div>
     );

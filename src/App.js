@@ -7,7 +7,7 @@ import TurnIndicator from './components/TurnIndicator/TurnIndicator';
 class App extends Component {
   state = {
     chess: new Chess(),
-  };
+  }
 
   updateGame = () => {
     this.setState({

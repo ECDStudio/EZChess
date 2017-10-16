@@ -2,33 +2,14 @@ import React, { Component } from 'react';
 
 class Piece extends Component {
   state = {
-    style: {
-      left: `${this.props.model.position.x * 12.5}%`,
-      bottom: `${this.props.model.position.y * 12.5}%`,
-    }
+    game: this.props.game
   };
-  update = () => {
-    this.setState(prevState => ({
-      style: {
-        zIndex: 20,
-        left: `${this.props.model.position.x * 12.5}%`,
-        bottom: `${this.props.model.position.y * 12.5}%`,
-      }
-    }));
+
+  updateGame = () => {
+    this.props.updateGame();
     setTimeout(() => {
-      this.setState(prevState => ({
-        style: {
-          zIndex: 1,
-          left: `${this.props.model.position.x * 12.5}%`,
-          bottom: `${this.props.model.position.y * 12.5}%`,
-        }
-      }));
     }, 500);
   };
-  
-  componentWillUpdate() {
-    this.props.updateGame();
-  }
 
   clearTargets() {
     // Remove all pieces' selectable targets in the DOM
@@ -56,7 +37,7 @@ class Piece extends Component {
 
   toPosition(piece, position, game) {
     piece.toPosition(game, ...position);
-    this.update();
+    this.updateGame();
     this.clearTargets();
     for (let player in game.players) {
       for (let p in game.players[player].pieces) {
@@ -76,10 +57,15 @@ class Piece extends Component {
   }
 
   render() {
+    let style = {
+      display: this.props.model.position.x === -1 ? 'none' : 'block',
+      left: `${this.props.model.position.x * 12.5}%`,
+      bottom: `${this.props.model.position.y * 12.5}%`,
+    }
     return (
       <li className={`chess-piece ${this.props.model.side} ${this.props.model.class}`}
-          style={this.state.style}
-          onClick={() => this.availableMoves(this.props.model, this.props.game)}>
+          style={style}
+          onClick={() => this.availableMoves(this.props.model, this.state.game)}>
       </li>
     )
   }
