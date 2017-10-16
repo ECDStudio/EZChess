@@ -92,8 +92,8 @@ export default class Pawn extends Piece {
 		}
 		setTimeout(() => {
 			// Indicate this move makes it able to be captured by en passant the next turn
-			if (this.step === 1 && pX === 3 && this.side === 'white' ||
-				this.step === 1 && pX === 4 && this.side === 'black') {
+			if ((this.step === 1 && pX === 3 && this.side === 'white') ||
+				(this.step === 1 && pX === 4 && this.side === 'black')) {
 				for (let player in game.players) {
 					if (game.players[player].side !== this.side) {
 						for (let p in game.players[player].pieces) {

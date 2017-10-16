@@ -1,4 +1,3 @@
-import { observable } from 'mobx';
 import React, { Component } from 'react';
 
 class Piece extends Component {
