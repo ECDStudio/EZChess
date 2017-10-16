@@ -5,13 +5,21 @@ import ChessBoard from './components/ChessBoard/ChessBoard';
 import TurnIndicator from './components/TurnIndicator/TurnIndicator';
 
 class App extends Component {
-  chess = new Chess();
+  state = {
+    chess: new Chess(),
+  };
+
+  updateGame = () => {
+    this.setState({
+      chess: this.state.chess,
+    })
+  }
 
   render() {
     return (
       <div className="chess-container">
-        <ChessBoard game={this.chess} />
-        <TurnIndicator game={this.chess} />
+        <ChessBoard game={this.state.chess} updateGame={this.updateGame} />
+        <TurnIndicator game={this.state.chess} />
       </div>
     );
   }

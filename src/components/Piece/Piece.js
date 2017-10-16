@@ -23,11 +23,11 @@ class Piece extends Component {
           bottom: `${this.props.model.position.y * 12.5}%`,
         }
       }));
-    }, 1000);
+    }, 500);
   };
   
   componentWillUpdate() {
-    console.log('123')
+    this.props.updateGame();
   }
 
   clearTargets() {

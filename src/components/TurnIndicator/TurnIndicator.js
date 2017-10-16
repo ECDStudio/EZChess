@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class TurnIndicator extends Component {
   render() {
-    const game = this.props.game;
+    let game = this.props.game;
     let currentTurn;
   
     for (let player in game.players) {
