@@ -4,6 +4,7 @@ import Piece from '../Piece/Piece';
 class ChessBoard extends Component {
   state = {
     game: this.props.game,
+    current: null,
   }
 
   updateGame = () => {
@@ -13,16 +14,36 @@ class ChessBoard extends Component {
     })
   }
 
+  setCurrent = (id) => {
+    this.setState({
+      current: id,
+    })
+  }
+
   render() {
-    let player1 = Object.keys(this.state.game.players.player1.pieces).map((piece) => {
+    const player1 = Object.keys(this.state.game.players.player1.pieces).map((piece) => {
       return (
-        <Piece game={this.state.game} model={this.state.game.players.player1.pieces[piece]} updateGame={this.updateGame} key={piece} />
+        <Piece
+          game={this.state.game}
+          model={this.state.game.players.player1.pieces[piece]}
+          updateGame={this.updateGame}
+          setCurrent={this.setCurrent}
+          current={this.state.current}
+          id={piece}
+          key={piece} />
       )
     })
 
-    let player2 = Object.keys(this.state.game.players.player2.pieces).map((piece) => {
+    const player2 = Object.keys(this.state.game.players.player2.pieces).map((piece) => {
       return (
-        <Piece game={this.state.game} model={this.state.game.players.player2.pieces[piece]} updateGame={this.updateGame} key={piece} />
+        <Piece
+          game={this.state.game}
+          model={this.state.game.players.player2.pieces[piece]}
+          updateGame={this.updateGame}
+          setCurrent={this.setCurrent}
+          current={this.state.current}
+          id={piece}
+          key={piece} />
       )
     })
 

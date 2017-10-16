@@ -68,73 +68,77 @@ body {
 	ul {
 		display:inline;
 		
-		li.chess-piece {
-			position: absolute;
-			display: block;
-			width: 10.5%;
-			height: 10.5%;
-			margin: 1%;
-			border-radius: 500px;
-			cursor: pointer;
-			background-size: 100% auto;
-			z-index: 1;
-			@include transition(all, 0.5s, ease-in-out);
-			
-			
-			&.white {
-				@include rotate(90);
+		li {
+			display: inline;
+
+			a.chess-piece {
+				position: absolute;
+				display: block;
+				width: 10.5%;
+				height: 10.5%;
+				margin: 1%;
+				border-radius: 500px;
+				cursor: pointer;
+				background-size: 100% auto;
+				z-index: 1;
+				@include transition(all, 0.5s, ease-in-out);
 				
-				&.king {
-					background-image: url('img/pieces/kingW.png');
+				
+				&.white {
+					@include rotate(90);
+					
+					&.king {
+						background-image: url('img/pieces/kingW.png');
+					}
+					&.queen {
+						background-image: url('img/pieces/queenW.png');
+					}
+					&.rook {
+						background-image: url('img/pieces/rookW.png');
+					}
+					&.knight {
+						background-image: url('img/pieces/knightW.png');
+					}
+					&.bishop {
+						background-image: url('img/pieces/bishopW.png');
+					}
+					&.pawn {
+						background-image: url('img/pieces/pawnW.png');
+					}
 				}
-				&.queen {
-					background-image: url('img/pieces/queenW.png');
-				}
-				&.rook {
-					background-image: url('img/pieces/rookW.png');
-				}
-				&.knight {
-					background-image: url('img/pieces/knightW.png');
-				}
-				&.bishop {
-					background-image: url('img/pieces/bishopW.png');
-				}
-				&.pawn {
-					background-image: url('img/pieces/pawnW.png');
+				&.black {
+					@include rotate(-90);
+					
+					&.king {
+						background-image: url('img/pieces/kingB.png');
+					}
+					&.queen {
+						background-image: url('img/pieces/queenB.png');
+					}
+					&.rook {
+						background-image: url('img/pieces/rookB.png');
+					}
+					&.knight {
+						background-image: url('img/pieces/knightB.png');
+					}
+					&.bishop {
+						background-image: url('img/pieces/bishopB.png');
+					}
+					&.pawn {
+						background-image: url('img/pieces/pawnB.png');
+					}
 				}
 			}
-			&.black {
-				@include rotate(-90);
-				
-				&.king {
-					background-image: url('img/pieces/kingB.png');
-				}
-				&.queen {
-					background-image: url('img/pieces/queenB.png');
-				}
-				&.rook {
-					background-image: url('img/pieces/rookB.png');
-				}
-				&.knight {
-					background-image: url('img/pieces/knightB.png');
-				}
-				&.bishop {
-					background-image: url('img/pieces/bishopB.png');
-				}
-				&.pawn {
-					background-image: url('img/pieces/pawnB.png');
-				}
+
+			.target-position {
+				position: absolute;
+				display: block;
+				width: 12.5%;
+				height: 12.5%;
+				background: rgba(150, 150, 150, 0.8);
+				cursor: pointer;
+				z-index: 2;
 			}
 		}
-	}
-	
-	> a {
-		position: absolute;
-		display: block;
-		width: 12.5%;
-		height: 12.5%;
-		background: rgba(150, 150, 150, 0.8);
-		cursor: pointer;
-		z-index: 2;
 	}
 }
