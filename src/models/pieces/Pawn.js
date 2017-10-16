@@ -1,5 +1,5 @@
 import Piece from '../Piece';
-import { checkPosition } from '../../checkPosition';
+import { checkPosition } from '../checkPosition';
 
 export default class Pawn extends Piece {
 	constructor(side, pX, pY) {

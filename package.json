@@ -1,32 +1,16 @@
 {
-  "name": "ezchess",
-  "version": "1.0.0",
-  "description": "A 'create a chess game in JS' challenge",
-  "main": "main.js",
+  "name": "ez-chess",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-scripts": "1.0.14"
+  },
   "scripts": {
-    "test": "karma start",
-    "scss": "sass --watch ./css --style compressed"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ECDStudio/EZChess.git"
-  },
-  "author": "Eriz Chau",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ECDStudio/EZChess/issues"
-  },
-  "homepage": "https://github.com/ECDStudio/EZChess#readme",
-  "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.0",
-    "jasmine-core": "^2.8.0",
-    "karma": "^1.7.1",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^1.1.0",
-    "karma-webpack": "^2.0.4",
-    "uglifyjs-webpack-plugin": "^0.4.6",
-    "webpack": "^3.5.6"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }
