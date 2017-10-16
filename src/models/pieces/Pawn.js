@@ -27,7 +27,9 @@ export default class Pawn extends Piece {
 		
 		// First step can take 2 steps, otherwise 1
 		if (this.step === 0) {
-			if (check(xDir(2), this.position.y) !== 'friendly' &&
+			if (check(xDir(1), this.position.y) !== 'friendly' &&
+				check(xDir(1), this.position.y) !== 'enemy' &&
+				check(xDir(2), this.position.y) !== 'friendly' &&
 				check(xDir(2), this.position.y) !== 'enemy') {
 				positions.push([xDir(2), this.position.y, false]);
 			}
