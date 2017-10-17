@@ -9,9 +9,6 @@ class ChessBoard extends Component {
 
   updateGame = () => {
     this.props.updateGame();
-    this.setState({
-      game: this.state.game,
-    })
   }
 
   setCurrent = (id) => {

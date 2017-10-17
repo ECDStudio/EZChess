@@ -5,7 +5,7 @@ class Piece extends Component {
   state = {
     game: this.props.game,
     targets: '',
-  };
+  }
 
   updateGame = () => {
     this.props.updateGame();
