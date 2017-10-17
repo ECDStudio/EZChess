@@ -54,7 +54,20 @@ body {
 	padding: 2%;
 	width: 100%;
 	max-width: 800px;
+	overflow:hidden;
 	@include border-box;
+	
+	&.white .chessboard {
+		@include rotate(-90);
+	}
+	
+	&.black .chessboard {
+		@include rotate(90);
+	}
+	
+	&.spec .chessboard {
+		@include rotate(0);
+	}
 }
 
 .chessboard {
@@ -65,7 +78,7 @@ body {
 	padding: 50% 0;
 	overflow: hidden;
 	@include border-box;
-	@include rotate(-90);
+	@include transition(all, 1s, ease-in-out);
 	
 	ul.tiles {
 		position: absolute;
@@ -230,4 +243,26 @@ body {
 .hud {
 	margin-top: 15px;
 	font-size: 1.5em;
+	text-align: center;
+	
+	.current-turn {
+		span {
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+	}
+	
+	a {
+		display: inline-block;
+		margin:5px 10px;
+		padding: 10px 18px;
+		background: $board-dark;
+		color: $board-light;
+		cursor: pointer;
+		@include transition(all, 0.5s, ease-in-out);
+		
+		&.current {
+			opacity: 0.6;
+		}
+	}
 }

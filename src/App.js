@@ -3,10 +3,12 @@ import './App.css';
 import Chess from './models/Chess';
 import ChessBoard from './components/ChessBoard/ChessBoard';
 import TurnIndicator from './components/TurnIndicator/TurnIndicator';
+import PointOfView from './components/PointOfView/PointOfView';
 
 class App extends Component {
   state = {
     chess: new Chess(),
+    view: 'white',
   }
 
   updateGame = () => {
@@ -15,12 +17,19 @@ class App extends Component {
     })
   }
 
+  updateView = (view) => {
+    this.setState({
+      view: view,
+    })
+  }
+
   render() {
     return (
-      <div className="chess-container">
+      <div className={`chess-container ${this.state.view}`}>
         <ChessBoard game={this.state.chess} updateGame={this.updateGame} />
         <div className="hud">
           <TurnIndicator game={this.state.chess} />
+          <PointOfView game={this.state.chess} current={this.state.view} updateView={this.updateView} />
         </div>
       </div>
     );
