@@ -21,6 +21,7 @@
 
 $board-light: #fff;
 $board-dark: #444;
+$hightlight: rgba(140, 140, 140, 0.9);
 
 *{
 	background:none;
@@ -231,7 +232,7 @@ body {
 				display: block;
 				width: 12.5%;
 				height: 12.5%;
-				background: rgba(150, 150, 150, 0.8);
+				background: $hightlight;
 				cursor: pointer;
 				z-index: 2;
 				font-size: 0;
@@ -262,7 +263,7 @@ body {
 		@include transition(all, 0.5s, ease-in-out);
 		
 		&.current {
-			opacity: 0.6;
+			background: $hightlight;
 		}
 	}
 }
