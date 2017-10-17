@@ -11,8 +11,8 @@ class TurnIndicator extends Component {
       }
     }
     return (
-      <div>
-        Current Turn: {currentTurn}
+      <div className="current-turn">
+        Current Turn: <span>{currentTurn}</span>
       </div>
     );
   }

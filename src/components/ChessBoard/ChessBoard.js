@@ -18,6 +18,23 @@ class ChessBoard extends Component {
   }
 
   render() {
+    const length = 8; 
+    const list = Array.apply(null, {length: length}).map(Number.call, Number);
+    const row = list.map((i) => {
+      return (
+        <li key={i}></li>
+      )
+    });
+    const tiles = list.map((i) => {
+      return (
+        <li key={i}>
+          <ul>
+            { row }
+          </ul>
+        </li>
+      )
+    });
+
     const player1 = Object.keys(this.state.game.players.player1.pieces).map((piece) => {
       return (
         <Piece
@@ -46,11 +63,14 @@ class ChessBoard extends Component {
 
     return (
       <div className="chessboard">
-        <ul>
-          {player1}
+        <ul className="tiles">
+          { tiles }
         </ul>
-        <ul>
-          {player2}
+        <ul className="player">
+          { player1 }
+        </ul>
+        <ul className="player">
+          { player2 }
         </ul>
       </div>
     );

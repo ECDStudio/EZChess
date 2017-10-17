@@ -19,6 +19,10 @@
 	box-sizing: border-box;
 }
 
+$board-light: #fff;
+$board-dark: #444;
+$hightlight: rgba(140, 140, 140, 0.9);
+
 *{
 	background:none;
 	margin:0;
@@ -48,24 +52,117 @@ body {
 .chess-container {
 	position: relative;
 	margin: auto;
+	padding: 2%;
 	width: 100%;
 	max-width: 800px;
+	overflow:hidden;
+	@include border-box;
 	
-	> div {
-		text-align: center;
+	&.white .chessboard {
+		@include rotate(-90);
+	}
+	
+	&.black .chessboard {
+		@include rotate(90);
+	}
+	
+	&.spec .chessboard {
+		@include rotate(0);
 	}
 }
 
 .chessboard {
 	position: relative;
+	border: 1px solid $board-dark;
 	width: 100%;
 	height: 0;
 	padding: 50% 0;
 	overflow: hidden;
 	@include border-box;
-	@include rotate(-90);
+	@include transition(all, 1s, ease-in-out);
 	
-	ul {
+	ul.tiles {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		
+		> li {
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 12.5%;
+			top: 0;
+			left: 0;
+			
+			&:nth-child(2) {
+				top: 12.5%;
+			}
+			&:nth-child(3) {
+				top: 25%;
+			}
+			&:nth-child(4) {
+				top: 37.5%;
+			}
+			&:nth-child(5) {
+				top: 50%;
+			}
+			&:nth-child(6) {
+				top: 62.5%;
+			}
+			&:nth-child(7) {
+				top: 75%;
+			}
+			&:nth-child(8) {
+				top: 87.5%;
+			}
+			
+			> ul {
+				width: 100%;
+				height: 100%;
+				
+				> li {
+					position: absolute;
+					display: block;
+					width: 12.5%;
+					height: 100%;
+					left: 0;
+					top: 0;
+					background: $board-light;
+			
+					&:nth-child(2) {
+						left: 12.5%;
+					}
+					&:nth-child(3) {
+						left: 25%;
+					}
+					&:nth-child(4) {
+						left: 37.5%;
+					}
+					&:nth-child(5) {
+						left: 50%;
+					}
+					&:nth-child(6) {
+						left: 62.5%;
+					}
+					&:nth-child(7) {
+						left: 75%;
+					}
+					&:nth-child(8) {
+						left: 87.5%;
+					}
+				}
+			}
+			
+			&:nth-child(odd) > ul > li:nth-child(even),
+			&:nth-child(even) > ul > li:nth-child(odd) {
+				background: $board-dark;
+			}
+		}
+	}
+	
+	ul.player {
 		display:inline;
 		
 		li {
@@ -135,10 +232,38 @@ body {
 				display: block;
 				width: 12.5%;
 				height: 12.5%;
-				background: rgba(150, 150, 150, 0.8);
+				background: $hightlight;
 				cursor: pointer;
 				z-index: 2;
+				font-size: 0;
 			}
+		}
+	}
+}
+	
+.hud {
+	margin-top: 15px;
+	font-size: 1.5em;
+	text-align: center;
+	
+	.current-turn {
+		span {
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+	}
+	
+	a {
+		display: inline-block;
+		margin:5px 10px;
+		padding: 10px 18px;
+		background: $board-dark;
+		color: $board-light;
+		cursor: pointer;
+		@include transition(all, 0.5s, ease-in-out);
+		
+		&.current {
+			background: $hightlight;
 		}
 	}
 }

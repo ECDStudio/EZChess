@@ -1,4 +1,4 @@
-import Chess from './models/Chess';
+import Chess from './Chess';
 import { checkPosition } from './checkPosition';
 
 describe('checkPosition', function() {
