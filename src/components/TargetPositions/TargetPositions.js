@@ -42,7 +42,7 @@ class TargetPositions extends Component {
       }
       return (
         <a className="target-position" style={style} key={target}
-          onClick={() => this.toTarget(this.props.model, moves[target], this.state.game)}></a>
+          onClick={() => this.toTarget(this.props.model, moves[target], this.state.game)}>.</a>
       )
     })
     return (

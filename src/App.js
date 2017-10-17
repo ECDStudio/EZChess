@@ -19,7 +19,9 @@ class App extends Component {
     return (
       <div className="chess-container">
         <ChessBoard game={this.state.chess} updateGame={this.updateGame} />
-        <TurnIndicator game={this.state.chess} />
+        <div className="hud">
+          <TurnIndicator game={this.state.chess} />
+        </div>
       </div>
     );
   }
