@@ -29,37 +29,34 @@ describe('availableMoves', function() {
 
   describe('En Passant Scenerio:', function() {
     it('should return a list of 2 positions', function() {
-      jasmine.clock().install();
       pawn1.toPosition(chess, 4, 2);
       chess.turn += 1;
       pawn2.toPosition(chess, 4, 1, true);
       chess.turn += 1;
-      jasmine.clock().tick(1);
-      expect(pawn1.availableMoves(chess).length).toEqual(2);
-      jasmine.clock().uninstall();
+      setTimeout(() => {
+        expect(pawn1.availableMoves(chess).length).toEqual(2);
+      }, 1);
     });
     it('should return a position of [-1, -1]', function() {
-      jasmine.clock().install();
       pawn1.toPosition(chess, 4, 2);
       chess.turn += 1;
       pawn2.toPosition(chess, 4, 1, true);
       chess.turn += 1;
-      jasmine.clock().tick(1);
-      pawn1.toPosition(chess, 5, 1, true);
-      expect(pawn2.position.x).toEqual(-1);
-      expect(pawn2.position.y).toEqual(-1);
-      jasmine.clock().uninstall();
+      setTimeout(() => {
+        pawn1.toPosition(chess, 5, 1, true);
+        expect(pawn2.position.x).toEqual(-1);
+        expect(pawn2.position.y).toEqual(-1);
+      }, 1);
     });
     it('should return a list of 1 positions', function() {
-      jasmine.clock().install();
       pawn1.toPosition(chess, 4, 2);
       chess.turn += 1;
       pawn2.toPosition(chess, 4, 1, true);
       chess.turn += 1;
-      jasmine.clock().tick(1);
-      chess.turn += 1;
-      expect(pawn1.availableMoves(chess).length).toEqual(1);
-      jasmine.clock().uninstall();
+      setTimeout(() => {
+        chess.turn += 1;
+        expect(pawn1.availableMoves(chess).length).toEqual(1);
+      }, 1);
     });
   })
   describe('Promotion', function() {
