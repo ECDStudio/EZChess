@@ -23,6 +23,11 @@ class App extends Component {
     })
   }
 
+  resetGame = () => {
+    this.state.chess.reset();
+    this.updateGame();
+  }
+
   render() {
     return (
       <div className={`chess-container ${this.state.view}`}>
@@ -30,6 +35,9 @@ class App extends Component {
         <div className="hud">
           <TurnIndicator game={this.state.chess} />
           <PointOfView game={this.state.chess} current={this.state.view} updateView={this.updateView} />
+          <div>
+            <a onClick={() => this.resetGame()}>Reset Game</a>
+          </div>
         </div>
       </div>
     );
