@@ -45,13 +45,11 @@ class Piece extends Component {
     }
 
     return (
-      <li>
-          <a className={`chess-piece ${this.props.model.side} ${this.props.model.class}`}
-          style={style}
-          onClick={() => this.toggleTargets(this.props.model, this.state.game)}>
-          </a>
-          {this.state.targets}
-      </li>
+      <a className={`chess-piece ${this.props.model.side} ${this.props.model.class}`}
+      style={style}
+      onClick={() => this.toggleTargets(this.props.model, this.state.game)}>
+      </a>
+      {this.state.targets}
     )
   }
 }

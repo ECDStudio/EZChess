@@ -36,7 +36,9 @@ class App extends Component {
           <TurnIndicator game={this.state.chess} />
           <PointOfView game={this.state.chess} current={this.state.view} updateView={this.updateView} />
           <div>
-            <a onClick={() => this.resetGame()}>Reset Game</a>
+            <a onClick={() => this.resetGame()}>
+              Reset Game
+            </a>
           </div>
         </div>
       </div>
