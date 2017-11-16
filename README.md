@@ -2,11 +2,13 @@
 
 ## Work in Progress
 
-To preview the game in action locally, run:
-```
-npm install
-```
-then
-```
-npm start
-```
+Working demo: https://ecdstudio.github.io/EZChess/
+
+
+## TODOs Plan
+
+- add check & checkmate: limit king to move out of check; annouce checkmate & stop game
+- complete all unit tests
+- spice up UI
+- developer server + database to support cross browser, then cross device PvP
+- potential hybrid mobile app
