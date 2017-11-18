@@ -16,8 +16,8 @@ class TargetPositions extends Component {
     piece.toPosition(game, ...position);
     this.updateGame();
     setTimeout(() => {
-      if ((piece.side === 'white' && piece.position.x === 7) ||
-        (piece.side ==='black' && piece.position.x === 0)) {
+      if ((piece.class === 'pawn' && piece.side === 'white' && piece.position.x === 7) ||
+        (piece.class === 'pawn' && piece.side ==='black' && piece.position.x === 0)) {
         for (let player in game.players) {
           if (game.players[player].side === piece.side) {
             for (let p in game.players[player].pieces) {
