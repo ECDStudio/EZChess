@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Chess from './models/Chess';
+import Queen from './models/pieces/Queen';
 import ChessBoard from './components/ChessBoard/ChessBoard';
 import TurnIndicator from './components/TurnIndicator/TurnIndicator';
 import PointOfView from './components/PointOfView/PointOfView';
@@ -42,8 +43,15 @@ class App extends Component {
       for (let p in this.game.players) {
         this.game.players[p].isTurn = data.players[p].isTurn;
         for (let q in this.game.players[p].pieces) {
-          this.game.players[p].pieces[q].position = data.players[p].pieces[q].position;
-          this.game.players[p].pieces[q].step = data.players[p].pieces[q].step;
+          const piece = this.game.players[p].pieces[q];
+          piece.position = data.players[p].pieces[q].position;
+          piece.step = data.players[p].pieces[q].step;
+          // Detect Pawn Promotion here
+          if (piece.class === 'pawn' &&
+            ((piece.side === 'white' && piece.position.x === 7) ||
+            (piece.side ==='black' && piece.position.x === 0))) {
+            this.game.players[p].pieces[q] = new Queen(piece.side, piece.position.x, piece.position.y);
+          }
         }
       }
       this.setState({
