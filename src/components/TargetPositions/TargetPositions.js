@@ -14,6 +14,7 @@ class TargetPositions extends Component {
 
   toTarget(piece, position, game) {
     piece.toPosition(game, ...position);
+    game.switchTurn();
     this.updateGame();
     setTimeout(() => {
       if ((piece.class === 'pawn' && piece.side === 'white' && piece.position.x === 7) ||
@@ -30,7 +31,6 @@ class TargetPositions extends Component {
         this.props.updateGame();
       }
     }, 1);
-    game.switchTurn();
   }
 
   render() {

@@ -4,17 +4,21 @@ import Chess from './models/Chess';
 import ChessBoard from './components/ChessBoard/ChessBoard';
 import TurnIndicator from './components/TurnIndicator/TurnIndicator';
 import PointOfView from './components/PointOfView/PointOfView';
+import socketIOClient from "socket.io-client";
 
 class App extends Component {
   state = {
     chess: new Chess(),
     view: 'white',
+    endpoint: 'http://localhost:3001',
   }
 
   updateGame = () => {
     this.setState({
       chess: this.state.chess,
-    })
+    });
+    const socket = socketIOClient(this.state.endpoint);
+    socket.emit('ToAPI', this.state.chess);
   }
 
   updateView = (view) => {
@@ -26,6 +30,13 @@ class App extends Component {
   resetGame = () => {
     this.state.chess.reset();
     this.updateGame();
+  }
+
+  componentDidMount() {
+    const socket = socketIOClient(this.state.endpoint);
+    socket.on('FromAPI', data => {
+      console.log(data);
+    });
   }
 
   render() {
