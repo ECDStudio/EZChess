@@ -39,8 +39,13 @@ class App extends Component {
     const socket = socketIOClient(this.state.endpoint);
     socket.on('FromAPI', data => {
       this.game.turn = data.turn;
-      this.game.players.player1.isTurn = data.players.player1.isTurn;
-      this.game.players.player2.isTurn = data.players.player2.isTurn;
+      for (let p in this.game.players) {
+        this.game.players[p].isTurn = data.players[p].isTurn;
+        for (let q in this.game.players[p].pieces) {
+          this.game.players[p].pieces[q].position = data.players[p].pieces[q].position;
+          this.game.players[p].pieces[q].step = data.players[p].pieces[q].step;
+        }
+      }
       this.setState({
         chess: this.game,
       });
