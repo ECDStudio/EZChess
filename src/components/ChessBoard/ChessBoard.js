@@ -37,30 +37,28 @@ class ChessBoard extends Component {
 
     const player1 = Object.keys(this.state.game.players.player1.pieces).map((piece) => {
       return (
-        <li>
+        <li key={piece}>
           <Piece
           game={this.state.game}
           model={this.state.game.players.player1.pieces[piece]}
           updateGame={this.updateGame}
           setCurrent={this.setCurrent}
           current={this.state.current}
-          id={piece}
-          key={piece} />
+          id={piece} />
         </li>
       )
     })
 
     const player2 = Object.keys(this.state.game.players.player2.pieces).map((piece) => {
       return (
-        <li>
+        <li key={piece}>
           <Piece
           game={this.state.game}
           model={this.state.game.players.player2.pieces[piece]}
           updateGame={this.updateGame}
           setCurrent={this.setCurrent}
           current={this.state.current}
-          id={piece}
-          key={piece} />
+          id={piece} />
         </li>
       )
     })
