@@ -7,8 +7,8 @@ class Piece extends Component {
     targets: '',
   }
 
-  updateGame = (g) => {
-    this.props.updateGame(g);
+  updateGame = (game) => {
+    this.props.updateGame(game);
   };
 
   toggleTargets(model, game) {

@@ -6,9 +6,9 @@ class TargetPositions extends Component {
     game: this.props.game
   }
 
-  updateGame = (g) => {
+  updateGame = (game) => {
     setTimeout(() => {
-      this.props.updateGame(g);
+      this.props.updateGame(game);
     }, 1);
   };
 

@@ -7,18 +7,21 @@ import PointOfView from './components/PointOfView/PointOfView';
 import socketIOClient from "socket.io-client";
 
 class App extends Component {
+  game = new Chess();
+
   state = {
-    chess: new Chess(),
+    chess: this.game,
     view: 'white',
     endpoint: 'http://localhost:3001',
   }
 
-  updateGame = (g) => {
+  updateGame = (game) => {
+    this.game = game;
     this.setState({
-      chess: g,
+      chess: game,
     });
     const socket = socketIOClient(this.state.endpoint);
-    socket.emit('ToAPI', g);
+    socket.emit('ToAPI', game);
   }
 
   updateView = (view) => {
@@ -29,16 +32,18 @@ class App extends Component {
 
   resetGame = () => {
     this.state.chess.reset();
-    this.updateGame();
+    this.updateGame(this.state.chess);
   }
 
   componentDidMount() {
     const socket = socketIOClient(this.state.endpoint);
     socket.on('FromAPI', data => {
-      console.log(data);
-    this.setState({
-      chess: data,
-    });
+      this.game.turn = data.turn;
+      this.game.players.player1.isTurn = data.players.player1.isTurn;
+      this.game.players.player2.isTurn = data.players.player2.isTurn;
+      this.setState({
+        chess: this.game,
+      });
     });
   }
 
