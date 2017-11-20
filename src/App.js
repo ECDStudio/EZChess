@@ -13,12 +13,12 @@ class App extends Component {
     endpoint: 'http://localhost:3001',
   }
 
-  updateGame = () => {
+  updateGame = (g) => {
     this.setState({
-      chess: this.state.chess,
+      chess: g,
     });
     const socket = socketIOClient(this.state.endpoint);
-    socket.emit('ToAPI', this.state.chess);
+    socket.emit('ToAPI', g);
   }
 
   updateView = (view) => {
@@ -36,6 +36,9 @@ class App extends Component {
     const socket = socketIOClient(this.state.endpoint);
     socket.on('FromAPI', data => {
       console.log(data);
+    this.setState({
+      chess: data,
+    });
     });
   }
 

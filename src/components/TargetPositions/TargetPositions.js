@@ -6,16 +6,16 @@ class TargetPositions extends Component {
     game: this.props.game
   }
 
-  updateGame = () => {
+  updateGame = (g) => {
     setTimeout(() => {
-      this.props.updateGame();
+      this.props.updateGame(g);
     }, 1);
   };
 
   toTarget(piece, position, game) {
     piece.toPosition(game, ...position);
     game.switchTurn();
-    this.updateGame();
+    this.updateGame(game);
     setTimeout(() => {
       if ((piece.class === 'pawn' && piece.side === 'white' && piece.position.x === 7) ||
         (piece.class === 'pawn' && piece.side ==='black' && piece.position.x === 0)) {
@@ -28,7 +28,7 @@ class TargetPositions extends Component {
             }
           }
         }
-        this.props.updateGame();
+        this.props.updateGame(game);
       }
     }, 1);
   }

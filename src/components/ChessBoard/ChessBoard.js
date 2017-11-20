@@ -7,8 +7,8 @@ class ChessBoard extends Component {
     current: null,
   }
 
-  updateGame = () => {
-    this.props.updateGame();
+  updateGame = (g) => {
+    this.props.updateGame(g);
   }
 
   setCurrent = (id) => {
