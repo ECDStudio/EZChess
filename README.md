@@ -10,5 +10,5 @@ Working demo: https://ecdstudio.github.io/EZChess/
 - add check & checkmate: limit king to move out of check; annouce checkmate & stop game
 - complete all unit tests
 - spice up UI
-- developer server + database to support cross browser, then cross device PvP
+- develop cross device PvP
 - potential hybrid mobile app
