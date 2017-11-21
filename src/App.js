@@ -9,11 +9,11 @@ import socketIOClient from "socket.io-client";
 
 class App extends Component {
   game = new Chess();
+  api = process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:3001';
 
   state = {
     chess: this.game,
     view: 'white',
-    endpoint: 'http://localhost:3001',
   }
 
   updateGame = (game) => {
@@ -21,7 +21,7 @@ class App extends Component {
     this.setState({
       chess: game,
     });
-    const socket = socketIOClient(this.state.endpoint);
+    const socket = socketIOClient(this.api);
     socket.emit('ToAPI', game);
   }
 
@@ -37,7 +37,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const socket = socketIOClient(this.state.endpoint);
+    const socket = socketIOClient(this.api);
     socket.on('FromAPI', data => {
       this.game.turn = data.turn;
       for (let p in this.game.players) {

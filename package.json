@@ -17,8 +17,6 @@
     "eject": "react-scripts eject",
     "deploy": "npm run build&&gh-pages -d build"
   },
-  "homepage": "https://ECDStudio.github.io/EZChess",
   "devDependencies": {
-    "gh-pages": "^1.0.0"
   }
 }
