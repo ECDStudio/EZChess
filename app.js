@@ -15,12 +15,19 @@ app.get('*', (req, res) => {
 const server = http.createServer(app);
 const io = socketIo(server);
 
+let gameState;
+
 io.on('connection', socket => {
-  socket.on('disconnect', () => console.log('Client disconnected'));
+  if (gameState !== undefined) {
+    socket.emit('FromAPI', gameState);
+  }
 
   socket.on('ToAPI', data => {
-    io.emit('FromAPI', data);
+    gameState = data;
+    io.emit('FromAPI', gameState);
   });
+
+  socket.on('disconnect', () => console.log('Client disconnected'));
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
