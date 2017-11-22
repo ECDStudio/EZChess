@@ -6,15 +6,15 @@ class PointOfView extends Component {
       <div>
         <a className={this.props.current === 'white' ? 'current' : ''}
              onClick={() => this.props.updateView('white')}>
-          White
-        </a>
-        <a className={this.props.current === 'spec' ? 'current' : ''}
-             onClick={() => this.props.updateView('spec')}>
-          Spectator
+          Play as Player 1 (White)
         </a>
         <a className={this.props.current === 'black' ? 'current' : ''}
              onClick={() => this.props.updateView('black')}>
-          Black
+          Play as Player 2 (Black)
+        </a>
+        <a className={this.props.current === 'spec' ? 'current' : ''}
+             onClick={() => this.props.updateView('spec')}>
+          Watch as Spectator
         </a>
       </div>
     );

@@ -40,6 +40,7 @@ class ChessBoard extends Component {
         <li key={piece}>
           <Piece
           game={this.state.game}
+          view={this.props.view}
           model={this.state.game.players.player1.pieces[piece]}
           updateGame={this.updateGame}
           setCurrent={this.setCurrent}
@@ -54,6 +55,7 @@ class ChessBoard extends Component {
         <li key={piece}>
           <Piece
           game={this.state.game}
+          view={this.props.view}
           model={this.state.game.players.player2.pieces[piece]}
           updateGame={this.updateGame}
           setCurrent={this.setCurrent}

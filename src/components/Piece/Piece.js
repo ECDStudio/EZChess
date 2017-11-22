@@ -13,7 +13,7 @@ class Piece extends Component {
 
   toggleTargets(model, game) {
     for (let p in game.players) {
-      if (game.players[p].side === model.side && game.players[p].isTurn === true) {
+      if (this.props.view === game.players[p].side && game.players[p].side === model.side && game.players[p].isTurn === true) {
         const targets = (() => {
           return (
             <TargetPositions model={model} game={this.state.game} updateGame={this.updateGame} />

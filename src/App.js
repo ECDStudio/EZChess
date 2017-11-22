@@ -13,7 +13,7 @@ class App extends Component {
 
   state = {
     chess: this.game,
-    view: 'white',
+    view: 'spec',
   }
 
   updateGame = (game) => {
@@ -63,7 +63,7 @@ class App extends Component {
   render() {
     return (
       <div className={`chess-container ${this.state.view}`}>
-        <ChessBoard game={this.state.chess} updateGame={this.updateGame} />
+        <ChessBoard game={this.state.chess} view={this.state.view} updateGame={this.updateGame} />
         <div className="hud">
           <TurnIndicator game={this.state.chess} />
           <PointOfView game={this.state.chess} current={this.state.view} updateView={this.updateView} />
