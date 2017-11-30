@@ -46,6 +46,13 @@ class App extends Component {
           const piece = this.game.players[p].pieces[q];
           piece.position = data.players[p].pieces[q].position;
           piece.step = data.players[p].pieces[q].step;
+          piece.class = data.players[p].pieces[q].class;
+          if (data.players[p].pieces[q].enPassant) {
+            piece.enPassant = data.players[p].pieces[q].enPassant;
+          }
+          if (data.players[p].pieces[q].enPassTurn) {
+            piece.enPassTurn = data.players[p].pieces[q].enPassTurn;
+          }
           // Detect Pawn Promotion here
           if (piece.class === 'pawn' &&
             ((piece.side === 'white' && piece.position.x === 7) ||
