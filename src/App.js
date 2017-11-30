@@ -17,11 +17,12 @@ class App extends Component {
   }
 
   updateGame = (game) => {
+    const socket = socketIOClient(this.api);
+
     this.game = game;
     this.setState({
       chess: game,
     });
-    const socket = socketIOClient(this.api);
     socket.emit('ToAPI', game);
   }
 
@@ -36,14 +37,33 @@ class App extends Component {
     this.updateGame(this.state.chess);
   }
 
+  watchPawnsPromotion = (game) => {
+    // Used to detect if the updated state of the game has
+    // any Pawn Promotion afer receiving emission from API
+    for (let p in game.players) {
+      for (let q in game.players[p].pieces) {
+        const piece = game.players[p].pieces[q];
+
+        if (piece.class === 'pawn' &&
+          ((piece.side === 'white' && piece.position.x === 7) ||
+          (piece.side ==='black' && piece.position.x === 0))) {
+          game.players[p].pieces[q] = new Queen(piece.side, piece.position.x, piece.position.y);
+        }
+      }
+    }
+  }
+
   componentDidMount() {
     const socket = socketIOClient(this.api);
+
     socket.on('FromAPI', data => {
       this.game.turn = data.turn;
       for (let p in this.game.players) {
         this.game.players[p].isTurn = data.players[p].isTurn;
         for (let q in this.game.players[p].pieces) {
           const piece = this.game.players[p].pieces[q];
+          // Update all piece's properties from the API, since there can be 
+          // multiple changes with one move. (very messy, due for some refactoring)
           piece.position = data.players[p].pieces[q].position;
           piece.step = data.players[p].pieces[q].step;
           piece.class = data.players[p].pieces[q].class;
@@ -53,14 +73,9 @@ class App extends Component {
           if (data.players[p].pieces[q].enPassTurn) {
             piece.enPassTurn = data.players[p].pieces[q].enPassTurn;
           }
-          // Detect Pawn Promotion here
-          if (piece.class === 'pawn' &&
-            ((piece.side === 'white' && piece.position.x === 7) ||
-            (piece.side ==='black' && piece.position.x === 0))) {
-            this.game.players[p].pieces[q] = new Queen(piece.side, piece.position.x, piece.position.y);
-          }
         }
       }
+      this.watchPawnsPromotion(this.game);
       this.setState({
         chess: this.game,
       });
