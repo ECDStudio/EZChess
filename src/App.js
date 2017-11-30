@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Chess from './models/Chess';
 import Queen from './models/pieces/Queen';
+import Pawn from './models/pieces/Pawn';
 import ChessBoard from './components/ChessBoard/ChessBoard';
 import TurnIndicator from './components/TurnIndicator/TurnIndicator';
 import PointOfView from './components/PointOfView/PointOfView';
@@ -33,11 +34,11 @@ class App extends Component {
   }
 
   resetGame = () => {
-    this.state.chess.reset();
+    this.game.reset();
     this.updateGame(this.state.chess);
   }
 
-  watchPawnsPromotion = (game) => {
+  watchPawnsPromotion = (game, newState) => {
     // Used to detect if the updated state of the game has
     // any Pawn Promotion afer receiving emission from API
     for (let p in game.players) {
@@ -61,17 +62,25 @@ class App extends Component {
       for (let p in this.game.players) {
         this.game.players[p].isTurn = data.players[p].isTurn;
         for (let q in this.game.players[p].pieces) {
-          const piece = this.game.players[p].pieces[q];
+          let piece = this.game.players[p].pieces[q];
           // Update all piece's properties from the API, since there can be 
-          // multiple changes with one move. (very messy, due for some refactoring)
-          piece.position = data.players[p].pieces[q].position;
-          piece.step = data.players[p].pieces[q].step;
-          piece.class = data.players[p].pieces[q].class;
-          if (data.players[p].pieces[q].enPassant) {
-            piece.enPassant = data.players[p].pieces[q].enPassant;
-          }
-          if (data.players[p].pieces[q].enPassTurn) {
-            piece.enPassTurn = data.players[p].pieces[q].enPassTurn;
+          // multiple changes with one move. Also watch for morphing from pawn
+          // revertion after game reset (very messy, due for some refactoring)
+          if (piece.class !== data.players[p].pieces[q].class) {
+            if (data.players[p].pieces[q].class === 'pawn') {
+              this.game.players[p].pieces[q] = new Pawn(data.players[p].side, 0, 0);
+              this.game.players[p].pieces[q].position = data.players[p].pieces[q].position;
+            }
+          } else {
+            piece.position = data.players[p].pieces[q].position;
+            piece.step = data.players[p].pieces[q].step;
+            piece.class = data.players[p].pieces[q].class;
+            if (data.players[p].pieces[q].enPassant) {
+              piece.enPassant = data.players[p].pieces[q].enPassant;
+            }
+            if (data.players[p].pieces[q].enPassTurn) {
+              piece.enPassTurn = data.players[p].pieces[q].enPassTurn;
+            }
           }
         }
       }
