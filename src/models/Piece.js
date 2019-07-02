@@ -9,30 +9,37 @@ export default class Piece {
   }
 
   toPosition(game, pX, pY) {
-    if (typeof pX === 'number' && typeof pY === 'number') {
-      if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
-        this.position.x = pX;
-        this.position.y = pY;
-        this.step += 1;
-        
-        // Capture enemy piece in target Position
-        for (let player in game.players) {
-          if (game.players[player].side !== this.side) {
-            for (let p in game.players[player].pieces) {
-              const piece = game.players[player].pieces[p];
-              if (piece.position.x === pX && piece.position.y === pY) {
-                piece.position.x = -1;
-                piece.position.y = -1;
-              }
-            }
-          }
+    if (typeof pX !== 'number' || typeof pY !== 'number') return;
+
+    // validate target position
+    if (pX >= 0 && pX < 8 && pY >= 0 && pY < 8) {
+      this.position.x = pX;
+      this.position.y = pY;
+      this.step += 1;
+
+      // Capture enemy piece in target Position
+      for (let player in game.players) {
+        const enemy = game.players[player];
+
+        if (enemy.side === this.side) continue; // not enemy
+
+        for (let p in enemy.pieces) {
+          const piece = enemy.pieces[p];
+
+          if (piece.position.x !== pX || piece.position.y !== pY) continue;
+
+          piece.position.x = -1;
+          piece.position.y = -1;
         }
-      } else if (pX === -1 && pY === -1) {
-        // [-1, -1] position is being captured
-        this.position.x = pX;
-        this.position.y = pY;
       }
     }
+
+    // [-1, -1] position is being captured
+    if (pX === -1 && pY === -1) {
+      this.position.x = pX;
+      this.position.y = pY;
+    }
+
     return [this.position.x, this.position.y];
   }
 }
