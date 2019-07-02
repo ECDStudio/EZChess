@@ -1,5 +1,7 @@
 import Player from './Player';
 
+import { WHITE, BLACK } from './constants';
+
 export default class Chess {
   constructor() {
     this.reset();
@@ -8,13 +10,13 @@ export default class Chess {
   reset() {
     this.turn = 0;
     this.players = {
-      player1: new Player('white'),
-      player2: new Player('black')
+      player1: new Player(WHITE),
+      player2: new Player(BLACK),
     }
   }
   
   switchTurn() {
-    const { player1, player2} = this.players;
+    const { player1, player2 } = this.players;
 
     player1.isTurn = !player1.isTurn;
     player2.isTurn = !player2.isTurn;

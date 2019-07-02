@@ -18,31 +18,31 @@ describe('Piece', function() {
 
   describe('toPosition', function() {
     it('should change the position of the piece to [5, 5]', function() {
-      piece.toPosition(chess, 5, 5);
+      piece.toPosition(chess, { x: 5, y: 5 });
       expect(piece.position.x).toEqual(5);
       expect(piece.position.y).toEqual(5);
     });
 
     it('should not change the position of the piece', function() {
-      piece.toPosition(chess, -1, 5);
+      piece.toPosition(chess, { x: -1, y: 5 });
       expect(piece.position.x).toEqual(0);
       expect(piece.position.y).toEqual(0);
     });
 
     it('should not change the position of the piece', function() {
-      piece.toPosition(chess, 4, 8);
+      piece.toPosition(chess, { x: 4, y: 8 });
       expect(piece.position.x).toEqual(0);
       expect(piece.position.y).toEqual(0);
     });
 
     it('should not change the position of the piece', function() {
-      piece.toPosition(chess, '5', 5);
+      piece.toPosition(chess, { x: '5', y: 5 });
       expect(piece.position.x).toEqual(0);
       expect(piece.position.y).toEqual(0);
     });
 
     it('should change the position of the piece to [-1, -1]', function() {
-      piece.toPosition(chess, -1, -1);
+      piece.toPosition(chess, { x: -1, y: -1 });
       expect(piece.position.x).toEqual(-1);
       expect(piece.position.y).toEqual(-1);
     });

@@ -1,75 +1,84 @@
 import Piece from '../Piece';
 import { checkPosition } from '../checkPosition';
 
+import { ROOK, FRIENDLY, ENEMY } from '../constants';
+
 export default class Rook extends Piece {
-  constructor(side, pX, pY) {
-    super(side, pX, pY);
-    this.class = 'rook';
+  constructor(side, x, y) {
+    super(side, x, y);
+    this.class = ROOK;
   }
 
-  // Returns an array of available positions to move to,
-  // including possible captures;
-  // empty if there is none
+  /**
+   * Returns an array of available positions to move to,
+   * including possible captures;
+   * empty if there is none
+   * 
+   * @param {object} game The current game state.
+   * @return {array} available positions to move to.
+   */
   availableMoves(game) {
+    const { x, y } = this.position;
     // dynamic-static x-y positions to call checkPosition(),
     // used to determine if there is a friendly or enemy piece at that position
-    const checkX = (target) => {
-      return checkPosition(target, this.position.y, this.side, game);
-    },
-    checkY = (target) => {
-      return checkPosition(this.position.x, target, this.side, game);
-    };
+    const checkX = target => (
+      checkPosition(target, y, this.side, game)
+    );
+    const checkY = target => (
+      checkPosition(x, target, this.side, game)
+    );
+    const positions = [];
 
-    let positions = [],
-      xUp = true,
+    let xUp = true,
       xDown = true,
       yUp = true,
       yDown = true;
 
-    // Loop through all possible positions in 4 directions;
-    // stops AT position with a friendly piece,
-    // or AFTER position with an enenmy piece(capture);
-    // the for loop makes sure the position is in bound of the chessboard(1-8),
-    // and is not the position the piece is currently standing
-    for (let i = this.position.x + 1; i < 8; i += 1) {
-      if (xUp === true) {
-        if (checkX(i) === 'friendly' || checkX(i) === 'enemy') {
-          xUp = false;
-        }
-        if (checkX(i) !== 'friendly') {
-          positions.push([i, this.position.y]);
-        }
-      }
+    /**
+     * Loop through all possible positions in 4 directions;
+     * stops AT position with a friendly piece,
+     * or AFTER position with an enenmy piece(capture);
+     * the for loop makes sure the position is in bound of the chessboard(0-7),
+     * and is not the position the piece is currently standing
+     */
+    for (let i = x + 1; i < 8; i += 1) {
+      if (!xUp) continue;
+
+      if (checkX(i) === FRIENDLY || checkX(i) === ENEMY)
+        xUp = false;
+
+      if (checkX(i) !== FRIENDLY)
+      positions.push({ x: i, y });
     }
-    for (let i = this.position.x - 1; i >= 0; i -= 1) {
-      if (xDown === true) {
-        if (checkX(i) === 'friendly' || checkX(i) === 'enemy') {
-          xDown = false;
-        }
-        if (checkX(i) !== 'friendly') {
-          positions.push([i, this.position.y]);
-        }
-      }
+
+    for (let i = x - 1; i >= 0; i -= 1) {
+      if (!xDown) continue;
+
+      if (checkX(i) === FRIENDLY || checkX(i) === ENEMY)
+        xDown = false;
+
+      if (checkX(i) !== FRIENDLY)
+        positions.push({ x: i, y });
     }
-    for (let i = this.position.y + 1; i < 8; i += 1) {
-      if (yUp === true) {
-        if (checkY(i) === 'friendly' || checkY(i) === 'enemy') {
-          yUp = false;
-        }
-        if (checkY(i) !== 'friendly') {
-          positions.push([this.position.x, i]);
-        }
-      }
+
+    for (let i = y + 1; i < 8; i += 1) {
+      if (!yUp) continue;
+
+      if (checkY(i) === FRIENDLY || checkY(i) === ENEMY)
+        yUp = false;
+
+      if (checkY(i) !== FRIENDLY)
+        positions.push({ x, y: i });
     }
-    for (let i = this.position.y - 1; i >= 0; i -= 1) {
-      if (yDown === true) {
-        if (checkY(i) === 'friendly' || checkY(i) === 'enemy') {
-          yDown = false;
-        }
-        if (checkY(i) !== 'friendly') {
-          positions.push([this.position.x, i]);
-        }
-      }
+
+    for (let i = y - 1; i >= 0; i -= 1) {
+      if (!yDown) continue;
+
+      if (checkY(i) === FRIENDLY || checkY(i) === ENEMY)
+        yDown = false;
+
+      if (checkY(i) !== FRIENDLY)
+        positions.push({ x, y: i });
     }
 
     return positions;

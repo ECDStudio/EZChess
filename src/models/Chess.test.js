@@ -21,7 +21,7 @@ describe('Chess', function() {
       let rook = game.players.player1.pieces.rook1;
       expect(rook.position.x).toEqual(0);
       expect(rook.position.y).toEqual(0);
-      rook.toPosition(game, 4, 4);
+      rook.toPosition(game, { x: 4, y: 4 });
       expect(rook.position.x).toEqual(4);
       expect(rook.position.y).toEqual(4);
       game.reset();
