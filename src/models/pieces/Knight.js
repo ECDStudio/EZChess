@@ -6,7 +6,7 @@ import { KNIGHT, FRIENDLY } from '../constants';
 export default class Knight extends Piece {
   constructor(side, x, y) {
     super(side, x, y);
-    this.class = KNIGHT;
+    this.type = KNIGHT;
   }
 
   /**

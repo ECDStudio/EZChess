@@ -1,81 +1,43 @@
 import React, { Component } from 'react';
+
 import Piece from '../Piece/Piece';
+
+import Tiles from './Tiles';
 
 class ChessBoard extends Component {
   state = {
-    game: this.props.game,
-    current: null,
-  }
-
-  updateGame = (game) => {
-    this.props.updateGame(game);
-  }
-
-  setCurrent = (id) => {
-    this.setState({
-      current: id,
-    })
+    selectedModel: null,
   }
 
   render() {
-    const length = 8; 
-    const list = Array.apply(null, {length: length}).map(Number.call, Number);
-    const row = list.map((i) => {
-      return (
-        <li key={i}></li>
-      )
-    });
-    const tiles = list.map((i) => {
-      return (
-        <li key={i}>
-          <ul>
-            { row }
-          </ul>
-        </li>
-      )
-    });
+    const { game, updateGame, view } = this.props;
 
-    const player1 = Object.keys(this.state.game.players.player1.pieces).map((piece) => {
+    const renderPieces = player => Object.values(game.players[player].pieces).map((piece, key) => {
       return (
-        <li key={piece}>
+        <li key={ key }>
           <Piece
-          game={this.state.game}
-          view={this.props.view}
-          model={this.state.game.players.player1.pieces[piece]}
-          updateGame={this.updateGame}
-          setCurrent={this.setCurrent}
-          current={this.state.current}
-          id={piece} />
-        </li>
-      )
-    })
-
-    const player2 = Object.keys(this.state.game.players.player2.pieces).map((piece) => {
-      return (
-        <li key={piece}>
-          <Piece
-          game={this.state.game}
-          view={this.props.view}
-          model={this.state.game.players.player2.pieces[piece]}
-          updateGame={this.updateGame}
-          setCurrent={this.setCurrent}
-          current={this.state.current}
-          id={piece} />
+            game={ game }
+            updateGame={ updateGame }
+            view={ view }
+            model={ piece }
+            selectedModel={ this.state.selectedModel }
+            setSelectedModel={ selectedModel => this.setState({ selectedModel }) }
+            id={ piece }
+          />
         </li>
       )
     })
 
     return (
       <div className="chessboard">
-        <ul className="tiles">
-          { tiles }
-        </ul>
-        <ul className="player">
-          { player1 }
-        </ul>
-        <ul className="player">
-          { player2 }
-        </ul>
+        <Tiles />
+        {
+          Object.keys(game.players).map((player, key) => (
+            <ul className="player" key={ key }>
+              { renderPieces(player) }
+            </ul>
+          ))
+        }
       </div>
     );
   }

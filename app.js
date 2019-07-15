@@ -14,12 +14,11 @@ app.get('*', (req, res) => {
 
 const socketIo = require('socket.io');
 const io = socketIo(server);
-let gameState;
+let gameState = null;
 
 io.on('connection', socket => {
-  if (gameState !== undefined) {
+  if (gameState)
     socket.emit('FromAPI', gameState);
-  }
 
   socket.on('ToAPI', data => {
     gameState = data;

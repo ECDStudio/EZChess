@@ -6,7 +6,7 @@ import { WHITE, KING, PAWN, KING_CASTLE, QUEEN_CASTLE, FRIENDLY } from '../const
 export default class King extends Piece {
   constructor(side, x, y) {
     super(side, x, y);
-    this.class = KING;
+    this.type = KING;
   }
 
   /**
@@ -32,7 +32,7 @@ export default class King extends Piece {
         for (let piece of Object.values(player.pieces)) {
           const { x, y } = piece.position;
 
-          switch (piece.class) {
+          switch (piece.type) {
             case KING:
             targets.push(
               { x: x + 1, y: y },

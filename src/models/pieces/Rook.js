@@ -6,7 +6,7 @@ import { ROOK, FRIENDLY, ENEMY } from '../constants';
 export default class Rook extends Piece {
   constructor(side, x, y) {
     super(side, x, y);
-    this.class = ROOK;
+    this.type = ROOK;
   }
 
   /**

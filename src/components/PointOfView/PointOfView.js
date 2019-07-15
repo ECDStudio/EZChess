@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class PointOfView extends Component {
   render() {
+    const { current } = this.props;
+
     return (
       <div>
-        <a className={this.props.current === 'white' ? 'current' : ''}
-             onClick={() => this.props.updateView('white')}>
+        <Link className={ current === 'white' ? 'current' : '' } to="/white">
           Play as Player 1 (White)
-        </a>
-        <a className={this.props.current === 'black' ? 'current' : ''}
-             onClick={() => this.props.updateView('black')}>
+        </Link>
+        <Link className={ current === 'black' ? 'current' : '' } to="/black">
           Play as Player 2 (Black)
-        </a>
-        <a className={this.props.current === 'spec' ? 'current' : ''}
-             onClick={() => this.props.updateView('spec')}>
+        </Link>
+        <Link className={ current !== 'white' && current !== 'black' ? 'current' : '' } to="/">
           Watch as Spectator
-        </a>
+        </Link>
       </div>
     );
   }

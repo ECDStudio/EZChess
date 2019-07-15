@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 
 class TurnIndicator extends Component {
   render() {
-    let game = this.props.game;
+    const { game } = this.props;
     let currentTurn;
   
-    for (let player in game.players) {
-      if (game.players[player].isTurn === true) {
-        currentTurn = game.players[player].side;
-      }
+    for (let player of Object.values(game.players)) {
+      if (!player.isTurn) continue;
+      currentTurn = player.side;
     }
+
     return (
       <div className="current-turn">
-        Current Turn: <span>{currentTurn}</span>
+        Current Turn: <span>{ currentTurn }</span>
       </div>
     );
   }

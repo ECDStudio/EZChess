@@ -6,7 +6,7 @@ import { QUEEN, FRIENDLY, ENEMY } from '../constants';
 export default class Queen extends Piece {
   constructor(side, x, y) {
     super(side, x, y);
-    this.class = QUEEN;
+    this.type = QUEEN;
   }
 
   /**

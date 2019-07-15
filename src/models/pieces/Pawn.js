@@ -6,7 +6,7 @@ import { PAWN, WHITE, BLACK } from '../constants';
 export default class Pawn extends Piece {
   constructor(side, x, y) {
     super(side, x, y);
-    this.class = PAWN;
+    this.type = PAWN;
     this.enPassant = false;
     this.enPassTurn = 0;
   }
@@ -110,7 +110,7 @@ export default class Pawn extends Piece {
           if (player.side === this.side) continue; // not enemy
 
           for (let piece of Object.values(player.pieces)) {
-            if (piece.class !== 'pawn') continue; // not pawn
+            if (piece.type !== 'pawn') continue; // not pawn
             if (piece.position.x !== x) continue; // x-position not matched
             if (piece.position.y !== y + 1 && piece.position.y !== y - 1) continue; // y-position not matched
 

@@ -6,7 +6,7 @@ import { BISHOP, FRIENDLY, ENEMY } from '../constants';
 export default class Bishop extends Piece {
   constructor(side, x, y) {
     super(side, x, y);
-    this.class = BISHOP;
+    this.type = BISHOP;
   }
 
   /**
