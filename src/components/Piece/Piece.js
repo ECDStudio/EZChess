@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TargetPositions from '../TargetPositions/TargetPositions';
+import TargetPositions from '../TargetPositions';
 
 class Piece extends Component {
   state = {
@@ -16,7 +16,7 @@ class Piece extends Component {
     for (let player of Object.values(game.players)) {
       if (this.props.view === player.side && player.side === model.side && player.isTurn) {
         const targets = (
-          <TargetPositions model={ model } game={ game } updateGame={this.props.updateGame} />
+          <TargetPositions model={ model } game={ game } />
         );
 
         this.props.setSelectedModel(model);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Piece from '../Piece/Piece';
+import Piece from '../Piece';
 
 import Tiles from './Tiles';
 
@@ -10,15 +10,13 @@ class ChessBoard extends Component {
   }
 
   render() {
-    const { game, updateGame, view } = this.props;
+    const { game, view } = this.props;
 
     const renderPieces = player => Object.values(game.players[player].pieces).map((piece, key) => {
       return (
         <li key={ key }>
           <Piece
             game={ game }
-            updateGame={ updateGame }
-            view={ view }
             model={ piece }
             selectedModel={ this.state.selectedModel }
             setSelectedModel={ selectedModel => this.setState({ selectedModel }) }

@@ -10,22 +10,17 @@ import ChessBoard from 'src/components/ChessBoard';
 import TurnIndicator from 'src/components/TurnIndicator/TurnIndicator';
 import PointOfView from 'src/components/PointOfView/PointOfView';
 
-const API = process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:3001';
+import { API } from 'src/constants';
 
 class Game extends Component {
   constructor() {
     super();
 
     this.game = new Chess();
-    this.state = {
-      view: '',
-    }
   }
 
   componentDidMount() {
     const socket = socketIOClient(API);
-
-    this.setState({ view: this.props.match.params.view });
 
     socket.on('FromAPI', data => {
       const { game } = this;
@@ -51,24 +46,20 @@ class Game extends Component {
       this.watchPawnsPromotion(game);
       this.forceUpdate();
     });
+
+    this.updateView();
   }
 
   componentDidUpdate(prevProps) {
     const { view } = this.props.match.params;
 
     if (prevProps.match.params.view !== view)
-      this.setState({ view });
-  }
-
-  updateGame = (game) => {
-    const socket = socketIOClient(API);
-
-    socket.emit('ToAPI', game);
+      this.updateView();
   }
 
   resetGame = () => {
     this.game.reset();
-    this.updateGame(this.game);
+    this.props.updateGame(this.game);
   }
 
   watchPawnsPromotion = (game) => {
@@ -87,9 +78,15 @@ class Game extends Component {
     }
   }
 
+  updateView = () => {
+    const { updateView, match } = this.props;
+
+    updateView(match.params.view);
+  }
+
   render() {
-    const { game, updateGame } = this;
-    const { view } = this.state;
+    const { game } = this;
+    const { view } = this.props;
     const classes = className({
       'chess-container': true,
       [view]: view,
@@ -97,11 +94,7 @@ class Game extends Component {
 
     return (
       <div className={ classes }>
-        <ChessBoard
-          game={ game }
-          updateGame={ updateGame }
-          view={ view }
-        />
+        <ChessBoard game={ game } />
         <div className="hud">
           <TurnIndicator game={ game } />
           <PointOfView current={ view } />
