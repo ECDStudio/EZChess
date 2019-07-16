@@ -2,8 +2,6 @@ import { combineReducers } from 'redux';
 
 import { UPDATE_VIEW, UPDATE_VIEWPORT } from './actions';
 
-import Chess from 'src/models/Chess';
-
 const initStates = {
   view: null,
   viewport: { width: 0, height: 0 },

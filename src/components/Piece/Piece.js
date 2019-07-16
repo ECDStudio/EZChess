@@ -1,36 +1,46 @@
 import React, { Component } from 'react';
-import TargetPositions from '../TargetPositions';
+
+import Queen from 'src/models/pieces/Queen';
+import Pawn from 'src/models/pieces/Pawn';
 
 class Piece extends Component {
-  state = {
-    targets: null,
-  }
 
-  componentWillReceiveProps() {
-    this.setState({
-      targets: null,
-    });
-  }
+  componentDidUpdate(prevProps) {
+    const { model, game } = this.props;
 
-  toggleTargets(model, game) {
-    for (let player of Object.values(game.players)) {
-      if (this.props.view === player.side && player.side === model.side && player.isTurn) {
-        const targets = (
-          <TargetPositions model={ model } game={ game } />
-        );
+    if (prevProps === this.props) return;
 
-        this.props.setSelectedModel(model);
-        setTimeout(() => {
-          if (this.props.selectedModel === model)
-            this.setState({ targets });
-        })
+    // Watch for pawn promotion
+    if (model.type === 'pawn' && model.promotion) {
+      for (let player of Object.values(game.players)) {
+        for (let q in player.pieces) {
+          if (player.pieces[q] !== model) continue;
+          player.pieces[q] = new Queen(model.side, model.position.x, model.position.y);
+        }
+      }
+    }
+    // Watch for pawn revertion after game reset
+    if (prevProps.model.type === 'queen' && model.type === 'pawn') {
+      for (let player of Object.values(game.players)) {
+        for (let q in player.pieces) {
+          if (player.pieces[q] !== model) continue;
+          player.pieces[q] = new Pawn(model.side, model.position.x, model.position.y);
+        }
       }
     }
   }
 
+  toggleTargets = () => {
+    const { model, game } = this.props;
+
+    for (let player of Object.values(game.players)) {
+      if (this.props.view !== player.side || player.side !== model.side || !player.isTurn) continue;
+      this.props.setSelectedModel(model);
+    }
+  }
+
   render() {
-    const { game, model } = this.props;
-    const { targets } = this.state
+    const { model } = this.props;
     const style = {
       display: model.position.x === -1 ? 'none' : 'block',
       left: `${ model.position.x * 12.5 }%`,
@@ -38,13 +48,10 @@ class Piece extends Component {
     }
 
     return (
-      <div>
-        <a className={`chess-piece ${model.side} ${model.type}`}
-          style={ style }
-          onClick={() => this.toggleTargets(model, game)}
-        />
-        { targets && targets }
-      </div>
+      <div className={`chess-piece ${model.side} ${model.type}`}
+        style={ style }
+        onClick={ this.toggleTargets }
+      />
     )
   }
 }

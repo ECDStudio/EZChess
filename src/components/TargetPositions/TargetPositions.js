@@ -28,8 +28,12 @@ class TargetPositions extends Component {
           bottom: `${ moves[target].y * 12.5 }%`,
         }
         return (
-          <a className="target-position" style={style} key={target}
-            onClick={() => this.toTarget(model, moves[target], game)}>.</a>
+          <div
+            className="target-position"
+            style={style}
+            key={target}
+            onClick={() => this.toTarget(model, moves[target], game)}
+          />
         )
       })
     )

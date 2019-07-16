@@ -175,7 +175,7 @@ body {
 		li {
 			display: inline;
 
-			a.chess-piece {
+			.chess-piece {
 				position: absolute;
 				display: block;
 				width: 10.5%;
@@ -233,18 +233,18 @@ body {
 					}
 				}
 			}
-
-			.target-position {
-				position: absolute;
-				display: block;
-				width: 12.5%;
-				height: 12.5%;
-				background: $hightlight;
-				cursor: pointer;
-				z-index: 2;
-				font-size: 0;
-			}
 		}
+	}
+
+	.target-position {
+		position: absolute;
+		display: block;
+		width: 12.5%;
+		height: 12.5%;
+		background: $hightlight;
+		cursor: pointer;
+		z-index: 2;
+		font-size: 0;
 	}
 }
 	

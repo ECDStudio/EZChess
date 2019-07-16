@@ -22,30 +22,7 @@ class Game extends Component {
   componentDidMount() {
     const socket = socketIOClient(API);
 
-    socket.on('FromAPI', data => {
-      const { game } = this;
-
-      game.turn = data.turn;
-      for (let p in game.players) {
-        game.players[p].isTurn = data.players[p].isTurn;
-        for (let q in game.players[p].pieces) {
-          const piece = game.players[p].pieces[q];
-          const { position, step, type, enPassant, enPassTurn } = data.players[p].pieces[q];
-
-          piece.position = position;
-          piece.step = step;
-          piece.type = type;
-          if (enPassant) piece.enPassant = enPassant;
-          if (enPassTurn) piece.enPassTurn = enPassTurn;
-
-          // Watch for morphing from pawn revertion after game reset
-          if (piece.type !== type && type === 'pawn')
-            game.players[p].pieces[q] = new Pawn(data.players[p].side, ...position);
-        }
-      }
-      this.watchPawnsPromotion(game);
-      this.forceUpdate();
-    });
+    socket.on('FromAPI', this.mapDataFromApi);
 
     this.updateView();
   }
@@ -57,25 +34,35 @@ class Game extends Component {
       this.updateView();
   }
 
-  resetGame = () => {
-    this.game.reset();
-    this.props.updateGame(this.game);
-  }
+  mapDataFromApi = data => {
+    // methods from the models are not passed around as data
+    // so we loop through individual properties and update them
+    // to the actual this.game object
+    const { game } = this;
 
-  watchPawnsPromotion = (game) => {
-    // Used to detect if the updated state of the game has
-    // any Pawn Promotion afer receiving emission from API
+    game.turn = data.turn;
+
     for (let p in game.players) {
-      for (let q in game.players[p].pieces) {
-        const { type, side, position } = game.players[p].pieces[q];
+      const player = game.players[p];
 
-        if (type === 'pawn' &&
-          ((side === 'white' && position.x === 7) ||
-          (side ==='black' && position.x === 0))) {
-          game.players[p].pieces[q] = new Queen(side, position.x, position.y);
+      player.isTurn = data.players[p].isTurn;
+
+      for (let q in player.pieces) {
+        const piece = player.pieces[q];
+
+        for (let key of Object.keys(data.players[p].pieces[q])) {
+          if (piece[key] === data.players[p].pieces[q][key]) continue;
+          piece[key] = data.players[p].pieces[q][key]
         }
       }
     }
+
+    this.forceUpdate();
+  }
+
+  resetGame = () => {
+    this.game.reset();
+    this.props.updateGame(this.game);
   }
 
   updateView = () => {

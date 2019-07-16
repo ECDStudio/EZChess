@@ -9,6 +9,7 @@ export default class Pawn extends Piece {
     this.type = PAWN;
     this.enPassant = false;
     this.enPassTurn = 0;
+    this.promotion = false;
   }
 
   /**
@@ -74,11 +75,11 @@ export default class Pawn extends Piece {
     return positions;
   }
 
-  toPosition(game, position) {
+  toPosition = (game, position) => {
     const { x, y, enPassMove } = position;
 
     if (typeof x !== 'number' || typeof y !== 'number')
-      return [ this.position.x, this.position.y, promotion ];
+      return { ...this.position };
 
     if (x >= 0 && x < 8 && y >= 0 && y < 8) {
       this.position = { x, y, enPassMove };
@@ -136,14 +137,11 @@ export default class Pawn extends Piece {
       }
     }
 
-    let promotion = false;
-
     if (
       (x === 7 && this.side === WHITE) ||
       (x === 0 && this.side === BLACK)
-    )
-      promotion = true;
+    ) this.promotion = true;
 
-    return { ...this.position, promotion };
+    return { ...this.position };
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Piece from '../Piece';
+import TargetPositions from '../TargetPositions';
 
 import Tiles from './Tiles';
 
@@ -9,8 +10,14 @@ class ChessBoard extends Component {
     selectedModel: null,
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props)
+      this.setState({ selectedModel: null })
+  }
+
   render() {
-    const { game, view } = this.props;
+    const { game } = this.props;
+    const { selectedModel } = this.state;
 
     const renderPieces = player => Object.values(game.players[player].pieces).map((piece, key) => {
       return (
@@ -18,9 +25,7 @@ class ChessBoard extends Component {
           <Piece
             game={ game }
             model={ piece }
-            selectedModel={ this.state.selectedModel }
             setSelectedModel={ selectedModel => this.setState({ selectedModel }) }
-            id={ piece }
           />
         </li>
       )
@@ -35,6 +40,10 @@ class ChessBoard extends Component {
               { renderPieces(player) }
             </ul>
           ))
+        }
+        {
+          selectedModel &&
+          <TargetPositions model={ selectedModel } game={ game } />
         }
       </div>
     );
