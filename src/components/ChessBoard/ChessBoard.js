@@ -5,6 +5,8 @@ import TargetPositions from '../TargetPositions';
 
 import Tiles from './Tiles';
 
+import './ChessBoard.scss';
+
 class ChessBoard extends Component {
   state = {
     selectedModel: null,
@@ -32,7 +34,7 @@ class ChessBoard extends Component {
     })
 
     return (
-      <div className="chessboard">
+      <div className="ChessBoard">
         <Tiles />
         {
           Object.keys(game.players).map((player, key) => (

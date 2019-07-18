@@ -1,277 +1,37 @@
-@mixin transition($name, $time, $curve) {
-	-webkit-transition: $name $time $curve;
-	-moz-transition: $name $time $curve;
-	-o-transition: $name $time $curve;
-	-ms-transition: $name $time $curve;
-	transition: $name $time $curve;
+@import './static/rules';
+
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
 }
 
-@mixin rotate($degree) {
-	-ms-transform: rotate(#{$degree}deg);
-	-moz-transform: rotate(#{$degree}deg);
-	-webkit-transform: rotate(#{$degree}deg);
-	transform: rotate(#{$degree}deg);
+html {
+  overflow-x: hidden;
+  height: 100%;
 }
 
-@mixin border-box {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-$board-light: rgba(255, 255, 255, 0.65);
-$board-dark: rgba(0, 0, 0, 0.65);
-$hightlight: rgba(117, 176, 237, 0.9);
-
-*{
-	background:none;
-	margin:0;
-	padding:0;
-	border:none;
-	outline:none;
-	color:inherit;
-	font-family:inherit;
-	font-size:inherit;
-	line-height:inherit;
-}
-
-/*----------------------------------GLOBAL----------------------------------*/
 html,
 body {
 	position: relative;
-	width: 100%;
-	height: 100%;
-	background: #fff;
-	color: #fff;
+	
+  width: 100%;
+	min-height: 100vh;
+	
+  background: radial-gradient(#fff, #cdcdcd);
+	color: #000;
+	
 	font-family: 'MinionPro', sans-serif;
 	letter-spacing: 0.05em;
 	font-size: 12px;
-	-webkit-text-size-adjust: 100%;
-	overflow-x: hidden;
-}
-
-body {
-	background: url('./static/img/bg.jpg') no-repeat center;
-	background-size: cover;
-}
-
-.chess-container {
-	position: relative;
-	margin: auto;
-	padding: 2%;
-	width: 100%;
-	max-width: 800px;
-	@include border-box;
-	
-	.chessboard {
-		@include rotate(0);
-	}
-	
-	&.white .chessboard {
-		@include rotate(-90);
-	}
-	
-	&.black .chessboard {
-		@include rotate(90);
-	}
-}
-
-.chessboard {
-	position: relative;
-	border: 1px solid $board-dark;
-	width: 100%;
-	height: 0;
-	padding: 50% 0;
-	background: url('./static/img/texture.jpg') no-repeat left top;
-	box-shadow: 1px 1px 15px #000;
-	overflow: hidden;
-	@include border-box;
-	@include transition(all, 1s, ease-in-out);
-	
-	ul.tiles {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		
-		> li {
-			position: absolute;
-			display: block;
-			width: 100%;
-			height: 12.5%;
-			top: 0;
-			left: 0;
-			
-			&:nth-child(2) {
-				top: 12.5%;
-			}
-			&:nth-child(3) {
-				top: 25%;
-			}
-			&:nth-child(4) {
-				top: 37.5%;
-			}
-			&:nth-child(5) {
-				top: 50%;
-			}
-			&:nth-child(6) {
-				top: 62.5%;
-			}
-			&:nth-child(7) {
-				top: 75%;
-			}
-			&:nth-child(8) {
-				top: 87.5%;
-			}
-			
-			> ul {
-				width: 100%;
-				height: 100%;
-				
-				> li {
-					position: absolute;
-					display: block;
-					width: 12.5%;
-					height: 100%;
-					left: 0;
-					top: 0;
-					background: $board-light;
-			
-					&:nth-child(2) {
-						left: 12.5%;
-					}
-					&:nth-child(3) {
-						left: 25%;
-					}
-					&:nth-child(4) {
-						left: 37.5%;
-					}
-					&:nth-child(5) {
-						left: 50%;
-					}
-					&:nth-child(6) {
-						left: 62.5%;
-					}
-					&:nth-child(7) {
-						left: 75%;
-					}
-					&:nth-child(8) {
-						left: 87.5%;
-					}
-				}
-			}
-			
-			&:nth-child(even) > ul > li:nth-child(even),
-			&:nth-child(odd) > ul > li:nth-child(odd) {
-				background: $board-dark;
-			}
-		}
-	}
-	
-	ul.player {
-		display:inline;
-		
-		li {
-			display: inline;
-
-			.chess-piece {
-				position: absolute;
-				display: block;
-				width: 10.5%;
-				height: 10.5%;
-				margin: 1%;
-				border-radius: 500px;
-				cursor: pointer;
-				background-size: 100% auto;
-				z-index: 1;
-				@include transition(all, 0.5s, ease-in-out);
-				
-				
-				&.white {
-					@include rotate(90);
-					
-					&.king {
-						background-image: url('./static/img/pieces/kingW.png');
-					}
-					&.queen {
-						background-image: url('./static/img/pieces/queenW.png');
-					}
-					&.rook {
-						background-image: url('./static/img/pieces/rookW.png');
-					}
-					&.knight {
-						background-image: url('./static/img/pieces/knightW.png');
-					}
-					&.bishop {
-						background-image: url('./static/img/pieces/bishopW.png');
-					}
-					&.pawn {
-						background-image: url('./static/img/pieces/pawnW.png');
-					}
-				}
-				&.black {
-					@include rotate(-90);
-					
-					&.king {
-						background-image: url('./static/img/pieces/kingB.png');
-					}
-					&.queen {
-						background-image: url('./static/img/pieces/queenB.png');
-					}
-					&.rook {
-						background-image: url('./static/img/pieces/rookB.png');
-					}
-					&.knight {
-						background-image: url('./static/img/pieces/knightB.png');
-					}
-					&.bishop {
-						background-image: url('./static/img/pieces/bishopB.png');
-					}
-					&.pawn {
-						background-image: url('./static/img/pieces/pawnB.png');
-					}
-				}
-			}
-		}
-	}
-
-	.target-position {
-		position: absolute;
-		display: block;
-		width: 12.5%;
-		height: 12.5%;
-		background: $hightlight;
-		cursor: pointer;
-		z-index: 2;
-		font-size: 0;
-	}
-}
-	
-.hud {
-	margin-top: 15px;
-	font-size: 1.5em;
-	text-align: center;
-	
-	.current-turn {
-		span {
-			font-weight: bold;
-			text-transform: uppercase;
-		}
-	}
-	
-	a {
-		display: inline-block;
-		margin:5px 10px;
-		padding: 10px 18px;
-		background: $board-dark;
-		color: $board-light;
-		text-decoration: none;
-		cursor: pointer;
-		@include transition(all, 0.5s, ease-in-out);
-		
-		&.current {
-			background: $hightlight;
-		}
-	}
+  line-height: 1;
+  -webkit-text-size-adjust: 100%;
 }

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './TurnIndicator.scss';
+
 class TurnIndicator extends Component {
   render() {
     const { game } = this.props;
@@ -11,7 +13,7 @@ class TurnIndicator extends Component {
     }
 
     return (
-      <div className="current-turn">
+      <div className="TurnIndicator">
         Current Turn: <span>{ currentTurn }</span>
       </div>
     );

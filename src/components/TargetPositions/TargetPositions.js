@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
 
+import './TargetPositions.scss';
+
 class TargetPositions extends Component {
   state = {
 
   }
 
-  updateGame = (game) => {
-    setTimeout(() => {
-      this.props.updateGame(game);
-    }, 1);
-  };
-
   toTarget(piece, position, game) {
     piece.toPosition(game, position);
     game.switchTurn();
-    this.updateGame(game);
+    this.props.updateGame(game);
   }
 
   render() {
@@ -29,7 +25,7 @@ class TargetPositions extends Component {
         }
         return (
           <div
-            className="target-position"
+            className="TargetPosition"
             style={style}
             key={target}
             onClick={() => this.toTarget(model, moves[target], game)}

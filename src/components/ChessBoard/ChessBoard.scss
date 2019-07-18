@@ -1,0 +1,102 @@
+@import '../../static/rules';
+
+.ChessBoard {
+	position: relative;
+	border: 1px solid $board-dark;
+	width: 100%;
+	height: 0;
+	padding: 50% 0;
+	background: url('../../static/img/texture.jpg') no-repeat left top;
+	box-shadow: 1px 1px 15px #000;
+	overflow: hidden;
+	transition: all 1s ease-in-out;
+
+	ul.tiles {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		
+		> li {
+			position: absolute;
+			display: block;
+			width: 100%;
+			height: 12.5%;
+			top: 0;
+			left: 0;
+			
+			&:nth-child(2) {
+				top: 12.5%;
+			}
+			&:nth-child(3) {
+				top: 25%;
+			}
+			&:nth-child(4) {
+				top: 37.5%;
+			}
+			&:nth-child(5) {
+				top: 50%;
+			}
+			&:nth-child(6) {
+				top: 62.5%;
+			}
+			&:nth-child(7) {
+				top: 75%;
+			}
+			&:nth-child(8) {
+				top: 87.5%;
+			}
+
+			> ul {
+				width: 100%;
+				height: 100%;
+
+				> li {
+					position: absolute;
+					display: block;
+					width: 12.5%;
+					height: 100%;
+					left: 0;
+					top: 0;
+					background: $board-light;
+
+					&:nth-child(2) {
+						left: 12.5%;
+					}
+					&:nth-child(3) {
+						left: 25%;
+					}
+					&:nth-child(4) {
+						left: 37.5%;
+					}
+					&:nth-child(5) {
+						left: 50%;
+					}
+					&:nth-child(6) {
+						left: 62.5%;
+					}
+					&:nth-child(7) {
+						left: 75%;
+					}
+					&:nth-child(8) {
+						left: 87.5%;
+					}
+				}
+			}
+
+			&:nth-child(even) > ul > li:nth-child(even),
+			&:nth-child(odd) > ul > li:nth-child(odd) {
+				background: $board-dark;
+			}
+		}
+	}
+
+	ul.player {
+		display:inline;
+
+		li {
+			display: inline;
+		}
+	}
+}

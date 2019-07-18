@@ -79,7 +79,7 @@ export default class Pawn extends Piece {
     const { x, y, enPassMove } = position;
 
     if (typeof x !== 'number' || typeof y !== 'number')
-      return { ...this.position };
+      return this.position;
 
     if (x >= 0 && x < 8 && y >= 0 && y < 8) {
       this.position = { x, y, enPassMove };
@@ -101,26 +101,24 @@ export default class Pawn extends Piece {
     if (x === -1 && y === -1)
       this.position = { x, y };
 
-    setTimeout(() => {
-      // Indicate this move makes it able to be captured by en passant the next turn
-      if (
-        (this.step === 1 && x === 3 && this.side === WHITE) ||
-        (this.step === 1 && x === 4 && this.side === BLACK)
-      ) {
-        for (let player of Object.values(game.players)) {
-          if (player.side === this.side) continue; // not enemy
+    // Indicate this move makes it able to be captured by en passant the next turn
+    if (
+      (this.step === 1 && x === 3 && this.side === WHITE) ||
+      (this.step === 1 && x === 4 && this.side === BLACK)
+    ) {
+      for (let player of Object.values(game.players)) {
+        if (player.side === this.side) continue; // not enemy
 
-          for (let piece of Object.values(player.pieces)) {
-            if (piece.type !== 'pawn') continue; // not pawn
-            if (piece.position.x !== x) continue; // x-position not matched
-            if (piece.position.y !== y + 1 && piece.position.y !== y - 1) continue; // y-position not matched
+        for (let piece of Object.values(player.pieces)) {
+          if (piece.type !== 'pawn') continue; // not pawn
+          if (piece.position.x !== x) continue; // x-position not matched
+          if (piece.position.y !== y + 1 && piece.position.y !== y - 1) continue; // y-position not matched
 
-            this.enPassant = true;
-            this.enPassTurn = game.turn;
-          }
+          this.enPassant = true;
+          this.enPassTurn = game.turn + 1;
         }
       }
-    }, 1)
+    }
 
     // This is for an offensive en passant move that captures an enemy pawn
     if (enPassMove) {
@@ -142,6 +140,6 @@ export default class Pawn extends Piece {
       (x === 0 && this.side === BLACK)
     ) this.promotion = true;
 
-    return { ...this.position };
+    return this.position;
   }
 }

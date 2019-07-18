@@ -1,0 +1,49 @@
+@import '../../static/rules';
+
+.Game {
+	position: relative;
+	margin: auto;
+	padding: 10%;
+	width: 100%;
+	max-width: 80vh;
+	
+	.ChessBoard {
+		transform: rotate(0deg);
+	}
+	
+	&.white .ChessBoard {
+		transform: rotate(-90deg);
+	}
+	
+	&.black .ChessBoard {
+		transform: rotate(90deg);
+	}
+
+  .hud {
+    margin-top: 15px;
+    text-align: center;
+    
+    a,
+    button {
+      display: inline-block;
+      
+      margin:5px 10px;
+      padding: 10px 18px;
+
+      outline: none;
+      border: none;
+      border-radius: 0;
+      
+      background: $board-dark;
+      color: $board-light;
+      text-decoration: none;
+
+      transition: all 0.5s ease-in-out;
+      cursor: pointer;
+      
+      &.current {
+        background: $hightlight;
+      }
+    }
+  }
+}

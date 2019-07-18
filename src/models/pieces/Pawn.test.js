@@ -60,16 +60,20 @@ describe('availableMoves', function() {
   })
   describe('Promotion', function() {
     it('should return false', function() {
-      expect(pawn1.toPosition(chess, { x: 4, y: 2 }).promotion).toEqual(false);
+      pawn1.toPosition(chess, { x: 4, y: 2 });
+      expect(pawn1.promotion).toEqual(false);
     });
     it('should return true', function() {
-      expect(pawn1.toPosition(chess, { x: 7, y: 2 }).promotion).toEqual(true);
+      pawn1.toPosition(chess, { x: 7, y: 2 });
+      expect(pawn1.promotion).toEqual(true);
     });
     it('should return false', function() {
-      expect(pawn2.toPosition(chess, { x: 4, y: 1 }).promotion).toEqual(false);
+      pawn2.toPosition(chess, { x: 4, y: 1 });
+      expect(pawn2.promotion).toEqual(false);
     });
     it('should return true', function() {
-      expect(pawn2.toPosition(chess, {x: 0, y: 1 }).promotion).toEqual(true);
+      pawn2.toPosition(chess, {x: 0, y: 1 });
+      expect(pawn2.promotion).toEqual(true);
     });
   })
 })

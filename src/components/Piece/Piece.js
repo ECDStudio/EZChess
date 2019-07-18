@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 
 import Queen from 'src/models/pieces/Queen';
 import Pawn from 'src/models/pieces/Pawn';
+
+import './Piece.scss';
 
 class Piece extends Component {
 
@@ -41,6 +44,11 @@ class Piece extends Component {
 
   render() {
     const { model } = this.props;
+    const classes = classNames({
+      'Piece': true,
+      [model.side]: model.side,
+      [model.type]: model.type,
+    })
     const style = {
       display: model.position.x === -1 ? 'none' : 'block',
       left: `${ model.position.x * 12.5 }%`,
@@ -48,7 +56,7 @@ class Piece extends Component {
     }
 
     return (
-      <div className={`chess-piece ${model.side} ${model.type}`}
+      <div className={ classes }
         style={ style }
         onClick={ this.toggleTargets }
       />

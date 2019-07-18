@@ -3,14 +3,14 @@ import className from 'classnames';
 import socketIOClient from "socket.io-client";
 
 import Chess from 'src/models/Chess';
-import Queen from 'src/models/pieces/Queen';
-import Pawn from 'src/models/pieces/Pawn';
 
 import ChessBoard from 'src/components/ChessBoard';
 import TurnIndicator from 'src/components/TurnIndicator/TurnIndicator';
 import PointOfView from 'src/components/PointOfView/PointOfView';
 
 import { API } from 'src/constants';
+
+import './Game.scss';
 
 class Game extends Component {
   constructor() {
@@ -75,7 +75,7 @@ class Game extends Component {
     const { game } = this;
     const { view } = this.props;
     const classes = className({
-      'chess-container': true,
+      'Game': true,
       [view]: view,
     })
 
@@ -85,7 +85,7 @@ class Game extends Component {
         <div className="hud">
           <TurnIndicator game={ game } />
           <PointOfView current={ view } />
-          <a onClick={ this.resetGame }>Reset Game</a>
+          <button onClick={ this.resetGame }>Reset Game</button>
         </div>
       </div>
     );
