@@ -3,9 +3,9 @@
 .Game {
 	position: relative;
 	margin: auto;
-	padding: 10%;
+	padding: 100px;
 	width: 100%;
-	max-width: 80vh;
+  max-width: 800px;
 	
 	.ChessBoard {
 		transform: rotate(0deg);

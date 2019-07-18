@@ -1,3 +1,3 @@
 # A JavaScript PvP Chess Game
 
-Working demo: https://ecdstudio.github.io/EZChess/
+Working demo: https://chess.ecdevstudio.ca/
