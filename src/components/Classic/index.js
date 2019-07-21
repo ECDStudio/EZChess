@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Game from './Game';
+import Classic from './Classic';
 
 import { updateGame, updateView } from 'src/redux/actions';
 
@@ -15,4 +15,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Game);
+)(Classic);

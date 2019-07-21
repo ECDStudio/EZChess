@@ -7,10 +7,10 @@ class PointOfView extends Component {
 
     return (
       <div>
-        <Link className={ current === 'white' ? 'current' : '' } to="/white">
+        <Link className={ current === 'white' ? 'current' : '' } to="/classic/white">
           Play as Player 1 (White)
         </Link>
-        <Link className={ current === 'black' ? 'current' : '' } to="/black">
+        <Link className={ current === 'black' ? 'current' : '' } to="/classic/black">
           Play as Player 2 (Black)
         </Link>
         <Link className={ current !== 'white' && current !== 'black' ? 'current' : '' } to="/">

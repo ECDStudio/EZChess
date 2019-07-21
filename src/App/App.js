@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import { Router, Route } from 'react-router-dom';
 import { createBrowserHistory as createHistory } from 'history';
 
-import Game from 'src/components/Game';
+import Classic from 'src/components/Classic';
+import Home from 'src/components/Home';
 
 import './App.scss';
 
 export const Routes = [
   {
+      path: '/classic/:view?',
+      component: Classic,
+      exact: false,
+  },
+  {
       path: '/:view?',
-      component: Game,
+      component: Home,
       exact: false,
   },
 ]

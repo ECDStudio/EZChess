@@ -10,9 +10,9 @@ import PointOfView from './PointOfView';
 
 import { API } from 'src/constants';
 
-import './Game.scss';
+import './Classic.scss';
 
-class Game extends Component {
+class Classic extends Component {
   constructor() {
     super();
 
@@ -54,7 +54,7 @@ class Game extends Component {
     const { game } = this;
     const { view } = this.props;
     const classes = className({
-      'Game': true,
+      'Classic': true,
       [view]: view,
     })
 
@@ -71,4 +71,4 @@ class Game extends Component {
   }
 }
 
-export default Game;
+export default Classic;
