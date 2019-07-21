@@ -5,7 +5,7 @@ import Knight from './pieces/Knight';
 import Bishop from './pieces/Bishop';
 import Pawn from './pieces/Pawn';
 
-import { WHITE } from './constants';
+import { WHITE, QUEEN, PAWN } from './constants';
 
 export default class Player {
   constructor(side) {
@@ -33,5 +33,20 @@ export default class Player {
 
   setupPawn = (side, y) => {
     return new Pawn(side, side === WHITE ? 1 : 6, y);
+  }
+
+  update = data => {
+    this.isTurn = data.isTurn;
+
+    for (let q in this.pieces) {
+      const target = data.pieces[q];
+
+      this.pieces[q].update(data.pieces[q]);
+
+      // Watch for pawn promotion
+      if ((this.pieces[q] instanceof Pawn || this.pieces[q].type === PAWN) &&
+      (target.promotion || target.type === QUEEN ))
+        this.pieces[q] = new Queen(this.side, target.position.x, target.position.y);
+    }
   }
 }

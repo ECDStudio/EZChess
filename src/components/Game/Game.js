@@ -4,9 +4,9 @@ import socketIOClient from "socket.io-client";
 
 import Chess from 'src/models/Chess';
 
-import ChessBoard from 'src/components/ChessBoard';
-import TurnIndicator from 'src/components/TurnIndicator/TurnIndicator';
-import PointOfView from 'src/components/PointOfView/PointOfView';
+import ChessBoard from './ChessBoard';
+import TurnIndicator from './TurnIndicator/TurnIndicator';
+import PointOfView from './PointOfView';
 
 import { API } from 'src/constants';
 
@@ -35,28 +35,7 @@ class Game extends Component {
   }
 
   mapDataFromApi = data => {
-    // methods from the models are not passed around as data
-    // so we loop through individual properties and update them
-    // to the actual this.game object
-    const { game } = this;
-
-    game.turn = data.turn;
-
-    for (let p in game.players) {
-      const player = game.players[p];
-
-      player.isTurn = data.players[p].isTurn;
-
-      for (let q in player.pieces) {
-        const piece = player.pieces[q];
-
-        for (let key of Object.keys(data.players[p].pieces[q])) {
-          if (piece[key] === data.players[p].pieces[q][key]) continue;
-          piece[key] = data.players[p].pieces[q][key]
-        }
-      }
-    }
-
+    this.game.update(data)
     this.forceUpdate();
   }
 

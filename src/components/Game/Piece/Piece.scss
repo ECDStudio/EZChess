@@ -1,0 +1,59 @@
+@import '../../../static/rules';
+
+.Piece {
+  position: absolute;
+  display: block;
+  width: 10.5%;
+  height: 10.5%;
+  margin: 1%;
+  border-radius: 500px;
+  cursor: pointer;
+  background-size: 100% auto;
+  z-index: 1;
+  transition: all 0.5s ease-in-out;
+
+  &.white {
+    transform: rotate(90deg);
+    
+    &.king {
+      background-image: url('../../../static/img/pieces/kingW.png');
+    }
+    &.queen {
+      background-image: url('../../../static/img/pieces/queenW.png');
+    }
+    &.rook {
+      background-image: url('../../../static/img/pieces/rookW.png');
+    }
+    &.knight {
+      background-image: url('../../../static/img/pieces/knightW.png');
+    }
+    &.bishop {
+      background-image: url('../../../static/img/pieces/bishopW.png');
+    }
+    &.pawn {
+      background-image: url('../../../static/img/pieces/pawnW.png');
+    }
+  }
+  &.black {
+    transform: rotate(-90deg);
+    
+    &.king {
+      background-image: url('../../../static/img/pieces/kingB.png');
+    }
+    &.queen {
+      background-image: url('../../../static/img/pieces/queenB.png');
+    }
+    &.rook {
+      background-image: url('../../../static/img/pieces/rookB.png');
+    }
+    &.knight {
+      background-image: url('../../../static/img/pieces/knightB.png');
+    }
+    &.bishop {
+      background-image: url('../../../static/img/pieces/bishopB.png');
+    }
+    &.pawn {
+      background-image: url('../../../static/img/pieces/pawnB.png');
+    }
+  }
+}

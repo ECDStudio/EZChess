@@ -5,7 +5,7 @@ export default class Piece {
     this.step = 0;
   }
 
-  toPosition(game, position) {
+  toPosition = (game, position) => {
     const { x, y } = position;
 
     if (typeof x !== 'number' || typeof y !== 'number')
@@ -33,5 +33,12 @@ export default class Piece {
       this.position = { x, y };
 
     return this.position;
+  }
+
+  update = data => {
+    for (let key of Object.keys(data)) {
+      if (this[key] === data[key]) continue;
+      this[key] = data[key];
+    }
   }
 }

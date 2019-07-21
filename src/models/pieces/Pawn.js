@@ -110,7 +110,7 @@ export default class Pawn extends Piece {
         if (player.side === this.side) continue; // not enemy
 
         for (let piece of Object.values(player.pieces)) {
-          if (piece.type !== 'pawn') continue; // not pawn
+          if (piece.type !== PAWN) continue; // not pawn
           if (piece.position.x !== x) continue; // x-position not matched
           if (piece.position.y !== y + 1 && piece.position.y !== y - 1) continue; // y-position not matched
 

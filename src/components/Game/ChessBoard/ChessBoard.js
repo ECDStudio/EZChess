@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Piece from '../Piece';
-import TargetPositions from '../TargetPositions';
+import TargetPositions from './TargetPositions';
 
 import Tiles from './Tiles';
 

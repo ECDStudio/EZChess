@@ -146,7 +146,7 @@ export default class King extends Piece {
     return finalPositions;
   }
   
-  toPosition(game, position) {
+  toPosition = (game, position) => {
     const { x, y, castle } = position;
 
     if (typeof x !== 'number' || typeof y !== 'number')

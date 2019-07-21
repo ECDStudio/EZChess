@@ -22,4 +22,11 @@ export default class Chess {
     player2.isTurn = !player2.isTurn;
     this.turn += 1;
   }
+
+  update(data) {
+    this.turn = data.turn;
+
+    for (let p in this.players)
+      this.players[p].update(data.players[p])
+  }
 }
