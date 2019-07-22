@@ -1,0 +1,11 @@
+.Home {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  .hud {
+    position: fixed;
+    left: 50px;
+    top: 50px;
+  }
+}

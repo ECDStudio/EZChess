@@ -9,13 +9,13 @@ import './App.scss';
 
 export const Routes = [
   {
-      path: '/classic/:view?',
-      component: Classic,
-      exact: false,
+      path: '/',
+      component: Home,
+      exact: true,
   },
   {
-      path: '/:view?',
-      component: Home,
+      path: '/classic/:view?',
+      component: Classic,
       exact: false,
   },
 ]

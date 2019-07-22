@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import className from 'classnames';
 import socketIOClient from "socket.io-client";
 
 import Chess from 'src/models/Chess';
 
+import TurnIndicator from 'src/components/TurnIndicator';
+
 import ChessBoard from './ChessBoard';
-import TurnIndicator from './TurnIndicator/TurnIndicator';
 import PointOfView from './PointOfView';
 
 import { API } from 'src/constants';
@@ -65,6 +67,7 @@ class Classic extends Component {
           <TurnIndicator game={ game } />
           <PointOfView current={ view } />
           <button onClick={ this.resetGame }>Reset Game</button>
+          <Link to="/">Modern Mode</Link>
         </div>
       </div>
     );

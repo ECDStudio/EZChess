@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 
-import Queen from 'src/models/pieces/Queen';
-import Pawn from 'src/models/pieces/Pawn';
-
 import './Piece.scss';
 
 class Piece extends Component {
