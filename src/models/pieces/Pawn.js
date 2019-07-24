@@ -4,8 +4,8 @@ import { checkPosition } from '../checkPosition';
 import { PAWN, WHITE, BLACK } from '../constants';
 
 export default class Pawn extends Piece {
-  constructor(side, x, y) {
-    super(side, x, y);
+  constructor(side, x, y, uid) {
+    super(side, x, y, uid);
     this.type = PAWN;
     this.enPassant = false;
     this.enPassTurn = 0;

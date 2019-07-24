@@ -24,7 +24,10 @@ class Classic extends Component {
   componentDidMount() {
     const socket = socketIOClient(API);
 
-    socket.on('FromAPI', this.mapDataFromApi);
+    socket.on('FromAPI', data => {
+      this.game.update(data)
+      this.forceUpdate();
+    });
 
     this.updateView();
   }
@@ -34,11 +37,6 @@ class Classic extends Component {
 
     if (prevProps.match.params.view !== view)
       this.updateView();
-  }
-
-  mapDataFromApi = data => {
-    this.game.update(data)
-    this.forceUpdate();
   }
 
   resetGame = () => {

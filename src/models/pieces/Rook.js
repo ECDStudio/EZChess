@@ -4,8 +4,8 @@ import { checkPosition } from '../checkPosition';
 import { ROOK, FRIENDLY, ENEMY } from '../constants';
 
 export default class Rook extends Piece {
-  constructor(side, x, y) {
-    super(side, x, y);
+  constructor(side, x, y, uid) {
+    super(side, x, y, uid);
     this.type = ROOK;
   }
 

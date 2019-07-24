@@ -4,8 +4,8 @@ import { checkPosition } from '../checkPosition';
 import { WHITE, KING, PAWN, KING_CASTLE, QUEEN_CASTLE, FRIENDLY } from '../constants';
 
 export default class King extends Piece {
-  constructor(side, x, y) {
-    super(side, x, y);
+  constructor(side, x, y, uid) {
+    super(side, x, y, uid);
     this.type = KING;
   }
 

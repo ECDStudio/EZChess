@@ -27,8 +27,12 @@ const CAMERA_FOV = 25;
 
 const TILE_SIZE = 8;
 
-const WHITE = 'white';
+const to3DCoord = coord => (
+  TILE_SIZE * (3.5 - coord)
+)
+
 const BLACK = 'black';
+const EASE_FACTOR = 0.1;
 
 const MATERIAL = (color = 0xcdcdcd) => {
   return new MeshStandardMaterial({
@@ -50,7 +54,7 @@ export default class ThreeScene {
     this.renderer.setClearColor( 0xffffff, 0 );
 
     this.setupBoard();
-    this.setupReflection();
+    this.setupShadows();
     this.setupLights();
     this.setUpCamera();
     this.animate();
@@ -63,6 +67,74 @@ export default class ThreeScene {
     new Interaction(this.renderer, this.scene, this.camera);
   }
 
+  setupPiece = (piece) => {
+    GLTFLOADER.load(`/models/${ piece.type }.glb`, (gltf) => {
+      const scene = gltf.scene;
+
+      const x = -to3DCoord(piece.position.x);
+      const y = 0;
+      const z = to3DCoord(piece.position.y);
+
+      scene.position.set(x, y, z);
+      scene.mappingId = piece;
+      setting(scene, piece.side);
+
+      this.chessPieces.add(scene);
+    });
+
+    const setting = (scene, side) => {
+      const model = scene.children[0];
+
+      model.material = MATERIAL(side === BLACK ? 0x000000 : 0xffffff);
+      model.receiveShadow = true;
+      model.castShadow = true;
+
+      model.cursor = 'pointer';
+      model.on('click', () => this.selectedPiece = piece);
+    }
+  }
+
+  update = data => {
+    this.chessPieces.children.forEach(piece => {
+      for (let player of Object.values(data.players)) {
+        for (let target of Object.values(player.pieces)) {
+          if (target.uid !== piece.mappingId.uid) continue;
+          this.handlePieceAction(piece, target);
+        }
+      }
+    })
+  }
+
+  handlePieceAction = (piece, target) => {
+    const targetX = -to3DCoord(target.position.x);
+    const targetY = to3DCoord(target.position.y);
+    const { x, z } = piece.position;
+
+    // Stay
+    if (x === targetX && z === targetY) return;
+
+    // Captured
+    if (target.position.x === -1 && target.position.y === -1)
+      piece.visible = false;
+    else piece.visible = true;
+
+    // Regular movement
+    let move;
+    (move = () => {
+      requestAnimationFrame(move);
+      piece.position.x += (targetX - piece.position.x) * EASE_FACTOR;
+      piece.position.z += (targetY - piece.position.z) * EASE_FACTOR;
+      this.renderer.render( this.scene, this.camera );
+    })();
+  }
+
+  showPossibleTargets = (targets) => {
+    this.currentlyShownTargets = null;
+    console.log(targets)
+  }
+
+  /* ENVIRONMENT STUFF
+  --------------------------------------*/
   setupBoard = () => {
     this.board = new Object3D();
     const tiles = new Group();
@@ -89,70 +161,7 @@ export default class ThreeScene {
     this.board.add(this.chessPieces)
   }
 
-  setupPiece = (piece) => {
-    const modelURL = () => {
-      switch (piece.type) {
-        case 'king':
-        return '/models/king/model.gltf';
-        case 'queen':
-        return '/models/queen/model.gltf';
-        case 'rook':
-        return '/models/rook/model.gltf';
-        case 'knight':
-        return '/models/knight/model.gltf';
-        case 'bishop':
-        return '/models/bishop/model.gltf';
-        default:
-        return '/models/pawn/model.gltf';
-      }
-    }
-
-    GLTFLOADER.load(modelURL(), (gltf) => {
-      const scene = gltf.scene;
-
-      const x = -TILE_SIZE * (3.5 - piece.position.x);
-      const y = 0;
-      const z = TILE_SIZE * (3.5 - piece.position.y);
-
-      scene.position.set(x, y, z);
-
-      setting(scene, piece.side);
-
-      scene.mappingId = piece;
-
-      this.chessPieces.add(scene);
-    });
-
-    const setting = (scene, side) => {
-      const model = scene.children[0];
-
-      model.receiveShadow = true;
-      model.castShadow = true;
-
-      model.scale.set(25, 25, 25);
-      model.position.set(-15.5, -7, -15);
-
-      model.material = MATERIAL(side === BLACK ? 0x000000 : 0xffffff);
-
-      model.cursor = 'pointer';
-      model.on('click', () => this.selectedPiece = piece);
-    }
-  }
-
-  update = data => {
-    console.log(this.chessPieces.children)
-    this.chessPieces.children.forEach(piece => {
-    })
-  }
-
-  showPossibleTargets = (targets) => {
-    this.currentlyShownTargets = null;
-    console.log(targets)
-  }
-
-  /* ENVIRONMENT STUFF
-  --------------------------------------*/
-  setupReflection = () => {
+  setupShadows = () => {
     const geometry = new PlaneBufferGeometry( 100, 100 );
     const surface = new Mesh( geometry, new ShadowMaterial());
     surface.opacity = 0.5;

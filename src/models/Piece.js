@@ -1,8 +1,9 @@
 export default class Piece {
-  constructor(side, x, y) {
+  constructor(side, x, y, uid) {
     this.side = side;
     this.position = { x, y };
     this.step = 0;
+    this.uid = uid;
   }
 
   toPosition = (game, position) => {
