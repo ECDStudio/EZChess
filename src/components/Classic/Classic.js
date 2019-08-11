@@ -5,10 +5,10 @@ import socketIOClient from "socket.io-client";
 
 import Chess from 'src/models/Chess';
 
+import PointOfView from 'src/components/PointOfView';
 import TurnIndicator from 'src/components/TurnIndicator';
 
 import ChessBoard from './ChessBoard';
-import PointOfView from './PointOfView';
 
 import { API } from 'src/constants';
 
@@ -63,7 +63,7 @@ class Classic extends Component {
         <ChessBoard game={ game } />
         <div className="hud">
           <TurnIndicator game={ game } />
-          <PointOfView current={ view } />
+          <PointOfView current={ view } classic />
           <button onClick={ this.resetGame }>Reset Game</button>
           <Link to="/">Modern Mode</Link>
         </div>

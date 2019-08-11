@@ -9,7 +9,7 @@ import './App.scss';
 
 export const Routes = [
   {
-      path: '/',
+      path: '/(|white|black)',
       component: Home,
       exact: true,
   },
