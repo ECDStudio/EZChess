@@ -43,7 +43,6 @@ export default class Home extends Component {
   resetGame = () => {
     this.game.reset();
     this.props.updateGame(this.game);
-    this.scene.update(this.game);
   }
 
   updateView = () => {
