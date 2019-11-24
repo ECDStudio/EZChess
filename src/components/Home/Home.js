@@ -25,6 +25,7 @@ export default class Home extends Component {
 
     socket.on('FromAPI', data => {
       this.game.update(data);
+      this.forceUpdate();
     });
 
     this.updateView();
