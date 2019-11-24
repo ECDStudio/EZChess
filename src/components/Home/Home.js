@@ -2,24 +2,24 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import socketIOClient from "socket.io-client";
 
-import Chess from 'src/models/Chess';
+import Chess from 'models/Chess';
 
 import ThreeScene from './ThreeScene';
 
-import PointOfView from 'src/components/PointOfView';
-import TurnIndicator from 'src/components/TurnIndicator';
+import PointOfView from 'components/PointOfView';
+import TurnIndicator from 'components/TurnIndicator';
 
-import { API } from 'src/constants';
+import { API } from 'constants.js';
 
 import './Home.scss';
-
-const EASE_FACTOR = 0.1;
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
 
     this.game = new Chess();
+
+    this.state = { ready: false };
   }
 
   componentDidMount() {
@@ -27,7 +27,7 @@ export default class Home extends Component {
 
     socket.on('FromAPI', data => {
       this.game.update(data);
-      this.forceUpdate();
+      if (!this.state.ready) this.setState({ ready: true });
     });
 
     this.updateView();
@@ -41,8 +41,10 @@ export default class Home extends Component {
   }
 
   resetGame = () => {
-    this.game.reset();
-    this.props.updateGame(this.game);
+    this.setState({ ready: false }, () => {
+      this.game.reset();
+      this.props.updateGame(this.game);
+    });
   }
 
   updateView = () => {
@@ -57,7 +59,7 @@ export default class Home extends Component {
 
     return (
       <div className="Home">
-        <ThreeScene game={ game } view={ view } />
+        { this.state.ready && <ThreeScene game={ game } view={ view } /> }
         <div className="hud">
           <TurnIndicator game={ game } />
           <PointOfView current={ view } />

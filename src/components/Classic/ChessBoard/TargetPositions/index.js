@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import TargetPositions from './TargetPositions';
 
-import { updateGame } from 'src/redux/actions';
+import { updateGame } from 'redux/actions';
 
 // const mapStateToProps = state => ({
 

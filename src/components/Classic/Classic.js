@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import className from 'classnames';
 import socketIOClient from "socket.io-client";
 
-import Chess from 'src/models/Chess';
+import Chess from 'models/Chess';
 
-import PointOfView from 'src/components/PointOfView';
-import TurnIndicator from 'src/components/TurnIndicator';
+import PointOfView from 'components/PointOfView';
+import TurnIndicator from 'components/TurnIndicator';
 
 import ChessBoard from './ChessBoard';
 
-import { API } from 'src/constants';
+import { API } from 'constants.js';
 
 import './Classic.scss';
 

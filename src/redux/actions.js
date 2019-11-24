@@ -1,6 +1,6 @@
 import socketIOClient from "socket.io-client";
 
-import { API } from 'src/constants';
+import { API } from 'constants.js';
 
 export const UPDATE_GAME = 'UPDATE_GAME';
 export const UPDATE_VIEW = 'UPDATE_VIEW';

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Router, Route } from 'react-router-dom';
 import { createBrowserHistory as createHistory } from 'history';
 
-import Classic from 'src/components/Classic';
-import Home from 'src/components/Home';
+import Classic from 'components/Classic';
+import Home from 'components/Home';
 
 import './App.scss';
 

@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import { Interaction } from 'three.interaction';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
+import { KING, QUEEN, ROOK, KNIGHT, BISHOP, PAWN, BLACK } from 'models/constants';
+
 const {
   AmbientLight,
   BoxBufferGeometry,
@@ -30,9 +32,6 @@ const TO_3D_COORD = coord => (
   TILE_SIZE * (3.5 - coord)
 )
 
-const BLACK = 'black';
-const EASE_FACTOR = 0.1;
-
 const MATERIAL = (color = 0xcdcdcd) => {
   return new MeshStandardMaterial({
     color: color,
@@ -41,6 +40,8 @@ const MATERIAL = (color = 0xcdcdcd) => {
     wireframe: false
   });
 };
+
+const EASE_FACTOR = 0.1;
 
 export default class ThreeScene extends Component {
   constructor(container) {
@@ -54,11 +55,7 @@ export default class ThreeScene extends Component {
     this.targetZoom = 0;
     this.zoomLevel = 0;
 
-    this.currentlyShownTargets = [];
-
-    this.state = {
-      selectedPiece: null,
-    }
+    this.currentTargets = [];
   }
 
   componentDidMount() {
@@ -93,16 +90,13 @@ export default class ThreeScene extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { game, view } = this.props;
+    const { view } = this.props;
 
-    if (prevProps.view !== view)
-      this.updateView(view);
-    else
-      this.updatePieces(game);
+    if (prevProps.view !== view) this.updateView(view);
   }
 
   loadModels = () => {
-    const types = ['king', 'queen', 'rook', 'knight', 'bishop', 'pawn'];
+    const types = [ KING, QUEEN, ROOK, KNIGHT, BISHOP, PAWN ];
 
     types.forEach(type => {
       GLTFLOADER.load(`/models/${ type }.glb`, (gltf) => {
@@ -185,12 +179,40 @@ export default class ThreeScene extends Component {
     const { game, view } = this.props;
 
     if (piece.side !== view) return;
-    this.setState({
-      selectedPiece: piece,
-    }, () => {
-      this.currentlyShownTargets = [];
-      console.log(piece.availableMoves(game))
-    })
+    if (!game.players[Object.keys(game.players).find(player => (game.players[player].side === piece.side))].isTurn) return;
+
+    this.clearTargets();
+
+    piece.availableMoves(game).forEach(target => this.handleSetupTarget(piece, target));
+    this.currentTargets.forEach(target => this.board.add(target));
+  }
+
+  handleSetupTarget = (piece, target) => {
+    const { game, updateGame } = this.props;
+
+    const targetPrompt = new Mesh( new BoxBufferGeometry( TILE_SIZE, 0.1, TILE_SIZE ) );
+    targetPrompt.material = MATERIAL(0x75b0ed);
+    targetPrompt.position.set( (- TILE_SIZE * 3.5) + (TILE_SIZE * target.x), 1, (- TILE_SIZE * 3.5) + (TILE_SIZE * (7 - target.y)));
+
+    targetPrompt.cursor = 'pointer';
+    targetPrompt.on('click', () => {
+      piece.toPosition(game, target);
+      game.switchTurn();
+      updateGame(game);
+      this.updatePieces(game);
+      this.clearTargets();
+    });
+
+    this.currentTargets.push(targetPrompt);
+  }
+
+  clearTargets = () => {
+    this.currentTargets.forEach(target => {
+      this.board.remove(target);
+      target.geometry.dispose();
+      target.material.dispose();
+    });
+    this.currentTargets = [];
   }
 
   /* ENVIRONMENT STUFF
@@ -222,7 +244,9 @@ export default class ThreeScene extends Component {
     this.scene.add(this.board);
 
     this.chessPieces = new Group();
-    this.board.add(this.chessPieces)
+    this.board.add(this.chessPieces);
+
+    this.updateView(this.props.view);
   }
 
   setupLights = () => {
@@ -240,7 +264,7 @@ export default class ThreeScene extends Component {
       width: 5000,
       height: 5000,
     });
-    // this.scene.add( mainLight );
+    this.scene.add( mainLight );
 
     const setupSpotLights = (intensity, x, y, z) => {
       const spotLight = new SpotLight( 0xffffff, intensity );
@@ -254,8 +278,8 @@ export default class ThreeScene extends Component {
     }
 
     setupSpotLights(0.5, 0, 50, 0);
-    // setupSpotLights(0.5, 0, 20, 25);
-    // setupSpotLights(0.5, 0, 20, -25);
+    setupSpotLights(0.5, 0, 20, 25);
+    setupSpotLights(0.5, 0, 20, -25);
 
     this.scene.add( new AmbientLight( 0xffffff, 0.5 ) );
   }
@@ -271,8 +295,6 @@ export default class ThreeScene extends Component {
   /* ENVIRONMENT INTERACTIONS
   --------------------------------------*/
   onTick = () => {
-    const { rotate, zoom } = this;
-
     this.raf = window.requestAnimationFrame( this.onTick );
 
     // Mouse move triggers rotation
@@ -329,14 +351,14 @@ export default class ThreeScene extends Component {
     const toDegrees = (radians) => (radians * 180 / Math.PI);
 
     switch (side) {
-      case '':
-      this.board.targetRotate = 0;
-      break;
       case 'white':
       this.board.targetRotate = 90;
       break;
       case 'black':
       this.board.targetRotate = -90;
+      break;
+      default:
+      this.board.targetRotate = 0;
       break;
     }
 
