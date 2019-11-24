@@ -18,8 +18,6 @@ export default class Home extends Component {
     super(props);
 
     this.game = new Chess();
-
-    this.state = { ready: false };
   }
 
   componentDidMount() {
@@ -27,7 +25,6 @@ export default class Home extends Component {
 
     socket.on('FromAPI', data => {
       this.game.update(data);
-      if (!this.state.ready) this.setState({ ready: true });
     });
 
     this.updateView();
@@ -41,10 +38,8 @@ export default class Home extends Component {
   }
 
   resetGame = () => {
-    this.setState({ ready: false }, () => {
-      this.game.reset();
-      this.props.updateGame(this.game);
-    });
+    this.game.reset();
+    this.props.updateGame(this.game);
   }
 
   updateView = () => {
@@ -59,7 +54,7 @@ export default class Home extends Component {
 
     return (
       <div className="Home">
-        { this.state.ready && <ThreeScene game={ game } view={ view } /> }
+        <ThreeScene view={ view } />
         <div className="hud">
           <TurnIndicator game={ game } />
           <PointOfView current={ view } />

@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import * as THREE from 'three';
 import { Interaction } from 'three.interaction';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import socketIOClient from "socket.io-client";
+
+import { API } from 'constants.js';
+
+import Chess from 'models/Chess';
 
 import { KING, QUEEN, ROOK, KNIGHT, BISHOP, PAWN, BLACK } from 'models/constants';
 
@@ -41,7 +46,7 @@ const MATERIAL = (color = 0xcdcdcd) => {
   });
 };
 
-const EASE_FACTOR = 0.1;
+const EASE_FACTOR = 0.25;
 
 export default class ThreeScene extends Component {
   constructor(container) {
@@ -56,6 +61,8 @@ export default class ThreeScene extends Component {
     this.zoomLevel = 0;
 
     this.currentTargets = [];
+
+    this.game = new Chess();
   }
 
   componentDidMount() {
@@ -79,13 +86,17 @@ export default class ThreeScene extends Component {
     this.raf = window.requestAnimationFrame( this.onTick );
 
     window.addEventListener('mousemove', this.handleMouseMove);
-    window.addEventListener('mousewheel', this.handleMouseWheel);
     window.addEventListener('resize', this.resize);
+
+    const socket = socketIOClient(API);
+    socket.on('FromAPI', data => {
+      this.game.update(data);
+      this.updatePieces(this.game);
+    });
   }
 
   componentWillUnmount() {
     window.removeEventListener('mousemove', this.handleMouseMove);
-    window.removeEventListener('mousewheel', this.handleMouseWheel);
     window.removeEventListener('resize', this.resize);
   }
 
@@ -106,7 +117,7 @@ export default class ThreeScene extends Component {
           if (!this.gltfs[type]) allLoaded = false;
         })
         if (allLoaded) {
-          for (let player of Object.values(this.props.game.players)) {
+          for (let player of Object.values(this.game.players)) {
             for (let piece of Object.values(player.pieces))
               this.setupPiece(piece)
           }
@@ -142,14 +153,18 @@ export default class ThreeScene extends Component {
   }
 
   updatePieces = data => {
-    this.chessPieces.children.forEach(piece => {
-      for (let player of Object.values(data.players)) {
-        for (let target of Object.values(player.pieces)) {
-          if (target.uid !== piece.mappingId.uid) continue;
-          this.handlePieceAction(piece, target);
+    let moves;
+    (moves = () => {
+      requestAnimationFrame(moves);
+      this.chessPieces.children.forEach(piece => {
+        for (let player of Object.values(data.players)) {
+          for (let target of Object.values(player.pieces)) {
+            if (target.uid !== piece.mappingId.uid) continue;
+            this.handlePieceAction(piece, target);
+          }
         }
-      }
-    })
+      })
+    })();
   }
 
   handlePieceAction = (piece, target) => {
@@ -166,17 +181,14 @@ export default class ThreeScene extends Component {
     else piece.visible = true;
 
     // Regular movement
-    let move;
-    (move = () => {
-      requestAnimationFrame(move);
-      piece.position.x += (targetX - piece.position.x) * EASE_FACTOR;
-      piece.position.z += (targetY - piece.position.z) * EASE_FACTOR;
-      this.renderer.render( this.scene, this.camera );
-    })();
+    piece.position.x += (targetX - piece.position.x) * EASE_FACTOR;
+    piece.position.z += (targetY - piece.position.z) * EASE_FACTOR;
+    this.renderer.render( this.scene, this.camera );
   }
 
   handlePieceClick = piece => {
-    const { game, view } = this.props;
+    const { view } = this.props;
+    const { game } = this;
 
     if (piece.side !== view) return;
     if (!game.players[Object.keys(game.players).find(player => (game.players[player].side === piece.side))].isTurn) return;
@@ -188,7 +200,8 @@ export default class ThreeScene extends Component {
   }
 
   handleSetupTarget = (piece, target) => {
-    const { game, updateGame } = this.props;
+    const { updateGame } = this.props;
+    const { game } = this;
 
     const targetPrompt = new Mesh( new BoxBufferGeometry( TILE_SIZE, 0.1, TILE_SIZE ) );
     targetPrompt.material = MATERIAL(0x75b0ed);
@@ -199,7 +212,6 @@ export default class ThreeScene extends Component {
       piece.toPosition(game, target);
       game.switchTurn();
       updateGame(game);
-      this.updatePieces(game);
       this.clearTargets();
     });
 
@@ -373,7 +385,7 @@ export default class ThreeScene extends Component {
 
   render() {
     return (
-      <div ref={ el => this.stage = el } />
+      <div ref={ el => this.stage = el } onWheel={ this.handleMouseWheel } />
     )
   }
 }
