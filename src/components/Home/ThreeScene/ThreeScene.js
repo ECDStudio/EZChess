@@ -126,8 +126,8 @@ export default class ThreeScene extends Component {
     scene.position.set(x, y, z);
     scene.mappingId = piece;
 
-    model.material = MATERIAL(piece.side === BLACK ? 0x000000 : 0xffffff);
-    model.receiveShadow = true;
+    model.material = MATERIAL(piece.side === BLACK ? 0x232323 : 0xffffff);
+    model.receiveShadow = false;
     model.castShadow = true;
 
     model.cursor = 'pointer';
@@ -192,7 +192,7 @@ export default class ThreeScene extends Component {
 
     const targetPrompt = new Mesh( new BoxBufferGeometry( TILE_SIZE, 0.1, TILE_SIZE ) );
     targetPrompt.material = MATERIAL(0x75b0ed);
-    targetPrompt.position.set( (- TILE_SIZE * 3.5) + (TILE_SIZE * target.x), 1, (- TILE_SIZE * 3.5) + (TILE_SIZE * (7 - target.y)));
+    targetPrompt.position.set( (- TILE_SIZE * 3.5) + (TILE_SIZE * target.x), 0.5, (- TILE_SIZE * 3.5) + (TILE_SIZE * (7 - target.y)));
 
     targetPrompt.cursor = 'pointer';
     targetPrompt.on('click', () => {
@@ -250,36 +250,36 @@ export default class ThreeScene extends Component {
   }
 
   setupLights = () => {
-    const mainLight = new DirectionalLight( 0xffffff, 0.25 );
+    const mainLight = new DirectionalLight( 0xffffff, 0.1 );
     mainLight.castShadow = true;
     mainLight.position.set( 0, 100, 0 );
     mainLight.lookAt( 0, 0, 0 );
     Object.assign(mainLight.shadow.camera, {
-      top: -100,
-      right: 100,
-      left: -100,
-      bottom: 100,
+      top: -50,
+      right: 50,
+      left: -50,
+      bottom: 50,
     });
     Object.assign(mainLight.shadow.mapSize, {
-      width: 5000,
-      height: 5000,
+      width: 250,
+      height: 250,
     });
     this.scene.add( mainLight );
 
-    const setupSpotLights = (intensity, x, y, z) => {
+    const setupSpotLights = (intensity, x, y, z, castShadow = false) => {
       const spotLight = new SpotLight( 0xffffff, intensity );
-      spotLight.castShadow = true;
+      spotLight.castShadow = castShadow;
       spotLight.position.set(x, y, z);
       Object.assign(spotLight.shadow.mapSize, {
-        width: 5000,
-        height: 5000,
+        width: 500,
+        height: 500,
       });
       this.scene.add( spotLight );
     }
 
-    setupSpotLights(0.5, 0, 50, 0);
-    setupSpotLights(0.5, 0, 20, 25);
-    setupSpotLights(0.5, 0, 20, -25);
+    setupSpotLights(0.25, 0, 50, 0, true);
+    setupSpotLights(0.25, 0, 25, 30);
+    setupSpotLights(0.25, 0, 25, -30);
 
     this.scene.add( new AmbientLight( 0xffffff, 0.5 ) );
   }

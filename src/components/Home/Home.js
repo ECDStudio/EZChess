@@ -65,7 +65,7 @@ export default class Home extends Component {
           <PointOfView current={ view } />
           <button onClick={ this.resetGame }>Reset Game</button>
           <Link to="/classic">Classic Mode</Link>
-          <p>3D models credit: Jarlan Perez (https://poly.google.com/user/4lZfAdz3x3X)</p>
+          <p>Chess pieces models credit: Jarlan Perez (https://poly.google.com/user/4lZfAdz3x3X)</p>
         </div>
       </div>
     );

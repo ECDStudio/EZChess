@@ -8,6 +8,18 @@
     left: 50px;
     top: 50px;
 
+    > * {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    a,
+    button {
+      display: block;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
     p {
       position: fixed;
       right: 15px;
