@@ -46,7 +46,7 @@ const MATERIAL = (color = 0xcdcdcd) => {
   });
 };
 
-const EASE_FACTOR = 0.25;
+const EASE_FACTOR = 0.15;
 
 export default class ThreeScene extends Component {
   constructor(container) {
@@ -98,6 +98,9 @@ export default class ThreeScene extends Component {
   componentWillUnmount() {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('resize', this.resize);
+    this.raf = null;
+    this.renderer = null;
+    this.scene = null;
   }
 
   componentDidUpdate(prevProps) {
@@ -183,7 +186,7 @@ export default class ThreeScene extends Component {
     // Regular movement
     piece.position.x += (targetX - piece.position.x) * EASE_FACTOR;
     piece.position.z += (targetY - piece.position.z) * EASE_FACTOR;
-    this.renderer.render( this.scene, this.camera );
+    if (this.renderer) this.renderer.render( this.scene, this.camera );
   }
 
   handlePieceClick = piece => {
@@ -323,7 +326,6 @@ export default class ThreeScene extends Component {
       const zOffset = Math.sqrt(CAMERA_RADIUS ** 2 - xOffset ** 2);
       this.camera.position.set( xOffset, CAMERA_ELEVATION - this.rotation.y * 5, zOffset );
       this.camera.lookAt( 0, 0, 0 );
-      this.renderer.render( this.scene, this.camera );
     }
 
     // Mouse scroll triggers zoom
@@ -333,8 +335,16 @@ export default class ThreeScene extends Component {
       const fovLevel = CAMERA_FOV + this.zoomLevel;
 
       this.camera.setFocalLength(fovLevel);
-      this.renderer.render( this.scene, this.camera );
     }
+
+    // from this.updateView()
+    const toRadians = (degrees) => (degrees * Math.PI / 180);
+    const toDegrees = (radians) => (radians * 180 / Math.PI);
+
+    const currentDegrees = toDegrees(this.board.rotation.y);
+    this.board.rotation.y = toRadians(currentDegrees + (this.board.targetRotate - currentDegrees) * EASE_FACTOR);
+    
+    if (this.renderer) this.renderer.render( this.scene, this.camera );
   }
 
   handleMouseMove = e => {
@@ -359,9 +369,6 @@ export default class ThreeScene extends Component {
   }
 
   updateView = (side) => {
-    const toRadians = (degrees) => (degrees * Math.PI / 180);
-    const toDegrees = (radians) => (radians * 180 / Math.PI);
-
     switch (side) {
       case 'white':
       this.board.targetRotate = 90;
@@ -373,14 +380,6 @@ export default class ThreeScene extends Component {
       this.board.targetRotate = 0;
       break;
     }
-
-    let rotate;
-    (rotate = () => {
-      requestAnimationFrame(rotate);
-      const currentDegrees = toDegrees(this.board.rotation.y);
-      this.board.rotation.y = toRadians(currentDegrees + (this.board.targetRotate - currentDegrees) * EASE_FACTOR);
-      this.renderer.render( this.scene, this.camera );
-    })();
   }
 
   render() {
