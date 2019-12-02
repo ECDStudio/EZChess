@@ -91,7 +91,6 @@ export default class ThreeScene extends Component {
     const socket = socketIOClient(API);
     socket.on('FromAPI', data => {
       this.game.update(data);
-      this.updatePieces(this.game);
     });
   }
 
@@ -155,21 +154,6 @@ export default class ThreeScene extends Component {
     this.renderer.render( this.scene, this.camera );
   }
 
-  updatePieces = data => {
-    let moves;
-    (moves = () => {
-      requestAnimationFrame(moves);
-      this.chessPieces.children.forEach(piece => {
-        for (let player of Object.values(data.players)) {
-          for (let target of Object.values(player.pieces)) {
-            if (target.uid !== piece.mappingId.uid) continue;
-            this.handlePieceAction(piece, target);
-          }
-        }
-      })
-    })();
-  }
-
   handlePieceAction = (piece, target) => {
     const targetX = -TO_3D_COORD(target.position.x);
     const targetY = TO_3D_COORD(target.position.y);
@@ -186,7 +170,6 @@ export default class ThreeScene extends Component {
     // Regular movement
     piece.position.x += (targetX - piece.position.x) * EASE_FACTOR;
     piece.position.z += (targetY - piece.position.z) * EASE_FACTOR;
-    if (this.renderer) this.renderer.render( this.scene, this.camera );
   }
 
   handlePieceClick = piece => {
@@ -223,9 +206,9 @@ export default class ThreeScene extends Component {
 
   clearTargets = () => {
     this.currentTargets.forEach(target => {
-      this.board.remove(target);
       target.geometry.dispose();
       target.material.dispose();
+      this.board.remove(target);
     });
     this.currentTargets = [];
   }
@@ -306,9 +289,6 @@ export default class ThreeScene extends Component {
     this.camera.setFocalLength(CAMERA_FOV);
   }
 
-
-  /* ENVIRONMENT INTERACTIONS
-  --------------------------------------*/
   onTick = () => {
     this.raf = window.requestAnimationFrame( this.onTick );
 
@@ -343,10 +323,22 @@ export default class ThreeScene extends Component {
 
     const currentDegrees = toDegrees(this.board.rotation.y);
     this.board.rotation.y = toRadians(currentDegrees + (this.board.targetRotate - currentDegrees) * EASE_FACTOR);
-    
+
+    // watch all chess pieces' actions
+    this.chessPieces.children.forEach(piece => {
+      for (let player of Object.values(this.game.players)) {
+        for (let target of Object.values(player.pieces)) {
+          if (target.uid !== piece.mappingId.uid) continue;
+          this.handlePieceAction(piece, target);
+        }
+      }
+    })
+
     if (this.renderer) this.renderer.render( this.scene, this.camera );
   }
 
+  /* ENVIRONMENT INTERACTIONS
+  --------------------------------------*/
   handleMouseMove = e => {
     const { innerWidth, innerHeight } = window;
 
@@ -369,6 +361,7 @@ export default class ThreeScene extends Component {
   }
 
   updateView = (side) => {
+    this.clearTargets();
     switch (side) {
       case 'white':
       this.board.targetRotate = 90;
